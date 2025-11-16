@@ -42,6 +42,7 @@
     cursor: pointer;
     transition: all var(--transition-base);
     text-align: left;
+    text-decoration: none;
 }
 
 .menu-btn:hover {
