@@ -6,7 +6,7 @@
 
     <section class="content">
         <!-- My Account Section -->
-        <div id="account-section">
+        <div id="account-section" class="content-section">
             <h1>My Account</h1>
 
             <!-- Profile Card -->

@@ -1,7 +1,7 @@
 <x-layouts.app>
 
     <section class="content">
-            <div id="chat-section">
+            <div id="chat-section" class="content-section">
                 <h1>Live Chat</h1>
                 
                 <div class="chat-container">

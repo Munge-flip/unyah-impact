@@ -3,7 +3,7 @@
         <div id="orders-section">
             <h1>Order History</h1>
 
-            <div class="orders-container">
+            <div class="orders-container" class="content-section">
                 <!-- Order Card 1 -->
                 <div class="order-card">
                     <div class="order-header">
