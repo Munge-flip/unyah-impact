@@ -1,0 +1,472 @@
+/* ==================== SERVICES LAYOUT ==================== */
+.services-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 20px auto;
+    gap: var(--spacing-lg);
+    padding: 0 var(--spacing-lg) var(--spacing-lg);
+}
+
+/* Banner */
+.banner {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    background: var(--primary-gradient);
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ==================== GAME SIDEBAR ==================== */
+.services-container .sidebar {
+    width: 280px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-xl);
+    height: fit-content;
+    position: sticky;
+    top: calc(10vh + 20px);
+    box-shadow: var(--shadow-md);
+}
+
+.game-info {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--border-medium);
+}
+
+.game-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--radius-circle);
+    object-fit: cover;
+    margin-bottom: var(--spacing-md);
+    border: 3px solid var(--accent-purple);
+}
+
+.game-info h2 {
+    font-size: var(--font-size-xl);
+    color: var(--gray-800);
+}
+
+.how-to-order h3 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-md);
+    color: var(--gray-800);
+}
+
+.how-to-order ol {
+    padding-left: var(--spacing-lg);
+}
+
+.how-to-order li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+    color: var(--gray-700);
+    font-size: var(--font-size-sm);
+}
+
+/* ==================== SERVICE CONTENT ==================== */
+.services-container .content {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-2xl);
+    box-shadow: var(--shadow-md);
+}
+
+/* ==================== SERVICE SECTIONS ==================== */
+.service-section h2 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-xl);
+    color: var(--gray-800);
+    border-bottom: 3px solid var(--accent-purple);
+    padding-bottom: var(--spacing-sm);
+}
+
+.service-category {
+    margin-bottom: 35px;
+}
+
+.service-category h3,
+.service-category h4 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-md);
+    color: var(--gray-700);
+}
+
+.event-note {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    padding: 0 150px;
+    font-size: var(--font-size-xs);
+    color: var(--gray-500);
+    font-style: italic;
+    margin-bottom: var(--spacing-xs);
+}
+
+/* ==================== SERVICE BUTTONS ==================== */
+.service-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.service-btn {
+    flex: 1;
+    min-width: 200px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--gray-100);
+    border: 2px solid var(--border-medium);
+    border-radius: var(--radius-round);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+}
+
+.service-btn:hover {
+    background: var(--white);
+    border-color: var(--accent-purple);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(167, 139, 250, 0.3);
+}
+
+.service-btn.selected {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+    color: var(--white);
+    font-weight: 600;
+}
+
+.service-btn .price {
+    font-weight: 700;
+    color: var(--gray-800);
+}
+
+.service-btn.selected .price {
+    color: var(--white);
+}
+
+/* ==================== EXPLORATION/REGION GRIDS ==================== */
+.exploration-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.exploration-card {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    border: 3px solid transparent;
+    box-shadow: var(--shadow-sm);
+}
+
+.exploration-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.exploration-card.selected {
+    border-color: var(--accent-purple);
+    box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
+}
+
+.exploration-image {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Genshin Region Backgrounds */
+.mondstadt-bg {
+    background-image: url(/img/mondstadt\ banner.png);
+}
+
+.liyue-bg {
+    background-image: url(/img/liyue\ banner.jpg);
+}
+
+.inazuma-bg {
+    background-image: url(/img/inazuma\ banner.png);
+}
+
+.fontaine-bg {
+    background-image: url(/img/fontaine\ banner.png);
+}
+
+.natlan-bg {
+    background-image: url(/img/natlan\ banner.png);
+}
+
+.nod-krai-bg {
+    background-image: url(/img/nodkrai\ banner.png);
+}
+
+/* HSR Region Backgrounds */
+.herta-bg {
+    background-image: url(/img/Herta\ Space\ Station\ banner.png);
+}
+
+.jarilo-bg {
+    background-image: url(/img/jarilo\ banner.png);
+}
+
+.xianzhou-bg {
+    background-image: url(/img/xianzhou\ banner.png);
+}
+
+.penacony-bg {
+    background-image: url(/img/penacony\ banner.png);
+}
+
+.amphoreus-bg {
+    background-image: url(/img/amphoreus\ banner.png);
+}
+
+.exploration-card h4 {
+    padding: var(--spacing-md);
+    text-align: center;
+    background: var(--white);
+    font-size: var(--font-size-md);
+    color: var(--gray-800);
+}
+
+.exploration-card.selected h4 {
+    background: var(--accent-purple);
+    color: var(--white);
+    font-weight: 600;
+}
+
+/* ==================== WORLD/MODE SELECTION (HSR/ZZZ) ==================== */
+.world-selection,
+.mode-selection {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-sm);
+}
+
+.world-card,
+.mode-card {
+    flex: 1;
+    min-width: 180px;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    border: 2px solid var(--border-medium);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+}
+
+.world-card:hover,
+.mode-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.world-card.selected,
+.mode-card.selected {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+    color: var(--white);
+    font-weight: 600;
+}
+
+.world-label,
+.mode-label {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ==================== PAYMENT SECTION ==================== */
+.payment-section {
+    margin-top: var(--spacing-3xl);
+    padding-top: var(--spacing-2xl);
+    border-top: 2px solid var(--border-medium);
+}
+
+.payment-section h2 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-lg);
+    color: var(--gray-800);
+}
+
+.payment-type {
+    margin-bottom: var(--spacing-xl);
+}
+
+.payment-type h3 {
+    background: #ffa500;
+    color: var(--white);
+    padding: 12px var(--spacing-lg);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    font-size: var(--font-size-lg);
+    margin-bottom: 0;
+}
+
+.payment-options {
+    display: flex;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--gray-100);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.payment-option {
+    flex: 1;
+}
+
+.payment-option label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.payment-option strong {
+    color: var(--gray-800);
+    font-size: var(--font-size-md);
+}
+
+.payment-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+}
+
+.payment-input:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+}
+
+/* ==================== ORDER SUMMARY ==================== */
+.order-summary {
+    margin: var(--spacing-2xl) 0;
+    padding: var(--spacing-lg);
+    background: #f9f9f9;
+    border-radius: var(--radius-xl);
+    border-left: 4px solid var(--accent-purple);
+}
+
+.order-summary h3 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-md);
+    color: var(--gray-800);
+}
+
+#selectedServices {
+    margin-bottom: var(--spacing-md);
+}
+
+.selected-item {
+    padding: 8px 0;
+    color: var(--gray-700);
+    font-size: var(--font-size-base);
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-price {
+    font-size: 22px;
+    color: var(--gray-800);
+    padding-top: var(--spacing-md);
+    border-top: 2px solid var(--gray-300);
+    text-align: right;
+}
+
+/* ==================== ORDER CONFIRMATION ==================== */
+.order-confirmation {
+    text-align: center;
+    margin-top: var(--spacing-2xl);
+}
+
+.order-confirmation h2 {
+    font-size: 22px;
+    margin-bottom: var(--spacing-md);
+    color: var(--gray-800);
+}
+
+.order-confirmation p {
+    margin-bottom: var(--spacing-lg);
+    color: var(--gray-600);
+}
+
+.order-confirmation a {
+    color: var(--accent-purple);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.order-confirmation a:hover {
+    text-decoration: underline;
+}
+
+.order-confirmation .submit-btn {
+    padding: var(--spacing-md) 50px;
+    border-radius: var(--radius-round);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* ==================== RESPONSIVE SERVICES ==================== */
+@media (max-width: 1024px) {
+    .services-container {
+        flex-direction: column;
+    }
+
+    .services-container .sidebar {
+        width: 100%;
+        position: relative;
+        top: 0;
+    }
+
+    .exploration-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .event-note {
+        flex-direction: column;
+        padding: 0;
+        gap: var(--spacing-xs);
+    }
+}
+
+@media (max-width: 768px) {
+    .service-options {
+        flex-direction: column;
+    }
+
+    .service-btn {
+        min-width: 100%;
+    }
+
+    .payment-options {
+        flex-direction: column;
+    }
+
+    .exploration-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .world-selection,
+    .mode-selection {
+        flex-direction: column;
+    }
+}
