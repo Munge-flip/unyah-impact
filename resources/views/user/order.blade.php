@@ -1,9 +1,9 @@
 <x-layouts.app>
     <section class="content">
-        <div id="orders-section">
+        <div id="orders-section" class="content-section">
             <h1>Order History</h1>
 
-            <div class="orders-container" class="content-section">
+            <div class="orders-container">
                 <!-- Order Card 1 -->
                 <div class="order-card">
                     <div class="order-header">
