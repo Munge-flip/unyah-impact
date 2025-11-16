@@ -6,7 +6,7 @@
 
     <section class="content">
         <!-- My Account Section -->
-        <div id="account-section" class="content-section">
+        <div id="account-section" class="content-section active">
             <h1>My Account</h1>
 
             <!-- Profile Card -->
@@ -64,7 +64,7 @@
         </div>
 
         <!-- Order History Section -->
-        <div id="orders-section" class="content-section active">
+        <div id="orders-section" class="content-section">
             <h1>Order History</h1>
 
             <div class="orders-container">
