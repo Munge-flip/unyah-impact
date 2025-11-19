@@ -1,43 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AgentController;
+use App\Http\Controllers\AdminController;
 
-Route::get('/user', function () {
-    return view('user.dashboard');
+Route::prefix('user')->name('User.')->group(function() {
+    Route::get('/', [UserController::class, 'index'])->name('dashboard');
+    Route::get('/order', [UserController::class, 'order'])->name('order');
+    Route::get('/chat', [UserController::class, 'chat'])->name('chat');
 });
 
-Route::get('/user/order', function () {
-    return view('user.order');
+Route::prefix('agent')->name('Agent.')->group(function() {
+    Route::get('/', [AgentController::class, 'index'])->name('dashboard');
+    Route::get('/order', [AgentController::class, 'order'])->name('order');
+    Route::get('/chat', [AgentController::class, 'chat'])->name('chat');
 });
 
-Route::get('/user/chat', function () {
-    return view('user.chat');
-});
-
-Route::get("/admin", function() {
-    return view ('admin.dashboard');
-});
-
-Route::get("/admin/order", function() {
-    return view ('admin.order');
-});
-
-Route::get("/admin/agent", function() {
-    return view ('admin.agent');
-});
-
-Route::get("/admin/user", function() {
-    return view ('admin.user');
-});
-
-Route::get("/agent", function() {
-    return view ('agent.dashboard');
-});
-
-Route::get("/agent/order", function() {
-    return view ('agent.order');
-});
-
-Route::get("/agent/chat", function() {
-    return view ('agent.chat');
+Route::prefix('admin')->name('Admin.')->group(function() {
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/order', [AdminController::class, 'order'])->name('order');
+    Route::get('/agent', [AdminController::class, 'agent'])->name('agent');
+    Route::get('/user', [AdminController::class, 'user'])->name('user');
 });
