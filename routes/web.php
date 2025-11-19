@@ -29,3 +29,15 @@ Route::get("/admin/agent", function() {
 Route::get("/admin/user", function() {
     return view ('admin.user');
 });
+
+Route::get("/agent", function() {
+    return view ('agent.dashboard');
+});
+
+Route::get("/agent/order", function() {
+    return view ('agent.order');
+});
+
+Route::get("/agent/chat", function() {
+    return view ('agent.chat');
+});
