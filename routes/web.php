@@ -17,3 +17,15 @@ Route::get('/user/chat', function () {
 Route::get("/admin", function() {
     return view ('admin.dashboard');
 });
+
+Route::get("/admin/order", function() {
+    return view ('admin.order');
+});
+
+Route::get("/admin/agent", function() {
+    return view ('admin.agent');
+});
+
+Route::get("/admin/user", function() {
+    return view ('admin.user');
+});

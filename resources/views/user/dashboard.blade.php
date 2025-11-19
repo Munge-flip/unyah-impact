@@ -1,9 +1,5 @@
 <x-layouts.app>
 
-    <x-slot name="main-content">
-
-    </x-slot>
-
     <section class="content">
         <!-- My Account Section -->
         <div id="account-section" class="content-section">
