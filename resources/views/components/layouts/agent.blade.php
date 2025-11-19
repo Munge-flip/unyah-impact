@@ -19,16 +19,7 @@
         <x-agent.sidebar/>
 
         <!-- Main Content Area -->
-        <section class="content">
-            <!-- My Account Section -->
-
-
-            <!-- Orders Handling Section -->
-
-
-            <!-- Live Chat Section -->
-
-        </section>
+        {{ $slot }}
     </main>
 
     <x-agent.footer/>
