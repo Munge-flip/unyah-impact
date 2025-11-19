@@ -2,7 +2,7 @@
 .dashboard-container,
 .profile-container {
     display: flex;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 20px auto;
     gap: var(--spacing-lg);
     padding: 0 var(--spacing-lg) var(--spacing-lg);
