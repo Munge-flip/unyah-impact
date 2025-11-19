@@ -13,3 +13,7 @@ Route::get('/user/order', function () {
 Route::get('/user/chat', function () {
     return view('user.chat');
 });
+
+Route::get("/admin", function() {
+    return view ('admin.dashboard');
+});

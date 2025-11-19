@@ -12,17 +12,17 @@
 </head>
 <body>
     <!-- Header Navigation -->
-    <x-header/>
+    <x-user.header/>
 
     <main class="profile-container">
         <!-- Sidebar Navigation -->
-    <x-sidebar/>
+    <x-user.sidebar/>
 
         <!-- Main Content Area -->
     {{ $slot }}
     </main>
 
-    <x-footer/>
+    <x-user.footer/>
 
     <script src="js/user-profile.js"></script>
 </body>
