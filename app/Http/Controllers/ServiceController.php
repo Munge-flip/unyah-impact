@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 class ServiceController extends Controller
 {
     public function genshin() {
-        return view ('Services.genshin');
+        return view ('services.genshin');
     }
         public function hsr() {
-        return view ('Services.hsr');
+        return view ('services.hsr');
     }
         public function zzz() {
-        return view ('Services.zzz');
+        return view ('services.zzz');
     }
 }

@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AgentController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\ServiceController;
+
+Route::get('/genshin', [ServiceController::class, 'index'])->name('genshin');
+Route::get('/hsr', [ServiceController::class, 'hsr'])->name('hsr');
+Route::get('/zzz', [ServiceController::class, 'zzz'])->name('zzz');
