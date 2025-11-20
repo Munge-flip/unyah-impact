@@ -81,6 +81,76 @@ header nav ul li a.active {
   background-color: rgba(167, 139, 250, 0.1);
 }
 
+.body-container {
+    display: flex;
+    height: 80vh;
+    gap: 15px;
+    padding: 15px;
+    background: transparent;
+}
+
+.frame {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.frame:hover {
+    box-shadow: 
+        0 0 25px rgba(167, 139, 250, 0.6),
+        0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.frame img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    opacity: 1;
+    transition: transform 1.5s ease, opacity 1.5s ease;
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+} */
+
+.frame:hover img {
+    transform: scale(1.15);
+    opacity: 0.7;
+}
+
+.frame section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+    font-size: 50px;
+    font-weight: bold;
+    color: #ffffff; /* Changed from black to white */
+    text-shadow: 
+        2px 2px 8px rgba(0, 0, 0, 0.9),
+        0 0 20px rgba(167, 139, 250, 0.5); /* Added glow effect */
+    opacity: 0;
+    transition: opacity 1.5s ease, transform 1.5s ease;
+}
+
+.frame:hover section {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
 /* Admin/Agent Info in Header */
 .admin-info,
 .agent-info {

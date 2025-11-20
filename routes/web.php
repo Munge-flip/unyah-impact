@@ -31,3 +31,19 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
+
+Route::get('/index', function() {
+    return view ('public.index');
+})->name('index');
+
+Route::get('/genshin', function() {
+    return view ('services.genshin');
+})->name('services.genshin');
+
+Route::get('/hsr', function() {
+    return view ('services.hsr');
+})->name('services.hsr');
+
+Route::get('/zzz', function() {
+    return view ('services.zzz');
+})->name('services.zzz');
