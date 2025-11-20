@@ -12,14 +12,14 @@
 </head>
 <body>
     <main>
-    
+
     <x-public.header/>
 
     {{ $slot }}
 
     </main>
 
-    <x-public.footer/>
+    <x-footer/>
 
 </body>
 </html>

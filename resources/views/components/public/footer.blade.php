@@ -1,3 +1,0 @@
-<footer>
-    <p>2025 Copyright. All rights reserved.</p>
-</footer>

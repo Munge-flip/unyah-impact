@@ -12,11 +12,11 @@
 </head>
 <body>
     <!-- Header Navigation -->
-    <x-admin.header/>
+    <x-admin.header />
 
     <main class="dashboard-container">
         <!-- Sidebar Navigation -->
-    <x-admin.sidebar/>
+        <x-admin.sidebar />
 
         <!-- Main Content Area -->
         {{ $slot }}
@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <x-admin.footer/>
+    <x-footer />
 
     <script src="js/admin-dashboard.js"></script>
 </body>

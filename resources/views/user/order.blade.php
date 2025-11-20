@@ -1,4 +1,7 @@
 <x-layouts.app>
+    <x-slot:sidebar>
+        <x-user.sidebar />
+    </x-slot:sidebar>
     <section class="content">
         <div id="orders-section" class="content-section">
             <h1>Order History</h1>

@@ -22,7 +22,7 @@
         {{ $slot }}
     </main>
 
-    <x-agent.footer/>
+    <x-footer/>
 
     <script src="js/agent-dashboard.js"></script>
 </body>

@@ -1,5 +1,7 @@
 <x-layouts.app>
-
+    <x-slot:sidebar>
+        <x-user.sidebar />
+    </x-slot:sidebar>
     <section class="content">
         <!-- My Account Section -->
         <div id="account-section" class="content-section">

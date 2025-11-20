@@ -12,17 +12,23 @@
 </head>
 <body>
     <!-- Header Navigation -->
-    <x-user.header/>
+    @if (isset($header))
+    {{ $header }}
+    @else
+    <x-user.header />
+    @endif
 
     <main class="profile-container">
         <!-- Sidebar Navigation -->
-    <x-user.sidebar/>
+        @if (isset($sidebar))
+        {{ $sidebar }}
+        @endif
 
         <!-- Main Content Area -->
-    {{ $slot }}
+        {{ $slot }}
     </main>
 
-    <x-user.footer/>
+    <x-footer />
 
     <script src="js/user-profile.js"></script>
 </body>

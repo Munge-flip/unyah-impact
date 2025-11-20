@@ -1,14 +1,5 @@
-<header>
-    <nav>
-        <div class="weblogo-container">
-            <div class="weblogo-frame">
-                <img src="{{ asset('img/weblogo.png')}}" alt="Logo" class="logo">
-            </div>
-        </div>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="profile.html" class="active">Profile</a></li>
-            <li><a href="#">Track Order</a></li>
-        </ul>
-    </nav>
-</header>
+<x-header>
+    <li><a href="{{ route('public.index') }}">Home</a></li>
+    <li><a href="{{ route('user.dashboard') }}">Profile</a></li>
+    <li><a href="{{ route('user.order') }}">Track Order</a></li>
+</x-header>
