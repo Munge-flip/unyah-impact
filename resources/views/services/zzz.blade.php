@@ -1,8 +1,6 @@
 <x-layouts.service 
     title="Zenless Zone Zero Services"
     :banner="asset('img/zzz banner.png')"
-    cssFile="zzz.css"
-    jsFile="zzz.js"
 >
     <x-slot:sidebar>
         <x-service.sidebar 
