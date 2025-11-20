@@ -1,29 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AgentController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ServiceController;
 
-Route::prefix('user')->name('User.')->group(function() {
-    Route::get('/', [UserController::class, 'index'])->name('dashboard');
-    Route::get('/order', [UserController::class, 'order'])->name('order');
-    Route::get('/chat', [UserController::class, 'chat'])->name('chat');
-});
-
-Route::prefix('agent')->name('Agent.')->group(function() {
-    Route::get('/', [AgentController::class, 'index'])->name('dashboard');
-    Route::get('/order', [AgentController::class, 'order'])->name('order');
-    Route::get('/chat', [AgentController::class, 'chat'])->name('chat');
-});
-
-Route::prefix('admin')->name('Admin.')->group(function() {
-    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
-    Route::get('/order', [AdminController::class, 'order'])->name('order');
-    Route::get('/agent', [AdminController::class, 'agent'])->name('agent');
-    Route::get('/user', [AdminController::class, 'user'])->name('user');
-});
+Route::prefix('user')->name('User.')->group(base_path('routes/user.php'));
+Route::prefix('agent')->name('Agent.')->group(base_path('routes/agent.php'));
+Route::prefix('admin')->name('Admin.')->group(base_path('routes/admin.php'));
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
