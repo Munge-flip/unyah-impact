@@ -26,7 +26,7 @@ class AdminController extends Controller
         return view("admin.users.index");
     }
     public function edit($id) {
-        return view ('admin.users.edit');
+        return view ('admin.users.edit', ['id'=>$id]);
     }
     public function show($id)
     {

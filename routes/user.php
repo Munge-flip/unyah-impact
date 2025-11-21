@@ -4,6 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
 Route::get('/', [UserController::class, 'index'])->name('dashboard');
+
+Route::get('/edit', [UserController::class, 'edit'])->name('dashboard.edit');
+
+Route::get('/update', [UserController::class, 'update'])->name('dashboard.update');
+
 Route::get('/order', [UserController::class, 'order'])->name('order');
+
 Route::get('/chat', [UserController::class, 'chat'])->name('chat');
+
 Route::get('/order/{id}', [UserController::class, 'show'])->name('order.show');

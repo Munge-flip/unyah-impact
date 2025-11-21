@@ -24,7 +24,7 @@
             <div class="info-card">
                 <div class="card-header">
                     <h3>Personal Information</h3>
-                    <button class="edit-btn">Manage →</button>
+                    <a href=" {{ route('user.dashboard.edit') }} " class="edit-btn">Manage →</a>
                 </div>
                 <div class="info-grid">
                     <div class="info-item">
@@ -46,7 +46,7 @@
             <div class="info-card">
                 <div class="card-header">
                     <h3>Password and Security</h3>
-                    <button class="edit-btn">Manage →</button>
+                    <a href=" {{ route('user.dashboard.update') }} " class="edit-btn">Manage →</a>
                 </div>
                 <div class="info-grid">
                     <div class="info-item">

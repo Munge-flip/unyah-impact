@@ -8,7 +8,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view("user.dashboard");
+        return view("user.dashboard.index");
     }
     public function chat()
     {
@@ -21,5 +21,11 @@ class UserController extends Controller
     public function show($id)
     {
         return view('user.orders.show', ['id'=>$id]);
+    }
+    public function edit() {
+        return view ('user.dashboard.edit-info');
+    }
+    public function update() {
+        return view ('user.dashboard.edit-password');
     }
 }
