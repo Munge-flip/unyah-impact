@@ -3,13 +3,13 @@
         <div id="agents-section" class="content-section">
             <div class="section-header">
                 <h1>Agents Management</h1>
-                <button class="btn-primary" id="addAgentBtn">
+                <a href="{{ route('admin.agent.create') }}" class="btn-primary">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                     Add Agent
-                </button>
+                </a>
             </div>
 
             <div class="agents-grid">

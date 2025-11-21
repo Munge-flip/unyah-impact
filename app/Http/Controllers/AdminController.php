@@ -10,9 +10,12 @@ class AdminController extends Controller
     {
         return view("admin.dashboard");
     }
+    public function create() {
+        return view ('admin.agents.create');
+    }
     public function agent()
     {
-        return view("admin.agent");
+        return view("admin.agents.index");
     }
     public function user()
     {
