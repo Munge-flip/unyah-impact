@@ -23,7 +23,7 @@
     </main>
 
     <!-- Add Agent Modal -->
-    <div id="addAgentModal" class="modal">
+    {{-- <div id="addAgentModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Add New Agent</h2>
@@ -48,7 +48,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> --}}
 
     <x-footer />
 
