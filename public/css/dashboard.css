@@ -548,6 +548,31 @@
   margin-bottom: 0;
 }
 
+/* Viewing order css */
+
+.detail-row .label {
+    color: #888;
+    font-weight: 500;
+}
+
+.detail-row strong {
+    color: #333;
+    font-weight: 600;
+}
+
+.price {
+    color: #667eea; /* Your primary purple */
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.btn-secondary {
+    text-decoration: none; /* Remove underline from back link */
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
 .order-actions {
   display: flex;
   gap: 10px;
