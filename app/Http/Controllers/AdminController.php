@@ -17,13 +17,16 @@ class AdminController extends Controller
     {
         return view("admin.agents.index");
     }
-    public function user()
-    {
-        return view("admin.user");
-    }
     public function order()
     {
         return view("admin.orders.index");
+    }
+    public function user()
+    {
+        return view("admin.users.index");
+    }
+    public function edit($id) {
+        return view ('admin.users.edit');
     }
     public function show($id)
     {
