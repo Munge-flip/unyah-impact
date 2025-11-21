@@ -15,17 +15,17 @@
             <form class="modal-form">
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" id="agentName" name="name" required>
+                    <input type="text" id="userName" name="name" required>
                 </div>
 
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="agentEmail" name="email" required>
+                    <input type="email" id="userEmail" name="email" required>
                 </div>
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="agentPassword" name="password" required minlength="6">
+                    <input type="password" id="userPassword" name="password" required minlength="6">
                 </div>
 
                 <div class="modal-actions">
