@@ -10,13 +10,13 @@ class UserController extends Controller
     {
         return view("user.dashboard");
     }
-    public function order()
-    {
-        return view("user.orders.index");
-    }
     public function chat()
     {
         return view("user.chat");
+    }
+    public function order()
+    {
+        return view("user.orders.index");
     }
     public function show($id)
     {
