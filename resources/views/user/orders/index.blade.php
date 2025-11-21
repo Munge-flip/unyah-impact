@@ -25,10 +25,14 @@
                             <span class="label">Service:</span>
                             <span>Exploration</span>
                         </div>
+                        <div class="detail-row">
+                            <span class="label">Amount:</span>
+                            <span>₱250.00</span>
+                        </div>
                     </div>
                     <div class="order-actions">
-                        <button class="action-btn primary">View</button>
-                        <button class="action-btn secondary">Chat with Agent</button>
+                        <a href="{{ route('user.order.show', ['id' => 1023]) }}" class="action-btn primary">View</a>
+                        <a href="{{ route('user.chat') }}" class="action-btn secondary">Chat with Agent</a>
                     </div>
                 </div>
 
@@ -36,7 +40,7 @@
                 <div class="order-card">
                     <div class="order-header">
                         <div class="order-id">
-                            <strong>Order #1023</strong>
+                            <strong>Order #1022</strong>
                             <span class="order-date">Oct 5</span>
                         </div>
                         <span class="status-badge pending">Pending</span>
@@ -50,10 +54,14 @@
                             <span class="label">Service:</span>
                             <span>100% Fontaine</span>
                         </div>
+                        <div class="detail-row">
+                            <span class="label">Amount:</span>
+                            <span>₱250.00</span>
+                        </div>
                     </div>
                     <div class="order-actions">
-                        <button class="action-btn primary">View</button>
-                        <button class="action-btn secondary">Chat with Agent</button>
+                        <a href="{{ route('user.order.show', ['id' => 1022]) }}" class="action-btn primary">View</a>
+                        <a href="{{ route('user.chat') }}" class="action-btn secondary">Chat with Agent</a>
                     </div>
                 </div>
 
@@ -75,10 +83,14 @@
                             <span class="label">Service:</span>
                             <span>MoC</span>
                         </div>
+                        <div class="detail-row">
+                            <span class="label">Amount:</span>
+                            <span>₱250.00</span>
+                        </div>
                     </div>
                     <div class="order-actions">
-                        <button class="action-btn primary">View</button>
-                        <button class="action-btn secondary">Chat with Agent</button>
+                        <a href="{{ route('user.order.show', ['id' => 1021]) }}" class="action-btn primary">View</a>
+                        <a href="{{ route('user.chat') }}" class="action-btn secondary">Chat with Agent</a>
                     </div>
                 </div>
 
@@ -100,10 +112,14 @@
                             <span class="label">Service:</span>
                             <span>Events</span>
                         </div>
+                        <div class="detail-row">
+                            <span class="label">Amount:</span>
+                            <span>₱250.00</span>
+                        </div>
                     </div>
                     <div class="order-actions">
-                        <button class="action-btn primary">View</button>
-                        <button class="action-btn secondary">Chat with Agent</button>
+                        <a href="{{ route('user.order.show', ['id' => 1021]) }}" class="action-btn primary">View</a>
+                        <a href="{{ route('user.chat') }}" class="action-btn secondary">Chat with Agent</a>
                     </div>
                 </div>
             </div>
