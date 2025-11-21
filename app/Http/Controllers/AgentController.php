@@ -10,9 +10,12 @@ class AgentController extends Controller
         return view ("agent.dashboard");
     }
         public function order() {
-        return view ("agent.order");
+        return view ("agent.orders.index");
     }
         public function chat() {
         return view ("agent.chat");
+    }
+    public function show($id) {
+        return view ('agent.orders.show', ['id' => $id]);
     }
 }
