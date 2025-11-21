@@ -5,6 +5,10 @@ use App\Http\Controllers\AgentController;
 
 Route::get('/', [AgentController::class, 'index'])->name('dashboard');
 
+Route::get('/edit', [AgentController::class, 'edit'])->name('dashboard.edit');
+
+Route::get('/update', [AgentController::class, 'update'])->name('dashboard.update');
+
 Route::get('/order', [AgentController::class, 'order'])->name('order');
 
 Route::get('/order/{id}', [AgentController::class, 'show'])->name('order.show');
