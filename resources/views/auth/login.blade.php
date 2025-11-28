@@ -1,7 +1,6 @@
 <x-layouts.guest title="Sign In">
     <x-auth-card>
         
-        {{-- LEFT SIDE: Tells user to go to Sign Up --}}
         <x-slot:info>
             <h2>NEED AN ACCOUNT?</h2>
             <p>Sign up an account and enjoy the services with Hoyo Piloting service</p>
@@ -10,7 +9,6 @@
             </a>
         </x-slot:info>
 
-        {{-- RIGHT SIDE: The Login Form --}}
         <x-slot:form>
             <h2>SIGN IN</h2>
             
