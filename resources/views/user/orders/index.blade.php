@@ -7,7 +7,6 @@
             <h1>Order History</h1>
 
             <div class="orders-container">
-                <!-- Order Card 1 -->
                 <div class="order-card">
                     <div class="order-header">
                         <div class="order-id">
@@ -36,7 +35,6 @@
                     </div>
                 </div>
 
-                <!-- Order Card 2 -->
                 <div class="order-card">
                     <div class="order-header">
                         <div class="order-id">
@@ -65,7 +63,6 @@
                     </div>
                 </div>
 
-                <!-- Order Card 3 -->
                 <div class="order-card">
                     <div class="order-header">
                         <div class="order-id">
@@ -94,7 +91,6 @@
                     </div>
                 </div>
 
-                <!-- Order Card 4 -->
                 <div class="order-card">
                     <div class="order-header">
                         <div class="order-id">

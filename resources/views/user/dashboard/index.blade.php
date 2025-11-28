@@ -3,11 +3,9 @@
         <x-user.sidebar />
     </x-slot:sidebar>
     <section class="content">
-        <!-- My Account Section -->
         <div id="account-section" class="content-section">
             <h1>My Account</h1>
 
-            <!-- Profile Card -->
             <div class="profile-card">
                 <div class="profile-header">
                     <div class="avatar">
@@ -20,7 +18,6 @@
                 </div>
             </div>
 
-            <!-- Personal Information -->
             <div class="info-card">
                 <div class="card-header">
                     <h3>Personal Information</h3>
@@ -42,7 +39,6 @@
                 </div>
             </div>
 
-            <!-- Security -->
             <div class="info-card">
                 <div class="card-header">
                     <h3>Password and Security</h3>
@@ -61,7 +57,6 @@
             </div>
         </div>
 
-        <!-- Live Chat Section -->
 
     </section>
 

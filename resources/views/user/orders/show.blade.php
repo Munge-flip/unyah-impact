@@ -1,14 +1,11 @@
 <x-layouts.app>
     
-    {{-- Sidebar Slot --}}
     <x-slot:sidebar>
         <x-user.sidebar />
     </x-slot:sidebar>
 
-    {{-- Main Content Area --}}
     <section class="content">
         
-        {{-- Header with Back Button --}}
         <div class="section-header">
             <h1>Order Details</h1>
             <a href="{{ route('user.order') }}" class="btn-secondary">
@@ -16,7 +13,6 @@
             </a>
         </div>
 
-        {{-- 1. Order Header Card --}}
         <div class="info-card">
             <div class="card-header">
                 <div>
@@ -27,7 +23,6 @@
             </div>
         </div>
 
-        {{-- 2. Service Details Card --}}
         <div class="info-card">
             <h3>Service Details</h3>
             <div class="detail-row">
@@ -48,7 +43,6 @@
             </div>
         </div>
 
-        {{-- 3. Timeline Card --}}
         <div class="info-card">
             <h3>Timeline</h3>
             <div class="detail-row">
@@ -61,7 +55,6 @@
             </div>
         </div>
 
-        {{-- 4. Pilot Info Card --}}
         <div class="info-card">
             <h3>Assigned Pilot</h3>
             <div class="detail-row">
