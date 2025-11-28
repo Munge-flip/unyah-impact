@@ -16,3 +16,5 @@ Route::get('/agent/create', [AdminController::class, 'create'])->name('agent.cre
 Route::get('/user/{id}', [AdminController::class, 'edit'])->name('user.edit');
 
 Route::get('/order/{id}', [AdminController::class, 'show'])->name('order.show');
+
+Route::delete('/user/{id}', [AdminController::class, 'destroyUser'])->name('user.delete');

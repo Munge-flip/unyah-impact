@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -10,8 +11,9 @@ class AdminController extends Controller
     {
         return view("admin.dashboard");
     }
-    public function create() {
-        return view ('admin.agents.create');
+    public function create()
+    {
+        return view('admin.agents.create');
     }
     public function agent()
     {
@@ -23,10 +25,17 @@ class AdminController extends Controller
     }
     public function user()
     {
-        return view("admin.users.index");
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
+        return view("admin.users.index", compact('users'));
     }
-    public function edit($id) {
-        return view ('admin.users.edit', ['id'=>$id]);
+    public function destroyUser($id)
+    {
+        User::findOrFail($id)->delete();
+        return back()->with('success', 'User deleted successfully');
+    }
+    public function edit($id)
+    {
+        return view('admin.users.edit', ['id' => $id]);
     }
     public function show($id)
     {

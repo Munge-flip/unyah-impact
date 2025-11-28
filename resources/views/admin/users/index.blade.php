@@ -3,7 +3,9 @@
         <div id="users-section" class="content-section">
             <div class="section-header">
                 <h1>Users Management</h1>
-                <input type="text" placeholder="Search users..." class="search-input">
+                <form action="{{ route('admin.user') }}" method="GET">
+                    <input type="text" name="search" placeholder="Search users..." class="search-input" value="{{ request('search') }}">
+                </form>
             </div>
 
             <div class="table-container">
@@ -11,61 +13,48 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Date Created</th>
-                            <th>Last Login</th>
+                            <th>Username</th> <th>Email</th>
+                            <th>Role</th>     <th>Date Created</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#1</td>
-                            <td>reyeah23</td>
-                            <td>ggonzalesa@ssct.edu.ph</td>
-                            <td>09/01/2025</td>
-                            <td>09/10/2025</td>
-                            <td>
-                                <a href=" {{ route('admin.user.edit', ['id' => 1]) }} " class="action-link">Edit</a>
-                                <button class="action-link delete">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#2</td>
-                            <td>darkbeam99</td>
-                            <td>darkbeam@ssct.edu.ph</td>
-                            <td>09/02/2025</td>
-                            <td>09/10/2025</td>
-                            <td>
-                                <a href=" {{ route('admin.user.edit', ['id' => 2]) }} " class="action-link">Edit</a>
-                                <button class="action-link delete">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#3</td>
-                            <td>jinxxgamer</td>
-                            <td>jinxx@ssct.edu.ph</td>
-                            <td>09/03/2025</td>
-                            <td>09/09/2025</td>
-                            <td>
-                                <a href=" {{ route('admin.user.edit', ['id' => 3]) }} " class="action-link">Edit</a>
-                                <button class="action-link delete">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#4</td>
-                            <td>colagaming</td>
-                            <td>cola@ssct.edu.ph</td>
-                            <td>09/04/2025</td>
-                            <td>09/08/2025</td>
-                            <td>
-                                <a href=" {{ route('admin.user.edit', ['id' => 4]) }} " class="action-link">Edit</a>
-                                <button class="action-link delete">Delete</button>
-                            </td>
-                        </tr>
+                        @forelse ($users as $user)
+                            <tr>
+                                <td>#{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                
+                                <td>
+                                    <span class="badge {{ $user->role === 'admin' ? 'completed' : 'pending' }}">
+                                        {{ ucfirst($user->role) }}
+                                    </span>
+                                </td>
+
+                                <td>{{ $user->created_at->format('m/d/Y') }}</td>
+                                
+                                <td>
+                                    <a href="{{ route('admin.user.edit', $user->id) }}" class="action-link">Edit</a>
+                                    
+                                    <form action="{{ route('admin.user.delete', $user->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="action-link delete" onclick="return confirm('Are you sure?')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 20px;">No users found.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
+            <div style="padding: 20px;">
+                {{ $users->links() }}
+            </div>
+            
         </div>
     </section>
 </x-layouts.admin>
