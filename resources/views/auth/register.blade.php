@@ -10,7 +10,6 @@
             </a>
         </x-slot:info>
 
-        {{-- RIGHT SIDE: The Register Form --}}
         <x-slot:form>
             <h2>SIGN UP</h2>
             
