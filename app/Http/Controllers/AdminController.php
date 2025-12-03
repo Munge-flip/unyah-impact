@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use App\Models\Order;
 
 class AdminController extends Controller
@@ -40,7 +40,7 @@ class AdminController extends Controller
     public function agent()
     {
         $agents = User::where('role', 'agent')
-            // ->withCount('tasks')
+            ->withCount('tasks')
             ->orderBy('created_at', 'desc')
             ->get();
 
