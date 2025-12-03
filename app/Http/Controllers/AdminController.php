@@ -12,21 +12,14 @@ class AdminController extends Controller
 {
     public function index()
     {
-        // 1. Total Orders
         $totalOrders = Order::count();
 
-        // 2. Active Agents (Agents with at least one active order, or just total agents)
-        // Let's just count total agents for now
         $activeAgents = User::where('role', 'agent')->count();
 
-        // 3. Total Users (Regular users only)
         $totalUsers = User::where('role', 'user')->count();
 
-        // 4. Revenue (Sum of 'price' column from completed orders)
-        // Assumes 'status' is 'completed' for paid orders
         $revenue = Order::where('status', 'completed')->sum('price');
 
-        // 5. Recent Activity (Get latest 5 orders)
         $recentOrders = Order::with('user') // Eager load user to show name
             ->latest()
             ->take(5)
@@ -73,7 +66,11 @@ class AdminController extends Controller
     }
     public function order()
     {
-        return view("admin.orders.index");
+        $orders = Order::with(['user', 'agent'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view("admin.orders.index", compact('orders'));
     }
     public function user()
     {
