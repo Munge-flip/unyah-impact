@@ -2,122 +2,70 @@
     <x-slot:sidebar>
         <x-user.sidebar />
     </x-slot:sidebar>
+
     <section class="content">
         <div id="orders-section" class="content-section">
             <h1>Order History</h1>
 
             <div class="orders-container">
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">
-                            <strong>Order #1023</strong>
-                            <span class="order-date">Oct 5</span>
+                
+                {{-- LOOP START --}}
+                @forelse ($orders as $order)
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-id">
+                                <strong>Order #{{ $order->id }}</strong>
+                                <span class="order-date">{{ $order->created_at->format('M d') }}</span>
+                            </div>
+                            
+                            {{-- Status Badge Logic --}}
+                            @php
+                                $statusClass = match($order->status) {
+                                    'completed' => 'completed',
+                                    'in-progress' => 'in-progress',
+                                    default => 'pending',
+                                };
+                            @endphp
+                            <span class="status-badge {{ $statusClass }}">
+                                {{ ucfirst($order->status) }}
+                            </span>
                         </div>
-                        <span class="status-badge pending">Pending</span>
+
+                        <div class="order-details">
+                            <div class="detail-row">
+                                <span class="label">Game:</span>
+                                <span>{{ $order->game }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Service:</span>
+                                <span>{{ $order->service_type }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Amount:</span>
+                                <span>₱{{ number_format($order->price, 2) }}</span>
+                            </div>
+                        </div>
+
+                        <div class="order-actions">
+                            {{-- View Button --}}
+                            <a href="{{ route('user.order.show', $order->id) }}" class="action-btn primary">View</a>
+                            
+                            {{-- Chat Button --}}
+                            <a href="{{ route('user.chat') }}" class="action-btn secondary">Chat with Agent</a>
+                        </div>
                     </div>
-                    <div class="order-details">
-                        <div class="detail-row">
-                            <span class="label">Game:</span>
-                            <span>Genshin Impact</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Service:</span>
-                            <span>Exploration</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Amount:</span>
-                            <span>₱250.00</span>
-                        </div>
+                @empty
+                    {{-- EMPTY STATE --}}
+                    <div class="order-card" style="text-align: center; color: #888;">
+                        <p>No orders found. <a href="{{ route('public.index') }}" style="color: #667eea;">Book a service now!</a></p>
                     </div>
-                    <div class="order-actions">
-                        <a href="{{ route('user.order.show', ['id' => 1023]) }}" class="action-btn primary">View</a>
-                        <a href="{{ route('user.chat') }}" class="action-btn secondary">Chat with Agent</a>
-                    </div>
+                @endforelse
+
+                {{-- Pagination --}}
+                <div style="margin-top: 20px;">
+                    {{ $orders->links() }}
                 </div>
 
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">
-                            <strong>Order #1022</strong>
-                            <span class="order-date">Oct 5</span>
-                        </div>
-                        <span class="status-badge pending">Pending</span>
-                    </div>
-                    <div class="order-details">
-                        <div class="detail-row">
-                            <span class="label">Game:</span>
-                            <span>Genshin Impact</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Service:</span>
-                            <span>100% Fontaine</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Amount:</span>
-                            <span>₱250.00</span>
-                        </div>
-                    </div>
-                    <div class="order-actions">
-                        <a href="{{ route('user.order.show', ['id' => 1022]) }}" class="action-btn primary">View</a>
-                        <a href="{{ route('user.chat') }}" class="action-btn secondary">Chat with Agent</a>
-                    </div>
-                </div>
-
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">
-                            <strong>Order #1022</strong>
-                            <span class="order-date">Oct 4</span>
-                        </div>
-                        <span class="status-badge in-progress">In Progress</span>
-                    </div>
-                    <div class="order-details">
-                        <div class="detail-row">
-                            <span class="label">Game:</span>
-                            <span>Honkai Star Rail</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Service:</span>
-                            <span>MoC</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Amount:</span>
-                            <span>₱250.00</span>
-                        </div>
-                    </div>
-                    <div class="order-actions">
-                        <a href="{{ route('user.order.show', ['id' => 1021]) }}" class="action-btn primary">View</a>
-                        <a href="{{ route('user.chat') }}" class="action-btn secondary">Chat with Agent</a>
-                    </div>
-                </div>
-
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">
-                            <strong>Order #1021</strong>
-                            <span class="order-date">Oct 3</span>
-                        </div>
-                        <span class="status-badge completed">Completed</span>
-                    </div>
-                    <div class="order-details">
-                        <div class="detail-row">
-                            <span class="label">Game:</span>
-                            <span>Zenless Zone Zero</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Service:</span>
-                            <span>Events</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Amount:</span>
-                            <span>₱250.00</span>
-                        </div>
-                    </div>
-                    <div class="order-actions">
-                        <a href="{{ route('user.order.show', ['id' => 1021]) }}" class="action-btn primary">View</a>
-                        <a href="{{ route('user.chat') }}" class="action-btn secondary">Chat with Agent</a>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

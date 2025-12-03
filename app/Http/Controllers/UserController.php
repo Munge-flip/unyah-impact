@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
 
 class UserController extends Controller
 {
@@ -14,18 +16,26 @@ class UserController extends Controller
     {
         return view("user.chat");
     }
-    public function order()
+    public function orders()
     {
-        return view("user.orders.index");
+        $user = Auth::user();
+
+        $orders = $user->orders()->orderBy('created_at', 'desc')->paginate(5);
+
+        return view("user.orders.index", compact('orders'));
     }
     public function show($id)
     {
-        return view('user.orders.show', ['id'=>$id]);
+        $order = Auth::user()->orders()->findOrFail($id);
+
+        return view('user.orders.show', compact('order'));
     }
-    public function edit() {
-        return view ('user.dashboard.edit-info');
+    public function edit()
+    {
+        return view('user.dashboard.edit-info');
     }
-    public function update() {
-        return view ('user.dashboard.edit-password');
+    public function update()
+    {
+        return view('user.dashboard.edit-password');
     }
 }

@@ -11,7 +11,13 @@
         />
     </x-slot:sidebar>
 
-    <form id="serviceForm">
+    <form id="serviceForm" action="{{ route('user.order.store') }}" method="POST">
+    @csrf
+        <input type="hidden" name="game" value="Genshin Impact">
+        <input type="hidden" name="service_category" id="inputCategory">
+        <input type="hidden" name="service_type" id="inputService">
+        <input type="hidden" name="price" id="inputPrice">
+        <input type="hidden" name="payment_method" id="inputPayment">
         <!-- Choose a Service -->
         <div class="service-section">
             <h2>Choose a service</h2>

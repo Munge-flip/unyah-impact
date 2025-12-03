@@ -22,7 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'role', 
+        'role',
         'avatar',
     ];
 
@@ -34,6 +34,11 @@ class User extends Authenticatable
     public function isAgent()
     {
         return $this->role === 'agent';
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id');
     }
 
     /**
