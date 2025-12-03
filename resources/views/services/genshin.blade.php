@@ -52,6 +52,7 @@
             <x-service.category 
                 title="Explorations" 
                 description="Select regions for your services"
+                :customLayout="true"
             >
                 <x-service.exploration-grid :regions="[
                     ['slug' => 'mondstadt', 'name' => 'Mondstadt'],

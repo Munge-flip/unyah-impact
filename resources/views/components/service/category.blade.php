@@ -1,4 +1,4 @@
-@props(['title', 'description' => null, 'note' => null])
+@props(['title', 'description' => null, 'note' => null, 'customLayout' => false])
 
 <div class="service-category">
     <h3>{{ $title }}</h3>
@@ -17,7 +17,11 @@
         </ul>
     @endif
     
-    <div class="service-options">
+    @if($customLayout)
         {{ $slot }}
-    </div>
+    @else
+        <div class="service-options">
+            {{ $slot }}
+        </div>
+    @endif
 </div>
