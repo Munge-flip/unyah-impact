@@ -13,7 +13,9 @@ Route::get('/user', [AdminController::class, 'user'])->name('user');
 
 Route::get('/agent/create', [AdminController::class, 'create'])->name('agent.create');
 
-Route::get('/user/{id}', [AdminController::class, 'edit'])->name('user.edit');
+Route::get('/user/{id}/edit', [AdminController::class, 'edit'])->name('user.edit');
+
+Route::put('/user/{id}', [AdminController::class, 'update'])->name('user.update');
 
 Route::get('/order/{id}', [AdminController::class, 'show'])->name('order.show');
 
