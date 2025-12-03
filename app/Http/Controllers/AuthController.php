@@ -21,9 +21,22 @@ class AuthController extends Controller
         ]);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
+
+            $role = Auth::user()->role;
+
+            if ($role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            if ($role === 'agent') {
+                return redirect()->route('agent.dashboard');
+            }
+
             return redirect()->route('public.index');
         }
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
     public function showRegister()
     {
@@ -37,7 +50,7 @@ class AuthController extends Controller
             'phone' => 'required|string|max:20',
             'password' => 'required|string|min:8|confirmed',
         ]);
-        
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
