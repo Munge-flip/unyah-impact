@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', [PageController::class, 'index'])->name('public.index');
 
-Route::prefix('services')->name('services')->group(base_path(('routes/services.php')));
+Route::prefix('services')->name('services.')->group(base_path(('routes/services.php')));
 
 Route::middleware('guest')->group(base_path('routes/auth.php'));
 
