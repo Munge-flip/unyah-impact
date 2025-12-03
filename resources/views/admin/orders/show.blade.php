@@ -4,8 +4,7 @@
     </x-slot:sidebar>
 
     <section class="content">
-        
-        {{-- Header with Back Button --}}
+
         <div class="section-header">
             <h1>Order Details</h1>
             <a href="{{ route('admin.order') }}" class="action-link">
@@ -13,7 +12,6 @@
             </a>
         </div>
 
-        {{-- 1. Order Header Card --}}
         <div class="info-card">
             <div class="card-header">
                 <div>
@@ -22,14 +20,13 @@
                         {{ $order->created_at->format('M d, Y \a\t h:i A') }}
                     </span>
                 </div>
-                
-                {{-- Dynamic Status Badge --}}
+
                 @php
-                    $statusClass = match($order->status) {
-                        'completed' => 'completed',
-                        'in-progress' => 'in-progress',
-                        default => 'pending',
-                    };
+                $statusClass = match($order->status) {
+                'completed' => 'completed',
+                'in-progress' => 'in-progress',
+                default => 'pending',
+                };
                 @endphp
                 <span class="badge {{ $statusClass }}">
                     {{ ucfirst($order->status) }}
@@ -37,7 +34,6 @@
             </div>
         </div>
 
-        {{-- 2. Service Details Card --}}
         <div class="info-card">
             <div class="card-header">
                 <h3>Service Details</h3>
@@ -69,7 +65,6 @@
             </div>
         </div>
 
-        {{-- 3. Timeline Card --}}
         <div class="info-card">
             <div class="card-header">
                 <h3>Timeline</h3>
@@ -80,46 +75,56 @@
                     <strong>{{ $order->created_at->format('M d, Y') }}</strong>
                 </div>
                 @if($order->status === 'completed')
-                    <div class="detail-row">
-                        <span class="label">Completed On:</span>
-                        <strong>{{ $order->updated_at->format('M d, Y') }}</strong>
-                    </div>
+                <div class="detail-row">
+                    <span class="label">Completed On:</span>
+                    <strong>{{ $order->updated_at->format('M d, Y') }}</strong>
+                </div>
                 @else
-                    <div class="detail-row">
-                        <span class="label">Status:</span>
-                        <strong style="color: #888; font-style: italic;">In Progress...</strong>
-                    </div>
+                <div class="detail-row">
+                    <span class="label">Status:</span>
+                    <strong style="color: #888; font-style: italic;">In Progress...</strong>
+                </div>
                 @endif
             </div>
         </div>
 
-        {{-- 4. Assignment Card (Admin Specific) --}}
         <div class="info-card">
             <div class="card-header">
                 <h3>Assignment</h3>
             </div>
             <div class="card-body">
                 <div class="detail-row">
-                    <span class="label">Assigned Agent:</span>
-                    @if($order->agent)
-                        <strong>{{ $order->agent->name }}</strong>
-                    @else
-                        <span style="color: #e74c3c; font-style: italic; font-weight: 600;">Unassigned</span>
-                    @endif
+                    <span class="label">Current Agent:</span>
+                    <strong>{{ $order->agent->name ?? 'Unassigned' }}</strong>
                 </div>
-                
-                {{-- Admin Actions Form --}}
-                <div class="agent-actions" style="margin-top: 20px;">
-                    
-                    {{-- 1. Reassign Agent --}}
-                    {{-- Note: Ideally this opens a modal or goes to an edit page. For now, a placeholder button. --}}
-                    <button class="action-btn secondary">Reassign Agent</button>
-                    
-                    {{-- 2. Mark as Complete (Only if not already completed) --}}
-                    @if($order->status !== 'completed')
-                        <button class="action-btn success">Mark as Complete</button>
-                    @endif
+
+                <form action="{{ route('admin.order.assign', $order->id) }}" method="POST" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                    @csrf
+                    @method('PATCH')
+
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600;">Assign to Agent:</label>
+
+                    <div style="display: flex; gap: 10px;">
+                        <select name="agent_id" class="search-input" style="flex: 1;">
+                            <option value="" disabled selected>Select an Agent</option>
+                            @foreach($agents as $agent)
+                            <option value="{{ $agent->id }}" {{ $order->agent_id == $agent->id ? 'selected' : '' }}>
+                                {{ $agent->name }}
+                            </option>
+                            @endforeach
+                        </select>
+
+                        <button type="submit" class="btn-primary" style="padding: 10px 20px;">
+                            Assign
+                        </button>
+                    </div>
+                </form>
+
+                @if($order->status !== 'completed')
+                <div style="margin-top: 15px;">
+                    <button class="action-btn success" style="width: 100%;">Mark as Complete</button>
                 </div>
+                @endif
             </div>
         </div>
 

@@ -24,3 +24,5 @@ Route::put('/user/{id}', [AdminController::class, 'update'])->name('user.update'
 Route::get('/order/{id}', [AdminController::class, 'show'])->name('order.show');
 
 Route::delete('/user/{id}', [AdminController::class, 'destroyUser'])->name('user.delete');
+
+Route::patch('/order/{id}/assign', [AdminController::class, 'assignAgent'])->name('order.assign');

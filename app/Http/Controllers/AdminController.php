@@ -114,6 +114,24 @@ class AdminController extends Controller
     {
         $order = Order::with(['user', 'agent'])->findOrFail($id);
 
-        return view('admin.orders.show', compact('order'));
+        $agents = User::where('role', 'agent')->get();
+
+        return view('admin.orders.show', compact('order', 'agents'));
+    }
+    public function assignAgent(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+
+        $request->validate([
+            'agent_id' => 'required|exists:users,id',
+        ]);
+
+        $order->agent_id = $request->agent_id;
+        if ($order->status === 'pending') {
+            $order->status = 'in-progress';
+        }
+        $order->save();
+
+        return back()->with('success', 'Agent assigned successfully.');
     }
 }
