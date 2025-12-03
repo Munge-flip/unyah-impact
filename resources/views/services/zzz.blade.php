@@ -55,6 +55,7 @@
             <x-service.category 
                 title="Hollow Zero" 
                 description="Choose a Mode"
+                :customLayout="true"
             >
                 {{-- Mode Selection --}}
                 <x-service.world-selection 
