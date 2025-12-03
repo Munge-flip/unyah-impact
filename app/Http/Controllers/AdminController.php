@@ -112,6 +112,8 @@ class AdminController extends Controller
     }
     public function show($id)
     {
-        return view('admin.orders.show', ['id' => $id]);
+        $order = Order::with(['user', 'agent'])->findOrFail($id);
+
+        return view('admin.orders.show', compact('order'));
     }
 }
