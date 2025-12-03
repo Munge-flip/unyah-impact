@@ -20,7 +20,7 @@ class AdminController extends Controller
 
         $revenue = Order::where('status', 'completed')->sum('price');
 
-        $recentOrders = Order::with('user') // Eager load user to show name
+        $recentOrders = Order::with('user')
             ->latest()
             ->take(5)
             ->get();

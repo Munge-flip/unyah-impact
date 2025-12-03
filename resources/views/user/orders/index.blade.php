@@ -9,7 +9,6 @@
 
             <div class="orders-container">
                 
-                {{-- LOOP START --}}
                 @forelse ($orders as $order)
                     <div class="order-card">
                         <div class="order-header">
@@ -18,7 +17,6 @@
                                 <span class="order-date">{{ $order->created_at->format('M d') }}</span>
                             </div>
                             
-                            {{-- Status Badge Logic --}}
                             @php
                                 $statusClass = match($order->status) {
                                     'completed' => 'completed',
@@ -47,21 +45,17 @@
                         </div>
 
                         <div class="order-actions">
-                            {{-- View Button --}}
                             <a href="{{ route('user.order.show', $order->id) }}" class="action-btn primary">View</a>
                             
-                            {{-- Chat Button --}}
                             <a href="{{ route('user.chat') }}" class="action-btn secondary">Chat with Agent</a>
                         </div>
                     </div>
                 @empty
-                    {{-- EMPTY STATE --}}
                     <div class="order-card" style="text-align: center; color: #888;">
                         <p>No orders found. <a href="{{ route('public.index') }}" style="color: #667eea;">Book a service now!</a></p>
                     </div>
                 @endforelse
 
-                {{-- Pagination --}}
                 <div style="margin-top: 20px;">
                     {{ $orders->links() }}
                 </div>
