@@ -14,4 +14,3 @@ Route::get('/order', [UserController::class, 'order'])->name('order');
 Route::get('/chat', [UserController::class, 'chat'])->name('chat');
 
 Route::get('/order/{id}', [UserController::class, 'show'])->name('order.show');
-

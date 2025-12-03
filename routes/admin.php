@@ -9,6 +9,10 @@ Route::get('/order', [AdminController::class, 'order'])->name('order');
 
 Route::get('/agent', [AdminController::class, 'agent'])->name('agent');
 
+Route::get('/agent/create', [AdminController::class, 'create'])->name('agent.create');
+
+Route::post('/agent', [AdminController::class, 'storeAgent'])->name('agent.store');
+
 Route::get('/user', [AdminController::class, 'user'])->name('user');
 
 Route::get('/agent/create', [AdminController::class, 'create'])->name('agent.create');

@@ -6,12 +6,39 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Order;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return view("admin.dashboard");
+        // 1. Total Orders
+        $totalOrders = Order::count();
+
+        // 2. Active Agents (Agents with at least one active order, or just total agents)
+        // Let's just count total agents for now
+        $activeAgents = User::where('role', 'agent')->count();
+
+        // 3. Total Users (Regular users only)
+        $totalUsers = User::where('role', 'user')->count();
+
+        // 4. Revenue (Sum of 'price' column from completed orders)
+        // Assumes 'status' is 'completed' for paid orders
+        $revenue = Order::where('status', 'completed')->sum('price');
+
+        // 5. Recent Activity (Get latest 5 orders)
+        $recentOrders = Order::with('user') // Eager load user to show name
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view("admin.dashboard", compact(
+            'totalOrders',
+            'activeAgents',
+            'totalUsers',
+            'revenue',
+            'recentOrders'
+        ));
     }
     public function create()
     {
@@ -19,7 +46,30 @@ class AdminController extends Controller
     }
     public function agent()
     {
-        return view("admin.agents.index");
+        $agents = User::where('role', 'agent')
+            // ->withCount('tasks')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view("admin.agents.index", compact('agents'));
+    }
+    public function storeAgent(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|max:20',
+            'password' => 'required|string|min:8',
+        ]);
+        User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'password' => Hash::make($validated['password']),
+            'role' => 'agent',
+        ]);
+
+        return redirect()->route('admin.agent')->with('success', 'Agent added successfully');
     }
     public function order()
     {
