@@ -2,7 +2,6 @@
     
     <section class="content">
         
-        {{-- Header with Back Button --}}
         <div class="section-header">
             <h1>Order Details</h1>
             <a href="{{ route('agent.order') }}" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
@@ -10,7 +9,6 @@
             </a>
         </div>
 
-        {{-- 1. Order Header Card --}}
         <div class="info-card">
             <div class="card-header">
                 <div>
@@ -20,7 +18,6 @@
                     </span>
                 </div>
                 
-                {{-- Dynamic Status Badge --}}
                 @php
                     $statusClass = match($order->status) {
                         'completed' => 'completed',
@@ -34,7 +31,6 @@
             </div>
         </div>
 
-        {{-- 2. Service Details Card --}}
         <div class="info-card">
             <h3>Service Details</h3>
             
@@ -64,7 +60,6 @@
             </div>
         </div>
 
-        {{-- 3. Timeline Card --}}
         <div class="info-card">
             <h3>Timeline</h3>
             <div class="detail-row">
@@ -87,18 +82,15 @@
             @endif
         </div>
 
-        {{-- 4. Actions Card (Agent Specific) --}}
         <div class="info-card">
             <h3>Actions</h3>
             
             <div class="agent-actions" style="margin-top: 20px; display: flex; gap: 10px;">
                 
-                {{-- Chat Button --}}
                 <a href="{{ route('agent.chat') }}" class="action-btn secondary" style="text-decoration:none; text-align:center;">
                     Chat with Customer
                 </a>
 
-                {{-- Mark as Complete Button (Only if not done) --}}
                 @if($order->status !== 'completed')
                     <form action="{{ route('agent.order.complete', $order->id) }}" method="POST" style="flex: 1;">
                         @csrf
