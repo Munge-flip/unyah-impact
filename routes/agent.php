@@ -13,4 +13,6 @@ Route::get('/order', [AgentController::class, 'order'])->name('order');
 
 Route::get('/order/{id}', [AgentController::class, 'show'])->name('order.show');
 
+Route::patch('/order/{id}/complete', [AgentController::class, 'completeOrder'])->name('order.complete');
+
 Route::get('/chat', [AgentController::class, 'chat'])->name('chat');

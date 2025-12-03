@@ -819,6 +819,7 @@
   .agent-actions,
   .order-actions {
     flex-direction: column;
+    display: inline;
   }
 
   .info-grid {

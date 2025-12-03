@@ -31,7 +31,12 @@ class AgentController extends Controller
     }
     public function order()
     {
-        return view("agent.orders.index");
+        $orders = Auth::user()->tasks()
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+
+        return view("agent.orders.index", compact('orders'));
     }
     public function edit()
     {
@@ -47,6 +52,16 @@ class AgentController extends Controller
     }
     public function show($id)
     {
-        return view('agent.orders.show', ['id' => $id]);
+        $order = Auth::user()->tasks()->with('user')->findOrFail($id);
+        return view('agent.orders.show', compact('order'));
+    }
+    public function completeOrder($id)
+    {
+        $order = Auth::user()->tasks()->findOrFail($id);
+
+        $order->status = 'completed';
+        $order->save();
+
+        return back()->with('success', 'Order marked as completed.');
     }
 }
