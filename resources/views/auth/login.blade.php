@@ -1,6 +1,6 @@
 <x-layouts.guest title="Sign In">
     <x-auth-card>
-        
+
         <x-slot:info>
             <h2>NEED AN ACCOUNT?</h2>
             <p>Sign up an account and enjoy the services with Hoyo Piloting service</p>
@@ -11,10 +11,16 @@
 
         <x-slot:form>
             <h2>SIGN IN</h2>
-            
+
             <form class="form-content active" action="{{ route('login') }}" method="POST">
                 @csrf
-                
+
+                @error('email')
+                <div class="alert-error">
+                    {{ $message }}
+                </div>
+                @enderror
+
                 <div class="form-group">
                     <input type="email" name="email" placeholder="Email" required>
                 </div>
