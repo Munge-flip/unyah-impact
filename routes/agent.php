@@ -18,3 +18,7 @@ Route::patch('/order/{id}/complete', [AgentController::class, 'completeOrder'])-
 Route::get('/order/{id}/chat', [App\Http\Controllers\ChatController::class, 'show'])->name('order.chat');
 
 Route::post('/order/{id}/chat', [App\Http\Controllers\ChatController::class, 'store'])->name('chat.store');
+
+Route::patch('/profile/update', [AgentController::class, 'updateProfile'])->name('profile.update');
+
+Route::put('/password/update', [AgentController::class, 'updatePassword'])->name('password.update');
