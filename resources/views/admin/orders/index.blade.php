@@ -15,6 +15,7 @@
                             <th>Service</th>
                             <th>Customer</th>
                             <th>Agent</th>
+                            <th>Payment</th>
                             <th>Status</th>
                             <th>Price</th>
                             <th>Date</th>
@@ -23,46 +24,56 @@
                     </thead>
                     <tbody>
                         @forelse ($orders as $order)
-                            <tr>
-                                <td>#{{ $order->id }}</td>
-                                
-                                <td>{{ $order->game }}</td>
-                                <td>{{ $order->service_type }}</td>
-                                
-                                <td>{{ $order->user->name ?? 'Unknown User' }}</td>
-                                
-                                <td style="{{ !$order->agent ? 'color: #e74c3c; font-style: italic;' : '' }}">
-                                    {{ $order->agent->name ?? 'Unassigned' }}
-                                </td>
+                        <tr>
+                            <td>#{{ $order->id }}</td>
 
-                                <td>
-                                    @php
-                                        $badgeClass = match($order->status) {
-                                            'completed' => 'completed',
-                                            'in-progress' => 'in-progress',
-                                            default => 'pending',
-                                        };
-                                    @endphp
-                                    <span class="badge {{ $badgeClass }}">
-                                        {{ ucfirst($order->status) }}
-                                    </span>
-                                </td>
+                            <td>{{ $order->game }}</td>
+                            <td>{{ $order->service_type }}</td>
 
-                                <td>₱{{ number_format($order->price, 2) }}</td>
-                                <td>{{ $order->created_at->format('M d, Y') }}</td>
-                                
-                                <td>
-                                    <a href="{{ route('admin.order.show', $order->id) }}" class="action-link">View</a>
-                                    
-                                    <button class="action-link delete">Delete</button>
-                                </td>
-                            </tr>
+                            <td>{{ $order->user->name ?? 'Unknown User' }}</td>
+
+                            <td style="{{ !$order->agent ? 'color: #e74c3c; font-style: italic;' : '' }}">
+                                {{ $order->agent->name ?? 'Unassigned' }}
+                            </td>
+
+                            <td>
+                                <span class="badge {{ $order->payment_status === 'paid' ? 'paid' : 'unpaid' }}">
+                                    {{ ucfirst($order->payment_status) }}
+                                </span>
+
+                                <div style="font-size: 11px; color: #888; margin-top: 4px;">
+                                    {{ $order->payment_method }}
+                                </div>
+                            </td>
+
+                            <td>
+                                @php
+                                $badgeClass = match($order->status) {
+                                'completed' => 'completed',
+                                'in-progress' => 'in-progress',
+                                default => 'pending',
+                                };
+                                @endphp
+                                <span class="badge {{ $badgeClass }}">
+                                    {{ ucfirst($order->status) }}
+                                </span>
+                            </td>
+
+                            <td>₱{{ number_format($order->price, 2) }}</td>
+                            <td>{{ $order->created_at->format('M d, Y') }}</td>
+
+                            <td>
+                                <a href="{{ route('admin.order.show', $order->id) }}" class="action-link">View</a>
+
+                                <button class="action-link delete">Delete</button>
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="9" style="text-align: center; padding: 30px; color: #888;">
-                                    No orders found.
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 30px; color: #888;">
+                                No orders found.
+                            </td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
