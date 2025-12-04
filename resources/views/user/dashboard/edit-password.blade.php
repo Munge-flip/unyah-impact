@@ -13,10 +13,9 @@
 
         <div class="info-card">
             
-            {{-- 1. Form Setup --}}
             <form action="{{ route('user.password.update') }}" method="POST">
                 @csrf
-                @method('PUT') {{-- Use PUT for password updates --}}
+                @method('PUT')
 
                 <div class="form-group">
                     <label>Current Password</label>
@@ -32,7 +31,6 @@
 
                 <div class="form-group">
                     <label>Confirm New Password</label>
-                    {{-- Name must be 'password_confirmation' for Laravel to check it automatically --}}
                     <input type="password" name="password_confirmation" required>
                 </div>
 

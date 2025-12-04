@@ -7,17 +7,14 @@
             </a>
         </div>
 
-        {{-- Wrapper Card for styling --}}
         <div class="info-card">
 
-            {{-- 1. Form Setup --}}
             <form action="{{ route('user.profile.update') }}" method="POST">
                 @csrf
-                @method('PATCH') {{-- Use PATCH for updates --}}
+                @method('PATCH')
 
                 <div class="form-group">
                     <label>Name</label>
-                    {{-- 2. Value Binding: Shows current user data --}}
                     <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}" required>
                     @error('name') <span style="color:red; font-size:13px;">{{ $message }}</span> @enderror
                 </div>
