@@ -1,44 +1,43 @@
 <div class="payment-section">
     <h2>Choose Payment Method</h2>
 
-    <!-- QR Payment -->
     <div class="payment-type">
-        <h3>QR</h3>
+        <h3>QR / E-Wallet</h3>
         <div class="payment-options">
+            
             <div class="payment-option">
-                <input type="radio" id="gcash-qr" name="payment-method" value="gcash-qr" />
-                <label for="gcash-qr">
-                    <strong>Gcash</strong>
-                    <input type="text" placeholder="Gcash" class="payment-input" />
+                <input type="radio" id="gcash" name="payment-method" value="gcash">
+                <label for="gcash" class="payment-card">
+                    <strong>GCash</strong>
+                    <span style="font-size: 12px; color: #666;">Scan to Pay</span>
                 </label>
             </div>
+
             <div class="payment-option">
-                <input type="radio" id="paypal-qr" name="payment-method" value="paypal-qr" />
-                <label for="paypal-qr">
-                    <strong>Paypal</strong>
-                    <input type="text" placeholder="Paypal" class="payment-input" />
+                <input type="radio" id="paypal" name="payment-method" value="paypal">
+                <label for="paypal" class="payment-card">
+                    <strong>PayPal</strong>
+                    <span style="font-size: 12px; color: #666;">Redirect to Pay</span>
                 </label>
             </div>
+
         </div>
     </div>
+</div>
 
-    <!-- E-wallet Payment -->
-    <div class="payment-type">
-        <h3>E-wallet</h3>
-        <div class="payment-options">
-            <div class="payment-option">
-                <input type="radio" id="gcash-wallet" name="payment-method" value="gcash-wallet" />
-                <label for="gcash-wallet">
-                    <strong>Gcash</strong>
-                    <input type="text" placeholder="Gcash" class="payment-input" />
-                </label>
-            </div>
-            <div class="payment-option">
-                <input type="radio" id="paypal-wallet" name="payment-method" value="paypal-wallet" />
-                <label for="paypal-wallet">
-                    <strong>Paypal</strong>
-                    <input type="text" placeholder="Paypal" class="payment-input" />
-                </label>
+<div id="qrModal" class="modal" style="display: none;">
+    <div class="modal-content" style="text-align: center;">
+        <div class="modal-header">
+            <h2>Scan to Pay</h2>
+            <span class="close-modal" onclick="closeQrModal()">&times;</span>
+        </div>
+        <div class="modal-body" style="padding: 30px;">
+            <p style="margin-bottom: 20px;">Please scan this QR code with your GCash app to pay <strong><span id="qrAmount">₱0.00</span></strong></p>
+            
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PayToUnyahImpact" alt="Payment QR" style="border: 5px solid #f0f0f0; border-radius: 10px;">
+
+            <div style="margin-top: 30px;">
+                <button type="button" class="btn-primary" onclick="confirmPayment()">I have completed payment</button>
             </div>
         </div>
     </div>
