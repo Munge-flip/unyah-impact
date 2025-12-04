@@ -826,3 +826,34 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Fix giant pagination arrows */
+.pagination svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Basic layout for the pagination container */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 5px;
+}
+
+/* Style the links */
+.pagination li a, 
+.pagination li span {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+}
+
+/* Active page style */
+.pagination li.active span {
+    background-color: #667eea;
+    color: white;
+    border-color: #667eea;
+}
