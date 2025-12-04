@@ -8,7 +8,7 @@ Route::get('/', [UserController::class, 'index'])->name('dashboard');
 
 Route::get('/edit', [UserController::class, 'edit'])->name('dashboard.edit');
 
-Route::get('/update', [UserController::class, 'update'])->name('dashboard.update');
+Route::get('/update', [UserController::class, 'editPassword'])->name('dashboard.update');
 
 Route::get('/order', [UserController::class, 'orders'])->name('order');
 
@@ -19,3 +19,7 @@ Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 Route::get('/order/{id}/chat', [App\Http\Controllers\ChatController::class, 'show'])->name('order.chat');
 
 Route::post('/order/{id}/chat', [App\Http\Controllers\ChatController::class, 'store'])->name('chat.store');
+
+Route::patch('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
+
+Route::put('/password/update', [UserController::class, 'updatePassword'])->name('password.update');
