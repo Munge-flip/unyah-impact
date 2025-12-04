@@ -65,4 +65,13 @@ class UserController extends Controller
 
         return back()->with('success', 'Password changed successfully.');
     }
+    public function payNow($id)
+    {
+        $order = Auth::user()->orders()->findOrFail($id);
+
+        $order->payment_status = 'paid';
+        $order->save();
+
+        return back()->with('success', 'Payment successful!');
+    }
 }

@@ -188,10 +188,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.querySelectorAll('.payment-input').forEach(input => { input.disabled = true; input.style.opacity = '0.5'; });
 
-    if (submitBtn) {
+    const hiddenStatusInput = document.getElementById('finalPaymentStatus');
+if (submitBtn) {
         submitBtn.addEventListener('click', function(e) {
-            e.preventDefault();
+            e.preventDefault(); // STOP the form from sending immediately
 
+            // --- VALIDATION START ---
             let hasSelection = false;
             Object.keys(selectedServices).forEach(category => {
                 if (!['explorations', 'hollow-modes', 'worlds'].includes(category) && selectedServices[category]) {
@@ -215,16 +217,55 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Please fill in your payment details!');
                 return;
             }
+            // --- VALIDATION END ---
 
-            const isQrMethod = inputPayment.value.includes('gcash'); 
+            // Check if selected method is a QR type (GCash or PayPal)
+            const isQrMethod = inputPayment.value.includes('gcash') || inputPayment.value.includes('paypal'); 
 
             if (isQrMethod) {
+                // Show QR Modal
                 if (qrAmountText) qrAmountText.textContent = '₱' + totalPriceElement.textContent;
                 if (qrModal) qrModal.style.display = 'block';
             } else {
+                // If Non-QR method, default to unpaid and submit
+                if(hiddenStatusInput) hiddenStatusInput.value = 'unpaid';
                 form.submit();
             }
         });
+    }
+
+    // --- MODAL BUTTON HANDLERS ---
+
+    // 2. Handle "I have completed payment" (Sets status to PAID)
+    const btnPaid = document.getElementById('btnPaid');
+    if (btnPaid) {
+        btnPaid.addEventListener('click', function() {
+            if(hiddenStatusInput) hiddenStatusInput.value = 'paid';
+            form.submit();
+        });
+    }
+
+    // 3. Handle "Pay Later" (Sets status to UNPAID)
+    const btnPayLater = document.getElementById('btnPayLater');
+    if (btnPayLater) {
+        btnPayLater.addEventListener('click', function() {
+            if(hiddenStatusInput) hiddenStatusInput.value = 'unpaid';
+            form.submit();
+        });
+    }
+
+    // Handle Closing Modal
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', function() {
+            qrModal.style.display = 'none';
+        });
+    }
+
+    // Close modal if clicking outside
+    window.onclick = function(event) {
+        if (event.target == qrModal) {
+            qrModal.style.display = "none";
+        }
     }
 
     if (closeModalBtn) {

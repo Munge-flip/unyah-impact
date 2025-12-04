@@ -24,3 +24,5 @@ Route::post('/order/{id}/chat', [ChatController::class, 'store'])->name('chat.st
 Route::patch('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
 
 Route::put('/password/update', [UserController::class, 'updatePassword'])->name('password.update');
+
+Route::patch('/order/{id}/pay', [App\Http\Controllers\UserController::class, 'payNow'])->name('order.pay');
