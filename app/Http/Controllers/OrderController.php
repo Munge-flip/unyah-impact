@@ -18,8 +18,15 @@ class OrderController extends Controller
             'payment_method' => 'required|string',
         ]);
 
-        $paidMethods = ['gcash-or', 'paypal-or', 'gcash-wallet', 'paypal-wallet'];
-        
+        $paidMethods = [
+            'gcash',
+            'paypal',
+            'gcash-or',
+            'paypal-or',
+            'gcash-wallet',
+            'paypal-wallet'
+        ];
+
         $paymentStatus = in_array($validated['payment_method'], $paidMethods) ? 'paid' : 'unpaid';
 
         Order::create([
@@ -30,8 +37,7 @@ class OrderController extends Controller
             'price' => $validated['price'],
             'payment_method' => $validated['payment_method'],
             'status' => 'pending',
-            
-            'payment_status' => $paymentStatus, 
+            'payment_status' => $paymentStatus,
         ]);
 
         return redirect()->route('user.order')->with('success', 'Order placed successfully!');
