@@ -1,17 +1,16 @@
-<x-layouts.service 
-    title="Honkai Star Rail Services"
-    :banner="asset('img/hsr banner.png')"
-    cssFile="hsr.css"
-    jsFile="hsr.js"
->
+<x-layouts.service title="Honkai Star Rail Services" :banner="asset('img/hsr banner.png')" jsFile="services.js">
     <x-slot:sidebar>
-        <x-service.sidebar 
-            :gameIcon="asset('img/hsr icon.png')"
-            gameName="Honkai Star Rail"
-        />
+        <x-service.sidebar :gameIcon="asset('img/hsr icon.png')" gameName="Honkai Star Rail" />
     </x-slot:sidebar>
 
-    <form id="serviceForm">
+    <form id="serviceForm" action="{{ route('user.order.store') }}" method="POST">
+        @csrf
+
+        <input type="hidden" name="game" value="Honkai Star Rail">
+        <input type="hidden" name="service_category" id="inputCategory">
+        <input type="hidden" name="service_type" id="inputService">
+        <input type="hidden" name="price" id="inputPrice">
+        <input type="hidden" name="payment_method" id="inputPayment">
         <div class="service-section">
             <h2>Choose a service</h2>
 
@@ -30,10 +29,7 @@
             </x-service.category>
 
             {{-- Events --}}
-            <x-service.category 
-                title="Events" 
-                :note="['*If the event hasn\'t been touched', '*If the event is halfway done']"
-            >
+            <x-service.category title="Events" :note="['*If the event hasn\'t been touched', '*If the event is halfway done']">
                 <x-service.button category="events" service="light" :price="120" label="Light events" />
                 <x-service.button category="events" service="full" :price="120" label="Full event" />
                 <x-service.button category="events" service="light-half" :price="100" label="Light events" />
@@ -48,19 +44,13 @@
             </x-service.category>
 
             {{-- Simulated Universe --}}
-            <x-service.category 
-                title="Simulated Universe" 
-                description="Choose a World"
-            >
+            <x-service.category title="Simulated Universe" description="Choose a World">
                 {{-- World Selection --}}
-                <x-service.world-selection 
-                    type="world"
-                    :items="[
+                <x-service.world-selection type="world" :items="[
                         ['slug' => 'swarm-disaster', 'name' => 'Swarm Disaster'],
                         ['slug' => 'gold-gears', 'name' => 'Gold and Gears'],
                         ['slug' => 'unknowable-domain', 'name' => 'Unknowable Domain'],
-                    ]" 
-                />
+                    ]" />
 
                 {{-- Clear Type Options --}}
                 <div class="service-options" style="margin-top: 20px">
@@ -76,11 +66,7 @@
             </x-service.category>
 
             {{-- Explorations --}}
-            <x-service.category 
-                title="Explorations" 
-                description="Select regions for your services"
-                :customLayout="true"
-            >
+            <x-service.category title="Explorations" description="Select regions for your services" :customLayout="true">
                 <x-service.exploration-grid :regions="[
                     ['slug' => 'herta-space-station', 'name' => 'Herta Space Station'],
                     ['slug' => 'jarilo-vi', 'name' => 'Jarilo-VI'],
@@ -92,12 +78,7 @@
 
             {{-- 100% Area Completion --}}
             <x-service.category title="100% Area Completion">
-                <x-service.button 
-                    category="completion" 
-                    service="small" 
-                    :price="170" 
-                    label='Small area/ex. "Fallen Twilight City" Okhema' 
-                />
+                <x-service.button category="completion" service="small" :price="170" label='Small area/ex. "Fallen Twilight City" Okhema' />
                 <x-service.button category="completion" service="whole" :price="500" label="Whole Map" />
             </x-service.category>
         </div>
