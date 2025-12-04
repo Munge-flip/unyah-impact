@@ -29,7 +29,7 @@
     <div class="modal-content" style="text-align: center;">
         <div class="modal-header">
             <h2>Scan to Pay</h2>
-            <span class="close-modal" onclick="closeQrModal()">&times;</span>
+            <span class="close-modal" style="cursor: pointer;">&times;</span>
         </div>
         <div class="modal-body" style="padding: 30px;">
             <p style="margin-bottom: 20px;">Please scan this QR code with your GCash app to pay <strong><span id="qrAmount">₱0.00</span></strong></p>
@@ -37,7 +37,7 @@
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PayToUnyahImpact" alt="Payment QR" style="border: 5px solid #f0f0f0; border-radius: 10px;">
 
             <div style="margin-top: 30px;">
-                <button type="button" class="btn-primary" onclick="confirmPayment()">I have completed payment</button>
+                <button type="button" class="btn-primary">I have completed payment</button>
             </div>
         </div>
     </div>
