@@ -87,7 +87,7 @@
             
             <div class="agent-actions" style="margin-top: 20px; display: flex; gap: 10px;">
                 
-                <a href="{{ route('agent.chat') }}" class="action-btn secondary" style="text-decoration:none; text-align:center;">
+                <a href="{{ route('agent.order') }}" class="action-btn secondary" style="text-decoration:none; text-align:center;">
                     Chat with Customer
                 </a>
 

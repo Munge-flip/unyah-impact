@@ -46,10 +46,6 @@ class AgentController extends Controller
     {
         return view('agent.dashboard.edit-password');
     }
-    public function chat()
-    {
-        return view("agent.chat");
-    }
     public function show($id)
     {
         $order = Auth::user()->tasks()->with('user')->findOrFail($id);

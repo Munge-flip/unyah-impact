@@ -13,11 +13,5 @@
             </svg>
             Orders Handling
         </a>
-        <a href=" {{ route('agent.chat') }} " @class(['menu-btn', 'active'=>request()->routeIs('agent.chat')])>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-            Live Chat
-        </a>
     </div>
 </aside>

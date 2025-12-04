@@ -12,10 +12,6 @@ class UserController extends Controller
     {
         return view("user.dashboard.index");
     }
-    public function chat()
-    {
-        return view("user.chat");
-    }
     public function orders()
     {
         $user = Auth::user();

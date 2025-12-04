@@ -29,4 +29,8 @@ class Order extends Model
     {
         return $this->belongsTo(User::class, 'agent_id');
     }
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }

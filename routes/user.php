@@ -12,8 +12,10 @@ Route::get('/update', [UserController::class, 'update'])->name('dashboard.update
 
 Route::get('/order', [UserController::class, 'orders'])->name('order');
 
-Route::get('/chat', [UserController::class, 'chat'])->name('chat');
-
 Route::get('/order/{id}', [UserController::class, 'show'])->name('order.show');
 
 Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+
+Route::get('/order/{id}/chat', [App\Http\Controllers\ChatController::class, 'show'])->name('order.chat');
+
+Route::post('/order/{id}/chat', [App\Http\Controllers\ChatController::class, 'store'])->name('chat.store');
