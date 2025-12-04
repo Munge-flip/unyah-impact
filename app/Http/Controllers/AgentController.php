@@ -74,7 +74,7 @@ class AgentController extends Controller
 
         $user->update($validated);
 
-        return back()->with('success', 'Profile updated successfully.');
+        return redirect()->route('agent.dashboard')->with('success', 'Profile updated successfully.');
     }
 
     public function updatePassword(Request $request)
@@ -88,6 +88,6 @@ class AgentController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return back()->with('success', 'Password changed successfully.');
+        return redirect()->route('agent.dashboard')->with('success', 'Password changed successfully.');
     }
 }

@@ -48,7 +48,7 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return back()->with('success', 'Profile updated successfully.');
+        return redirect()->route('user.dashboard')->with('success', 'Profile updated successfully.');
     }
 
     // 2. Handle Password Update
@@ -63,7 +63,7 @@ class UserController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return back()->with('success', 'Password changed successfully.');
+        return redirect()->route('user.dashboard')->with('success', 'Password changed successfully.');
     }
     public function payNow($id)
     {
