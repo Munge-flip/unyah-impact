@@ -878,3 +878,339 @@
     text-transform: capitalize;
     display: inline-block;
 }
+
+/* ============================================
+   NEW ADDITIONS (Add to bottom of dashboard.css)
+   ============================================ */
+
+/* --- General Text Helpers --- */
+.text-error {
+  color: #ef4444; /* Red */
+  font-size: 13px;
+  margin-top: 5px;
+  display: block;
+}
+
+.text-muted {
+  color: #888;
+  font-size: 11px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+/* --- Form & Modal Styles --- */
+.admin-card {
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 15px;
+  padding: 0; /* Header separates content */
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 20px 25px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.card-body {
+  padding: 25px;
+}
+
+.modal-form {
+  padding: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #a78bfa;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+/* --- Button Variants --- */
+.btn-danger {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Syne', sans-serif;
+  transition: background 0.3s ease;
+}
+
+.btn-danger:hover {
+  background: #e60000;
+}
+
+/* Fix for buttons that look like links */
+.btn-secondary, 
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* --- Table & List States --- */
+.empty-state-row td {
+  text-align: center;
+  padding: 30px;
+  color: #888;
+}
+
+.empty-activity {
+  color: #888;
+  font-style: italic;
+  padding: 10px 0;
+}
+
+.pagination-wrapper {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* --- Specific: Orders Index --- */
+.text-unassigned {
+  color: #e74c3c;
+  font-style: italic;
+}
+
+.payment-meta {
+  font-size: 11px;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* --- Specific: Order Show Page --- */
+.user-id-sub {
+  color: #888;
+  font-weight: normal;
+  font-size: 13px;
+}
+
+.status-text-pending {
+  color: #888;
+  font-style: italic;
+}
+
+/* The Assignment Form Area */
+.assignment-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.assignment-row {
+  display: flex;
+  gap: 10px;
+}
+
+.assignment-select {
+  flex: 1;
+}
+
+.mt-15 {
+  margin-top: 15px;
+}
+
+/* --- Specific: Users Index --- */
+.delete-form {
+  display: inline;
+}
+
+/* ============================================
+   FIXES (Add to bottom of dashboard.css)
+   ============================================ */
+
+/* FIX 1: Make the unassigned color stronger
+   We use ".data-table td.text-unassigned" to beat ".data-table td" */
+.data-table td.text-unassigned {
+    color: #e74c3c;
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* FIX 2: Pagination Overlap 
+   This targets the default Laravel pagination structure to stack 
+   the "Showing results" text above the buttons */
+
+.pagination-wrapper nav {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Force the inner container to stack vertically */
+.pagination-wrapper nav > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Style the 'Showing x results' text */
+.pagination-wrapper nav > div > div:first-child p {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+/* ensure the buttons container is centered */
+.pagination-wrapper nav > div > div:last-child {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Optional: Clean up the button look if they are default Laravel/Tailwind */
+.pagination-wrapper span, 
+.pagination-wrapper a {
+    position: relative;
+    z-index: 1; /* Ensures buttons sit above any background overlap */
+}
+
+/* ============================================
+   PAGINATION FIX (Replace previous FIX 2)
+   ============================================ */
+
+/* 1. Target the container holding the text and buttons.
+   We set it to flex row, and use 'space-between' to push
+   the text to the left and buttons to the right. */
+.pagination-wrapper nav > div {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center;
+    width: 100%;
+    flex-wrap: nowrap; /* Prevent wrapping onto new lines */
+    gap: 20px; /* Ensures at least 20px gap between text and buttons */
+}
+
+/* 2. Target the left side ("Showing x results" text area) */
+.pagination-wrapper nav > div > div:first-child {
+    text-align: left;
+    flex-shrink: 0; /* Ensures the text doesn't get squished */
+    margin-right: auto; /* An extra push to keep it left */
+}
+
+/* Ensure paragraphs inside are left-aligned with no weird margins */
+.pagination-wrapper nav > div > div:first-child p {
+    text-align: left;
+    margin: 0;
+}
+
+/* 3. Target the right side (The Button container) */
+.pagination-wrapper nav > div > div:last-child {
+    display: flex;
+    justify-content: flex-end; /* Aligns buttons to the right */
+    flex-wrap: nowrap;
+}
+
+/* Optional: On smaller screens, stack them so they don't overlap */
+@media (max-width: 768px) {
+    .pagination-wrapper nav > div {
+        flex-direction: column !important;
+        justify-content: center !important;
+        gap: 15px;
+    }
+
+    .pagination-wrapper nav > div > div:first-child {
+        margin-right: 0;
+        text-align: center;
+    }
+}
+
+/* ============================================
+   AGENT DASHBOARD HELPERS
+   ============================================ */
+
+/* Styles for the text-based avatar (e.g., "JD") */
+.avatar-text {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+/* Helper for empty card states (No orders found) */
+.empty-card {
+    text-align: center;
+    padding: 30px;
+    color: #888;
+}
+
+/* Flexbox Helpers */
+.flex-1 {
+    flex: 1;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+/* Disabled Button State */
+.btn-disabled {
+    background: #e0e0e0 !important;
+    color: #888 !important;
+    cursor: not-allowed;
+    border: none;
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: 'Syne', sans-serif;
+}

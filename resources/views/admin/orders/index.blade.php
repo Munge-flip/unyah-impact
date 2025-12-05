@@ -26,13 +26,11 @@
                         @forelse ($orders as $order)
                         <tr>
                             <td>#{{ $order->id }}</td>
-
                             <td>{{ $order->game }}</td>
                             <td>{{ $order->service_type }}</td>
-
                             <td>{{ $order->user->name ?? 'Unknown User' }}</td>
 
-                            <td style="{{ !$order->agent ? 'color: #e74c3c; font-style: italic;' : '' }}">
+                            <td class="{{ !$order->agent ? 'text-unassigned' : '' }}">
                                 {{ $order->agent->name ?? 'Unassigned' }}
                             </td>
 
@@ -40,8 +38,7 @@
                                 <span class="badge {{ $order->payment_status === 'paid' ? 'paid' : 'unpaid' }}">
                                     {{ ucfirst($order->payment_status) }}
                                 </span>
-
-                                <div style="font-size: 11px; color: #888; margin-top: 4px;">
+                                <div class="payment-meta">
                                     {{ $order->payment_method }}
                                 </div>
                             </td>
@@ -64,13 +61,12 @@
 
                             <td>
                                 <a href="{{ route('admin.order.show', $order->id) }}" class="action-link">View</a>
-
                                 <button class="action-link delete">Delete</button>
                             </td>
                         </tr>
                         @empty
-                        <tr>
-                            <td colspan="9" style="text-align: center; padding: 30px; color: #888;">
+                        <tr class="empty-state-row">
+                            <td colspan="10">
                                 No orders found.
                             </td>
                         </tr>
@@ -79,7 +75,7 @@
                 </table>
             </div>
 
-            <div style="padding: 20px;">
+            <div class="pagination-wrapper">
                 {{ $orders->links() }}
             </div>
         </div>

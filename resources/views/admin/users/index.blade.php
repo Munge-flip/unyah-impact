@@ -13,8 +13,10 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Username</th> <th>Email</th>
-                            <th>Role</th>     <th>Date Created</th>
+                            <th>Username</th> 
+                            <th>Email</th>
+                            <th>Role</th>     
+                            <th>Date Created</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -36,7 +38,7 @@
                                 <td>
                                     <a href="{{ route('admin.user.edit', $user->id) }}" class="action-link">Edit</a>
                                     
-                                    <form action="{{ route('admin.user.delete', $user->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('admin.user.delete', $user->id) }}" method="POST" class="delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="action-link delete" onclick="return confirm('Are you sure?')">Delete</button>
@@ -44,14 +46,14 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 20px;">No users found.</td>
+                            <tr class="empty-state-row">
+                                <td colspan="6">No users found.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-            <div style="padding: 20px;">
+            <div class="pagination-wrapper">
                 {{ $users->links() }}
             </div>
             

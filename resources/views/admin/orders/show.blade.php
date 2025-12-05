@@ -12,7 +12,7 @@
             </a>
         </div>
 
-        <div class="info-card">
+        <div class="admin-card">
             <div class="card-header">
                 <div>
                     <h3>Order #{{ $order->id }}</h3>
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div class="info-card">
+        <div class="admin-card">
             <div class="card-header">
                 <h3>Service Details</h3>
             </div>
@@ -55,7 +55,7 @@
                     <span class="label">Customer:</span>
                     <strong>
                         {{ $order->user->name ?? 'Unknown User' }}
-                        <span style="color: #888; font-weight: normal; font-size: 13px;">(ID: #{{ $order->user_id }})</span>
+                        <span class="user-id-sub">(ID: #{{ $order->user_id }})</span>
                     </strong>
                 </div>
                 <div class="detail-row">
@@ -65,7 +65,7 @@
             </div>
         </div>
 
-        <div class="info-card">
+        <div class="admin-card">
             <div class="card-header">
                 <h3>Timeline</h3>
             </div>
@@ -82,13 +82,13 @@
                 @else
                 <div class="detail-row">
                     <span class="label">Status:</span>
-                    <strong style="color: #888; font-style: italic;">In Progress...</strong>
+                    <strong class="status-text-pending">In Progress...</strong>
                 </div>
                 @endif
             </div>
         </div>
 
-        <div class="info-card">
+        <div class="admin-card">
             <div class="card-header">
                 <h3>Assignment</h3>
             </div>
@@ -98,36 +98,36 @@
                     <strong>{{ $order->agent->name ?? 'Unassigned' }}</strong>
                 </div>
 
-                <form action="{{ route('admin.order.assign', $order->id) }}" method="POST" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                <form action="{{ route('admin.order.assign', $order->id) }}" method="POST" class="assignment-section">
                     @csrf
                     @method('PATCH')
 
-                    <label style="display: block; margin-bottom: 10px; font-weight: 600;">Assign to Agent:</label>
+                    <div class="form-group">
+                        <label>Assign to Agent:</label>
+                        <div class="assignment-row">
+                            <select name="agent_id" class="search-input assignment-select">
+                                <option value="" disabled selected>Select an Agent</option>
+                                @foreach($agents as $agent)
+                                <option value="{{ $agent->id }}" {{ $order->agent_id == $agent->id ? 'selected' : '' }}>
+                                    {{ $agent->name }}
+                                </option>
+                                @endforeach
+                            </select>
 
-                    <div style="display: flex; gap: 10px;">
-                        <select name="agent_id" class="search-input" style="flex: 1;">
-                            <option value="" disabled selected>Select an Agent</option>
-                            @foreach($agents as $agent)
-                            <option value="{{ $agent->id }}" {{ $order->agent_id == $agent->id ? 'selected' : '' }}>
-                                {{ $agent->name }}
-                            </option>
-                            @endforeach
-                        </select>
-
-                        <button type="submit" class="btn-primary" style="padding: 10px 20px;">
-                            Assign
-                        </button>
+                            <button type="submit" class="btn-primary">
+                                Assign
+                            </button>
+                        </div>
                     </div>
                 </form>
 
                 @if($order->status !== 'completed')
-                <div style="margin-top: 15px;">
-                    <button class="action-btn success" style="width: 100%;">Mark as Complete</button>
+                <div class="mt-15">
+                    <button class="action-btn success w-100">Mark as Complete</button>
                 </div>
                 @endif
             </div>
         </div>
 
     </section>
-
 </x-layouts.admin>

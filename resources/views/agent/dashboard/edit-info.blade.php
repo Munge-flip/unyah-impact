@@ -9,30 +9,30 @@
 
         <div class="info-card">
 
-            <form action="{{ route('user.profile.update') }}" method="POST">
+            <form action="{{ route('user.profile.update') }}" method="POST" class="modal-form">
                 @csrf
                 @method('PATCH')
 
                 <div class="form-group">
                     <label>Name</label>
                     <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}" required>
-                    @error('name') <span style="color:red; font-size:13px;">{{ $message }}</span> @enderror
+                    @error('name') <span class="text-error">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="form-group">
                     <label>Email Address</label>
                     <input type="email" name="email" value="{{ old('email', auth()->user()->email) }}" required>
-                    @error('email') <span style="color:red; font-size:13px;">{{ $message }}</span> @enderror
+                    @error('email') <span class="text-error">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="form-group">
                     <label>Mobile Number</label>
                     <input type="tel" name="phone" value="{{ old('phone', auth()->user()->phone) }}">
-                    @error('phone') <span style="color:red; font-size:13px;">{{ $message }}</span> @enderror
+                    @error('phone') <span class="text-error">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="modal-actions">
-                    <a href="{{ route('agent.dashboard') }}" class="btn-secondary" style="text-decoration:none; display:inline-flex; justify-content:center; align-items:center;">Cancel</a>
+                    <a href="{{ route('agent.dashboard') }}" class="btn-secondary">Cancel</a>
                     <button type="submit" class="btn-primary">Save Changes</button>
                 </div>
             </form>

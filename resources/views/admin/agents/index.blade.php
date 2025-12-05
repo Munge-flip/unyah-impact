@@ -36,11 +36,11 @@
                         </div>
 
                         <div class="agent-actions">
-                            <a href="{{ route('admin.order', ['agent_id' => $agent->id]) }}" class="btn-secondary" style="text-decoration:none; text-align:center;">
+                            <a href="{{ route('admin.order', ['agent_id' => $agent->id]) }}" class="btn-secondary">
                                 View Orders
                             </a>
                             
-                            <a href="{{ route('admin.user.edit', $agent->id) }}" class="btn-danger" style="text-decoration:none; text-align:center;">
+                            <a href="{{ route('admin.user.edit', $agent->id) }}" class="btn-danger">
                                 Manage
                             </a>
                         </div>

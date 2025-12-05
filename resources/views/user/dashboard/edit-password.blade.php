@@ -20,13 +20,13 @@
                 <div class="form-group">
                     <label>Current Password</label>
                     <input type="password" name="current_password" required>
-                    @error('current_password') <span style="color:red; font-size:13px;">{{ $message }}</span> @enderror
+                    @error('current_password') <span class="text-error">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="form-group">
                     <label>New Password</label>
                     <input type="password" name="password" required minlength="8">
-                    @error('password') <span style="color:red; font-size:13px;">{{ $message }}</span> @enderror
+                    @error('password') <span class="text-error">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="form-group">
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="modal-actions">
-                    <a href="{{ route('user.dashboard') }}" class="btn-secondary" style="text-decoration:none; display:inline-flex; justify-content:center; align-items:center;">Cancel</a>
+                    <a href="{{ route('user.dashboard') }}" class="btn-secondary">Cancel</a>
                     <button type="submit" class="btn-primary">Update Password</button>
                 </div>
             </form>
