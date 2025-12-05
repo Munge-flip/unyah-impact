@@ -47,7 +47,7 @@
                                     color: {{ $isMe ? '#fff' : '#333' }};
                                  ">
                                 <p style="margin: 0;">{{ $message->message }}</p>
-                                <span style="font-size: 11px; opacity: 0.7; display: block; text-align: right; margin-top: 5px;">
+                                <span class="message-data">
                                     {{ $message->created_at->format('h:i A') }}
                                 </span>
                             </div>
