@@ -506,3 +506,38 @@
     min-width: 100%;
   }
 }
+/* Add this to your CSS file */
+.mode-card {
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.mode-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mode-card.selected {
+  background: #a78bfa;
+  border-color: #a78bfa;
+  color: white;
+  font-weight: 600;
+}
+
+.mode-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.mode-selection {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+}
