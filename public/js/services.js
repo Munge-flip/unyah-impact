@@ -118,11 +118,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     let servicePrice = service.price;
                     let multiplier = 1;
 
-                        // Apply multiplier for specific categories
                     if (multiplierCategories.includes(category)) {
-                        // Check which selection type applies
                         if (category === 'simulated-clear' && selectedServices.worlds.length > 0) {
-                            // Multiply for BOTH Basic Clear and Full Clear
                             multiplier = worldCount;
                         } else if (category === 'hollow-zero' && selectedServices['hollow-modes'].length > 0) {
                             multiplier = modeCount;
