@@ -61,7 +61,11 @@
 
                             <td>
                                 <a href="{{ route('admin.order.show', $order->id) }}" class="action-link">View</a>
-                                <button class="action-link delete">Delete</button>
+                                <form action="{{ route('admin.order.delete', $order->id) }}" method="POST" class="delete-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="action-link delete" onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
                             </td>
                         </tr>
                         @empty

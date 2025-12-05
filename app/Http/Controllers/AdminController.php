@@ -72,6 +72,11 @@ class AdminController extends Controller
 
         return view("admin.orders.index", compact('orders'));
     }
+    public function destroyOrder($id)
+    {
+        Order::findOrFail($id)->delete();
+        return back()->with('success', 'Order deleted successfully');
+    }
     public function user()
     {
         $users = User::orderBy('created_at', 'desc')->paginate(10);

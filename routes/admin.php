@@ -25,4 +25,6 @@ Route::get('/order/{id}', [AdminController::class, 'show'])->name('order.show');
 
 Route::delete('/user/{id}', [AdminController::class, 'destroyUser'])->name('user.delete');
 
+Route::delete('/order/{id}', [AdminController::class, 'destroyOrder'])->name('order.delete');
+
 Route::patch('/order/{id}/assign', [AdminController::class, 'assignAgent'])->name('order.assign');
