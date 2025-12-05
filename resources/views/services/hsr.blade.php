@@ -53,7 +53,7 @@
                     ]" />
 
                 {{-- Clear Type Options --}}
-                <div class="service-options" style="margin-top: 20px">
+                <div class="world-selection" style="margin-top: 20px">
                     <x-service.button category="simulated-clear" service="basic" :price="200" label="Basic Clear (1 World)" />
                     <x-service.button category="simulated-clear" service="full" :price="1000" label="Full Clear (All Worlds)" />
                 </div>
