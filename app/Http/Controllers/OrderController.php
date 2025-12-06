@@ -16,12 +16,10 @@ class OrderController extends Controller
             'service_type' => 'required|string',
             'price' => 'required|numeric',
             'payment_method' => 'required|string',
-            'final_payment_status' => 'nullable|string|in:paid,unpaid', 
         ]);
 
-        $finalStatus = $request->input('final_payment_status', 'unpaid');
 
-        Order::create([
+        $order = Order::create([
             'user_id' => Auth::id(),
             'game' => $validated['game'],
             'service_category' => $validated['service_category'],
@@ -30,9 +28,10 @@ class OrderController extends Controller
             'payment_method' => $validated['payment_method'],
             'status' => 'pending',
             
-            'payment_status' => $finalStatus, 
+            'payment_status' => 'unpaid', 
         ]);
 
-        return redirect()->route('user.order')->with('success', 'Order placed successfully!');
+        return redirect()->route('user.order.show', $order->id) // Redirect directly to the order to pay
+            ->with('success', 'Order placed! Please submit your payment details below.');
     }
 }

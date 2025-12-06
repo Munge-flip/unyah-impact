@@ -32,8 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const qrModal = document.getElementById('qrModal');
     const closeModalBtn = document.querySelector('.close-modal');
-    const confirmPaymentBtn = document.querySelector('#qrModal .btn-primary'); 
+    // const confirmPaymentBtn = document.querySelector('#qrModal .btn-primary'); 
+    const btnConfirmOrder = document.getElementById('btnConfirmOrder');
     const qrAmountText = document.getElementById('qrAmount');
+    const qrMethodText = document.getElementById('qrMethod');
     
     const inputCategory = document.querySelector('input[name="service_category"]');
     const inputService = document.querySelector('input[name="service_type"]');
@@ -194,6 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.payment-input').forEach(input => { input.disabled = true; input.style.opacity = '0.5'; });
 
     const hiddenStatusInput = document.getElementById('finalPaymentStatus');
+    // 1. UPDATED SUBMIT BUTTON LOGIC
     if (submitBtn) {
         submitBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -226,12 +229,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (isQrMethod) {
                 if (qrAmountText) qrAmountText.textContent = '₱' + totalPriceElement.textContent;
+                // Display the selected payment method in the modal text
+                if (qrMethodText) qrMethodText.textContent = inputPayment.value.toUpperCase();
                 if (qrModal) qrModal.style.display = 'block';
             } else {
-                if(hiddenStatusInput) hiddenStatusInput.value = 'unpaid';
                 form.submit();
             }
         });
+    }
+
+    // 2. NEW "PLACE ORDER" CONFIRMATION BUTTON
+    if (btnConfirmOrder) {
+        btnConfirmOrder.addEventListener('click', function() {
+            form.submit();
+        });
+    }
+
+    // 3. MODAL CLOSING LOGIC (Keep this)
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', function() {
+            qrModal.style.display = 'none';
+        });
+    }
+
+    window.onclick = function(event) {
+        if (event.target == qrModal) {
+            qrModal.style.display = "none";
+        }
     }
 
     const btnPaid = document.getElementById('btnPaid');
