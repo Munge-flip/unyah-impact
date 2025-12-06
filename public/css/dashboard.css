@@ -1222,3 +1222,69 @@
   text-align: right; 
   margin-top: 5px;
 }
+
+/* ============================================
+   USER ORDER & PAYMENT MODAL HELPERS
+   ============================================ */
+
+/* Small Button Variant */
+.btn-sm {
+    padding: 6px 15px;
+    font-size: 12px;
+    height: auto; /* reset fixed height if set */
+}
+
+/* Detail Row Helpers */
+.align-center {
+    align-items: center;
+}
+
+.flex-row-gap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-pilot-missing {
+    color: #e74c3c;
+    font-style: italic;
+    font-weight: 600;
+}
+
+/* Modal Specifics */
+.modal-medium {
+    max-width: 600px;
+    width: 90%;
+}
+
+.p-30 {
+    padding: 30px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-help {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+    display: block;
+}
+
+.qr-code {
+    display: block;
+    margin: 0 auto 20px;
+    border: 5px solid #f0f0f0;
+    border-radius: 10px;
+    max-width: 200px;
+    width: 100%;
+}

@@ -30,6 +30,5 @@
 
     <x-footer />
 
-    <script src="js/user-profile.js"></script>
 </body>
 </html>
