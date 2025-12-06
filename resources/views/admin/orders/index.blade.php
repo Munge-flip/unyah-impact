@@ -41,6 +41,11 @@
                                 <div class="payment-meta">
                                     {{ $order->payment_method }}
                                 </div>
+                                @if($order->transaction)
+                                <a href="{{ route('admin.transactions.show', $order->transaction->id) }}" style="font-size: 11px; color: #667eea; text-decoration: underline; display: block; margin-top: 3px;">
+                                    View Transaction
+                                </a>
+                                @endif
                             </td>
 
                             <td>

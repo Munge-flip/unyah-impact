@@ -22,34 +22,6 @@
         {{ $slot }}
     </main>
 
-    <!-- Add Agent Modal -->
-    {{-- <div id="addAgentModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Add New Agent</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="addAgentForm" class="modal-form">
-                <div class="form-group">
-                    <label>Agent Name</label>
-                    <input type="text" id="agentName" required>
-                </div>
-                <div class="form-group">
-                    <label>Agent ID</label>
-                    <input type="text" id="agentId" placeholder="#0000" required>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="agentEmail" required>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
-                    <button type="submit" class="btn-primary">Add Agent</button>
-                </div>
-            </form>
-        </div>
-    </div> --}}
-
     <x-footer />
 
     <script src="js/admin-dashboard.js"></script>

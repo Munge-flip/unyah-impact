@@ -99,7 +99,7 @@
             @else
             <div class="detail-row">
                 <span class="label">Status:</span>
-                <strong style="color: #888; font-style: italic;">Work in progress...</strong>
+                <strong class="status-text-pending">Work in progress...</strong>
             </div>
             @endif
         </div>
@@ -117,6 +117,7 @@
         </div>
     </section>
 
+    {{-- Payment Modal with Proof Upload --}}
     @if($order->payment_status === 'unpaid')
     <div id="payModal" class="modal" style="display: none;">
         <div class="modal-content" style="max-width: 600px;">
@@ -166,31 +167,7 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const payModal = document.getElementById('payModal');
-            const btnPayNow = document.getElementById('btnPayNow');
-            const closeModalBtns = document.querySelectorAll('.close-modal');
-
-            if (btnPayNow) {
-                btnPayNow.addEventListener('click', function() {
-                    payModal.style.display = 'block';
-                });
-            }
-
-            closeModalBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    payModal.style.display = 'none';
-                });
-            });
-
-            window.onclick = function(event) {
-                if (event.target == payModal) {
-                    payModal.style.display = "none";
-                }
-            }
-        });
-    </script>
     @endif
 </x-layouts.app>
+
+<script src="{{ asset('js/order-show.js') }}"></script>

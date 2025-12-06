@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     
+    
     const payModal = document.getElementById('payModal');
     const btnPayNow = document.getElementById('btnPayNow');
+    const closeModalBtns = document.querySelectorAll('.close-modal');
     const btnConfirmPayment = document.getElementById('btnConfirmPayment'); 
     const closeModalBtn = document.querySelector('.close-modal');
     const payNowForm = document.getElementById('payNowForm');
@@ -14,6 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    closeModalBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (payModal) {
+                payModal.style.display = 'none';
+            }
+        });
+    });
 
     if (btnConfirmPayment) {
         btnConfirmPayment.addEventListener('click', function() {
