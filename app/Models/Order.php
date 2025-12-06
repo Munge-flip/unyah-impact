@@ -33,4 +33,13 @@ class Order extends Model
     {
         return $this->hasMany(Message::class);
     }
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

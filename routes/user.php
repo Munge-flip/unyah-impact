@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', [UserController::class, 'index'])->name('dashboard');
 
@@ -26,3 +27,9 @@ Route::patch('/profile/update', [UserController::class, 'updateProfile'])->name(
 Route::put('/password/update', [UserController::class, 'updatePassword'])->name('password.update');
 
 Route::patch('/order/{id}/pay', [App\Http\Controllers\UserController::class, 'payNow'])->name('order.pay');
+
+Route::get('/transactions', [TransactionController::class, 'userTransactions'])->name('transactions');
+
+Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions.show');
+
+Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');

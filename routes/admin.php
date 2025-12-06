@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
@@ -28,3 +29,11 @@ Route::delete('/user/{id}', [AdminController::class, 'destroyUser'])->name('user
 Route::delete('/order/{id}', [AdminController::class, 'destroyOrder'])->name('order.delete');
 
 Route::patch('/order/{id}/assign', [AdminController::class, 'assignAgent'])->name('order.assign');
+
+Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
+
+Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions.show');
+
+Route::patch('/transactions/{id}/verify', [TransactionController::class, 'verify'])->name('transactions.verify');
+
+Route::get('/transactions/{id}/download-proof', [TransactionController::class, 'downloadProof'])->name('transactions.download-proof');

@@ -13,14 +13,19 @@ class AdminController extends Controller
     public function index()
     {
         $totalOrders = Order::count();
-
         $activeAgents = User::where('role', 'agent')->count();
-
         $totalUsers = User::where('role', 'user')->count();
-
         $revenue = Order::where('status', 'completed')->sum('price');
+        $pendingTransactions = \App\Models\Transaction::where('status', 'pending')->count();
+        $verifiedTransactions = \App\Models\Transaction::where('status', 'verified')->count();
+        $totalTransactions = \App\Models\Transaction::count();
 
         $recentOrders = Order::with('user')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $recentTransactions = \App\Models\Transaction::with(['user', 'order'])
             ->latest()
             ->take(5)
             ->get();
@@ -30,7 +35,12 @@ class AdminController extends Controller
             'activeAgents',
             'totalUsers',
             'revenue',
-            'recentOrders'
+            'recentOrders',
+            'pendingTransactions',
+            'verifiedTransactions',
+            'totalTransactions',
+            'recentTransactions'
+
         ));
     }
     public function create()
