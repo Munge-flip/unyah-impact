@@ -5,11 +5,62 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Order;
 
 class AdminController extends Controller
 {
+    public function profile()
+    {
+        return view('admin.profile.index');
+    }
+    public function editProfile()
+    {
+        return view('admin.profile.edit');
+    }
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        $user->update($validated);
+
+        return redirect()->route('admin.profile.index')
+            ->with('success', 'Profile updated successfully.');
+    }
+
+    /**
+     * Show change password form
+     */
+    public function editPassword()
+    {
+        return view('admin.profile.password');
+    }
+
+    /**
+     * Update admin password
+     */
+    public function updatePassword(Request $request)
+    {
+        $validated = $request->validate([
+            'current_password' => 'required|current_password',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        Auth::user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return redirect()->route('admin.profile.index')
+            ->with('success', 'Password changed successfully.');
+    }
+
     public function index()
     {
         $totalOrders = Order::count();

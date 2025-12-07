@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ServiceManagementController;
 
 Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
@@ -37,3 +38,19 @@ Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('
 Route::patch('/transactions/{id}/verify', [TransactionController::class, 'verify'])->name('transactions.verify');
 
 Route::get('/transactions/{id}/download-proof', [TransactionController::class, 'downloadProof'])->name('transactions.download-proof');
+
+// Admin Profile Routes
+Route::get('/profile', [AdminController::class, 'profile'])->name('profile.index');
+Route::get('/profile/edit', [AdminController::class, 'editProfile'])->name('profile.edit');
+Route::patch('/profile/update', [AdminController::class, 'updateProfile'])->name('profile.update');
+Route::get('/profile/password', [AdminController::class, 'editPassword'])->name('profile.password');
+Route::put('/profile/password/update', [AdminController::class, 'updatePassword'])->name('profile.password.update');
+
+// Service Management Routes
+Route::get('/services', [ServiceManagementController::class, 'index'])->name('services.index');
+Route::get('/services/create', [ServiceManagementController::class, 'create'])->name('services.create');
+Route::post('/services', [ServiceManagementController::class, 'store'])->name('services.store');
+Route::get('/services/{id}/edit', [ServiceManagementController::class, 'edit'])->name('services.edit');
+Route::put('/services/{id}', [ServiceManagementController::class, 'update'])->name('services.update');
+Route::delete('/services/{id}', [ServiceManagementController::class, 'destroy'])->name('services.destroy');
+Route::patch('/services/{id}/toggle', [ServiceManagementController::class, 'toggleStatus'])->name('services.toggle');

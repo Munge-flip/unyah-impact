@@ -1,6 +1,6 @@
 <aside class="sidebar">
     <div class="sidebar-menu">
-        <a href=" {{ route('admin.dashboard') }} " @class(['menu-btn', 'active'=>request()->routeIs('admin.dashboard')])>
+        <a href="{{ route('admin.dashboard') }}" @class(['menu-btn', 'active'=>request()->routeIs('admin.dashboard')])>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="3" width="7" height="7"></rect>
                 <rect x="14" y="3" width="7" height="7"></rect>
@@ -22,7 +22,15 @@
             </svg>
             Transactions
         </a>
-        <a href=" {{ route('admin.agent') }} " @class(['menu-btn', 'active'=>request()->routeIs('admin.agent*')])>
+        <a href="{{ route('admin.services.index') }}" @class(['menu-btn', 'active'=>request()->routeIs('admin.services*')])>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            Services
+        </a>
+        <a href="{{ route('admin.agent') }}" @class(['menu-btn', 'active'=>request()->routeIs('admin.agent*')])>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                 <circle cx="9" cy="7" r="4"></circle>
@@ -31,7 +39,7 @@
             </svg>
             Agents
         </a>
-        <a href=" {{ route('admin.user') }} " @class(['menu-btn', 'active'=>request()->routeIs('admin.user*')])>
+        <a href="{{ route('admin.user') }}" @class(['menu-btn', 'active'=>request()->routeIs('admin.user*')])>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>

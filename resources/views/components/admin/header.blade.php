@@ -1,6 +1,8 @@
 <x-header>
     <div class="admin-info">
-        <span>Admin Panel</span>
+        <a href="{{ route('admin.profile.index') }}" style="color: white; text-decoration: none; transition: all 0.3s ease;">
+            <span>Admin Panel</span>
+        </a>
     </div>
     <li>
         <form method="POST" action="{{ route('logout') }}" style="display: inline;">
