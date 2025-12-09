@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ServiceManagementController extends Controller
 {
@@ -21,7 +22,7 @@ class ServiceManagementController extends Controller
 
         // Filter by category if provided
         if ($request->has('category') && $request->category) {
-            $query->where('category', $request->category);
+            $query->where('category_name', $request->category);
         }
 
         // Search by name
@@ -29,7 +30,7 @@ class ServiceManagementController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        $services = $query->orderBy('game')->orderBy('category')->paginate(15);
+        $services = $query->orderBy('game')->orderBy('category_name')->paginate(15);
 
         return view('admin.services.index', compact('services'));
     }
@@ -56,7 +57,25 @@ class ServiceManagementController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        Service::create($validated);
+        // Auto-generate category_name from category if not provided
+        $categoryName = $validated['category'];
+        
+        // Auto-generate category slug (lowercase, hyphenated)
+        $categorySlug = Str::slug($validated['category']);
+        
+        // Auto-generate name slug (lowercase, hyphenated)
+        $nameSlug = Str::slug($validated['name']);
+
+        Service::create([
+            'game' => $validated['game'],
+            'category_name' => $categoryName, // Display name
+            'category' => $categorySlug, // Slug for JS logic
+            'name' => $validated['name'], // Display name
+            'slug' => $nameSlug, // Slug for JS logic
+            'description' => $validated['description'] ?? null,
+            'price' => $validated['price'],
+            'is_active' => $validated['is_active'] ?? true,
+        ]);
 
         return redirect()->route('admin.services.index')
             ->with('success', 'Service created successfully!');
@@ -87,7 +106,21 @@ class ServiceManagementController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        $service->update($validated);
+        // Auto-generate slugs
+        $categoryName = $validated['category'];
+        $categorySlug = Str::slug($validated['category']);
+        $nameSlug = Str::slug($validated['name']);
+
+        $service->update([
+            'game' => $validated['game'],
+            'category_name' => $categoryName,
+            'category' => $categorySlug,
+            'name' => $validated['name'],
+            'slug' => $nameSlug,
+            'description' => $validated['description'] ?? null,
+            'price' => $validated['price'],
+            'is_active' => $validated['is_active'] ?? $service->is_active,
+        ]);
 
         return redirect()->route('admin.services.index')
             ->with('success', 'Service updated successfully!');

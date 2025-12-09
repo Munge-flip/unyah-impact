@@ -6,16 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('game'); // Genshin Impact, HSR, ZZZ
-            $table->string('category'); // Maintenance, Quests, Events, etc.
-            $table->string('name'); // Daily, Weekly, Monthly, etc.
+            $table->string('category_name'); // e.g., "Maintenance", "Regular Quests" (Display Name)
+            $table->string('category'); // e.g., "maintenance", "quests" (For JS logic)
+            $table->string('name'); // e.g., "Daily", "Weekly" (Display Name)
+            $table->string('slug'); // e.g., "daily", "weekly" (For JS logic)
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->boolean('is_active')->default(true);
@@ -23,9 +22,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('services');

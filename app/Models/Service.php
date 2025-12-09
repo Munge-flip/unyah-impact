@@ -11,8 +11,10 @@ class Service extends Model
 
     protected $fillable = [
         'game',
+        'category_name',
         'category',
         'name',
+        'slug',
         'description',
         'price',
         'is_active',

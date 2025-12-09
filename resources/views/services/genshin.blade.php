@@ -18,37 +18,31 @@
         <input type="hidden" name="service_type" id="inputService">
         <input type="hidden" name="price" id="inputPrice">
         <input type="hidden" name="payment_method" id="inputPayment">
+        
         <div class="service-section">
             <h2>Choose a service</h2>
 
-            <x-service.category title="Maintenance">
-                <x-service.button category="maintenance" service="daily" :price="57" label="Daily" />
-                <x-service.button category="maintenance" service="weekly" :price="300" label="Weekly" />
-                <x-service.button category="maintenance" service="monthly" :price="1300" label="Monthly" />
-                <x-service.button category="maintenance" service="full-patch" :price="700" label="Full Patch (6 weeks)" />
-            </x-service.category>
+            {{-- 1. TOP SECTION: Categories before Explorations --}}
+            @php
+                $topCategories = ['Maintenance', 'Regular Quests', 'Events', 'Endgame'];
+            @endphp
 
-            <x-service.category title="Regular Quests">
-                <x-service.button category="quests" service="short" :price="50" label="Short quests (1-2 parts)" />
-                <x-service.button category="quests" service="long" :price="170" label="Long quests (multiple parts, lots of dialogue/fighting)" />
-            </x-service.category>
+            @foreach($topCategories as $categoryName)
+                @if(isset($services[$categoryName]))
+                    <x-service.category :title="$categoryName">
+                        @foreach($services[$categoryName] as $service)
+                            <x-service.button 
+                                :category="$service->category" 
+                                :service="$service->slug" 
+                                :price="$service->price" 
+                                :label="$service->name" 
+                            />
+                        @endforeach
+                    </x-service.category>
+                @endif
+            @endforeach
 
-            <x-service.category 
-                title="Events" 
-                :note="['*If the event hasn\'t been touched', '*If the event is halfway done']"
-            >
-                <x-service.button category="events" service="light" :price="120" label="Light events" />
-                <x-service.button category="events" service="full" :price="120" label="Full event" />
-                <x-service.button category="events" service="light-half" :price="100" label="Light events" />
-                <x-service.button category="events" service="full-half" :price="200" label="Full event" />
-            </x-service.category>
-
-            <x-service.category title="Endgame">
-                <x-service.button category="endgame" service="spiral" :price="120" label="Spiral abyss" />
-                <x-service.button category="endgame" service="imaginarium" :price="120" label="Imaginarium Theater" />
-                <x-service.button category="endgame" service="stygian" :price="120" label="Stygian Onslaught" />
-            </x-service.category>
-
+            {{-- 2. MIDDLE SECTION: Static Explorations Grid --}}
             <x-service.category 
                 title="Explorations" 
                 description="Select regions for your services"
@@ -64,31 +58,35 @@
                 ]" />
             </x-service.category>
 
-            <x-service.category title="Unlocking Waypoints & Statues">
-                <x-service.button category="waypoints" service="small" :price="70" label="Small Area" />
-                <x-service.button category="waypoints" service="full" :price="70" label="Full Region" />
-            </x-service.category>
+            {{-- 3. BOTTOM SECTION: Categories after Explorations --}}
+            @php
+                $bottomCategories = [
+                    'Unlocking Waypoints & Statues', 
+                    'Chest Farming', 
+                    'Collecting oculi', 
+                    '100% Area Completion'
+                ];
+            @endphp
 
-            <x-service.category title="Chest Farming">
-                <x-service.button category="chest" service="light" :price="120" label="Light farming (30 chests)" />
-                <x-service.button category="chest" service="full" :price="120" label="Full chest run (as many as possible in a region)" />
-            </x-service.category>
+            @foreach($bottomCategories as $categoryName)
+                @if(isset($services[$categoryName]))
+                    <x-service.category :title="$categoryName">
+                        @foreach($services[$categoryName] as $service)
+                            <x-service.button 
+                                :category="$service->category" 
+                                :service="$service->slug" 
+                                :price="$service->price" 
+                                :label="$service->name" 
+                            />
+                        @endforeach
+                    </x-service.category>
+                @endif
+            @endforeach
 
-            <x-service.category title="Collecting oculi">
-                <x-service.button category="oculi" service="one" :price="170" label="1 Region" />
-                <x-service.button category="oculi" service="full" :price="120" label="Full map(all available oculi)" />
-            </x-service.category>
-
-            <x-service.category title="100% Area Completion">
-                <x-service.button category="completion" service="small" :price="170" label="Small area/ex. Starfell Valley" />
-                <x-service.button category="completion" service="whole" :price="120" label="Whole region" />
-            </x-service.category>
         </div>
 
         <x-service.payment-section />
-
         <x-service.order-summary />
-
         <x-service.order-confirmation />
     </form>
 </x-layouts.service>
