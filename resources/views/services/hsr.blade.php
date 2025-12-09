@@ -14,58 +14,65 @@
         <div class="service-section">
             <h2>Choose a service</h2>
 
-            {{-- Maintenance --}}
-            <x-service.category title="Maintenance">
-                <x-service.button category="maintenance" service="daily" :price="57" label="Daily" />
-                <x-service.button category="maintenance" service="weekly" :price="300" label="Weekly" />
-                <x-service.button category="maintenance" service="monthly" :price="1300" label="Monthly" />
-                <x-service.button category="maintenance" service="full-patch" :price="700" label="Full Patch (6 weeks)" />
-            </x-service.category>
+            {{-- 1. Standard Categories --}}
+            @php
+                $standardCategories = ['Maintenance', 'Regular Quests', 'Events', 'Endgame'];
+            @endphp
 
-            {{-- Regular Quests --}}
-            <x-service.category title="Regular Quests">
-                <x-service.button category="quests" service="short" :price="60" label="Short quests (1-2 parts)" />
-                <x-service.button category="quests" service="long" :price="170" label="Long quests (multiple parts, lots of dialogue/fighting)" />
-            </x-service.category>
+            @foreach($standardCategories as $categoryName)
+                @if(isset($services[$categoryName]))
+                    <x-service.category :title="$categoryName">
+                        @foreach($services[$categoryName] as $service)
+                            <x-service.button 
+                                :category="$service->category" 
+                                :service="$service->slug" 
+                                :price="$service->price" 
+                                :label="$service->name" 
+                            />
+                        @endforeach
+                    </x-service.category>
+                @endif
+            @endforeach
 
-            {{-- Events --}}
-            <x-service.category title="Events" :note="['*If the event hasn\'t been touched', '*If the event is halfway done']">
-                <x-service.button category="events" service="light" :price="120" label="Light events" />
-                <x-service.button category="events" service="full" :price="120" label="Full event" />
-                <x-service.button category="events" service="light-half" :price="100" label="Light events" />
-                <x-service.button category="events" service="full-half" :price="200" label="Full event" />
-            </x-service.category>
+            {{-- 2. Simulated Universe (Has Custom UI Elements) --}}
+            @if(isset($services['Simulated Universe']))
+                <x-service.category title="Simulated Universe" description="Choose a World">
+                    {{-- Static World Selection UI --}}
+                    <x-service.world-selection type="world" :items="[
+                            ['slug' => 'swarm-disaster', 'name' => 'Swarm Disaster'],
+                            ['slug' => 'gold-gears', 'name' => 'Gold and Gears'],
+                            ['slug' => 'unknowable-domain', 'name' => 'Unknowable Domain'],
+                        ]" />
 
-            {{-- Endgame --}}
-            <x-service.category title="Endgame">
-                <x-service.button category="endgame" service="memory-chaos" :price="120" label="Memory of Chaos" />
-                <x-service.button category="endgame" service="pure-fiction" :price="120" label="Pure Fiction" />
-                <x-service.button category="endgame" service="apocalyptic" :price="120" label="Apocalyptic Shadow" />
-            </x-service.category>
+                    {{-- Dynamic Clear Options --}}
+                    <div class="world-selection" style="margin-top: 20px">
+                        @foreach($services['Simulated Universe'] as $service)
+                            <x-service.button 
+                                :category="$service->category" 
+                                :service="$service->slug" 
+                                :price="$service->price" 
+                                :label="$service->name" 
+                            />
+                        @endforeach
+                    </div>
+                </x-service.category>
+            @endif
 
-            {{-- Simulated Universe --}}
-            <x-service.category title="Simulated Universe" description="Choose a World">
-                {{-- World Selection --}}
-                <x-service.world-selection type="world" :items="[
-                        ['slug' => 'swarm-disaster', 'name' => 'Swarm Disaster'],
-                        ['slug' => 'gold-gears', 'name' => 'Gold and Gears'],
-                        ['slug' => 'unknowable-domain', 'name' => 'Unknowable Domain'],
-                    ]" />
+            {{-- 3. Divergent Universe --}}
+            @if(isset($services['Divergent Universe']))
+                <x-service.category title="Divergent Universe">
+                    @foreach($services['Divergent Universe'] as $service)
+                        <x-service.button 
+                            :category="$service->category" 
+                            :service="$service->slug" 
+                            :price="$service->price" 
+                            :label="$service->name" 
+                        />
+                    @endforeach
+                </x-service.category>
+            @endif
 
-                {{-- Clear Type Options --}}
-                <div class="world-selection" style="margin-top: 20px">
-                    <x-service.button category="simulated-clear" service="basic" :price="200" label="Basic Clear (1 World)" />
-                    <x-service.button category="simulated-clear" service="full" :price="1000" label="Full Clear (All Worlds)" />
-                </div>
-            </x-service.category>
-
-            {{-- Divergent Universe --}}
-            <x-service.category title="Divergent Universe">
-                <x-service.button category="divergent" service="basic" :price="200" label="Basic Clear (1 Protocol)" />
-                <x-service.button category="divergent" service="full" :price="1000" label="Full Clear (All Protocols)" />
-            </x-service.category>
-
-            {{-- Explorations --}}
+            {{-- 4. Explorations (Static Grid) --}}
             <x-service.category title="Explorations" description="Select regions for your services" :customLayout="true">
                 <x-service.exploration-grid :regions="[
                     ['slug' => 'herta-space-station', 'name' => 'Herta Space Station'],
@@ -76,19 +83,26 @@
                 ]" />
             </x-service.category>
 
-            {{-- 100% Area Completion --}}
-            <x-service.category title="100% Area Completion">
-                <x-service.button category="completion" service="small" :price="170" label='Small area/ex. "Fallen Twilight City" Okhema' />
-                <x-service.button category="completion" service="whole" :price="500" label="Whole Map" />
-            </x-service.category>
+            {{-- 5. 100% Area Completion --}}
+            @if(isset($services['100% Area Completion']))
+                <x-service.category title="100% Area Completion">
+                    @foreach($services['100% Area Completion'] as $service)
+                        <x-service.button 
+                            :category="$service->category" 
+                            :service="$service->slug" 
+                            :price="$service->price" 
+                            :label="$service->name" 
+                        />
+                    @endforeach
+                </x-service.category>
+            @endif
+
         </div>
 
         {{-- Payment Method --}}
         <x-service.payment-section />
-
         {{-- Order Summary --}}
         <x-service.order-summary />
-
         {{-- Order Confirmation --}}
         <x-service.order-confirmation />
     </form>

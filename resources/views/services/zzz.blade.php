@@ -18,55 +18,70 @@
         <div class="service-section">
             <h2>Choose a service</h2>
 
-            <x-service.category title="Maintenance">
-                <x-service.button category="maintenance" service="daily" :price="57" label="Daily" />
-                <x-service.button category="maintenance" service="weekly" :price="300" label="Weekly" />
-                <x-service.button category="maintenance" service="monthly" :price="1300" label="Monthly" />
-                <x-service.button category="maintenance" service="full-patch" :price="1700" label="Full Patch (6 weeks)" />
-            </x-service.category>
+            {{-- 1. Standard Categories --}}
+            @php
+                $standardCategories = ['Maintenance', 'Regular Quests', 'Events', 'Endgame'];
+            @endphp
 
-            <x-service.category title="Regular Quests">
-                <x-service.button category="quests" service="short" :price="60" label="Short quests (1-2 parts)" />
-                <x-service.button category="quests" service="long" :price="170" label="Long quests (multiple parts, lots of dialogue/fighting)" />
-            </x-service.category>
+            @foreach($standardCategories as $categoryName)
+                @if(isset($services[$categoryName]))
+                    <x-service.category :title="$categoryName">
+                        @foreach($services[$categoryName] as $service)
+                            <x-service.button 
+                                :category="$service->category" 
+                                :service="$service->slug" 
+                                :price="$service->price" 
+                                :label="$service->name" 
+                            />
+                        @endforeach
+                    </x-service.category>
+                @endif
+            @endforeach
 
-            <x-service.category title="Events" :note="['*If the event hasn\'t been touched', '*If the event is halfway done']">
-                <x-service.button category="events" service="light" :price="120" label="Light events" />
-                <x-service.button category="events" service="full" :price="120" label="Full event" />
-                <x-service.button category="events" service="light-half" :price="100" label="Light events" />
-                <x-service.button category="events" service="full-half" :price="200" label="Full event" />
-            </x-service.category>
+            {{-- 2. Hollow Zero (Custom Layout) --}}
+            @if(isset($services['Hollow Zero']))
+                <x-service.category title="Hollow Zero" description="Choose a Mode" :customLayout="true">
+                    {{-- Static Mode Selection --}}
+                    <x-service.world-selection type="mode" :items="[
+                            ['slug' => 'lost-void', 'name' => 'Lost Void'],
+                            ['slug' => 'withered-domain', 'name' => 'Withered Domain'],
+                        ]" />
 
-            <x-service.category title="Endgame">
-                <x-service.button category="endgame" service="shiyu-defense" :price="150" label="Shiyu Defense" />
-                <x-service.button category="endgame" service="deadly-assault" :price="150" label="Deadly Assault" />
-            </x-service.category>
+                    {{-- Dynamic Buttons --}}
+                    <div class="service-options" style="margin-top: 20px">
+                        @foreach($services['Hollow Zero'] as $service)
+                            <x-service.button 
+                                :category="$service->category" 
+                                :service="$service->slug" 
+                                :price="$service->price" 
+                                :label="$service->name" 
+                            />
+                        @endforeach
+                    </div>
+                </x-service.category>
+            @endif
 
-            <x-service.category title="Hollow Zero" description="Choose a Mode" :customLayout="true">
-                <x-service.world-selection type="mode" :items="[
-                        ['slug' => 'lost-void', 'name' => 'Lost Void'],
-                        ['slug' => 'withered-domain', 'name' => 'Withered Domain'],
-                    ]" />
-
-                <div class="service-options" style="margin-top: 20px">
-                    <x-service.button category="hollow-zero" service="20-levels" :price="200" label="20 levels" />
-                    <x-service.button category="hollow-zero" service="full-level" :price="1000" label="Full level" />
-                </div>
-            </x-service.category>
-
+            {{-- 3. Explorations / Completion --}}
             <div class="service-category">
                 <h3>Explorations</h3>
-
-                <h4 style="font-size: 18px; margin-bottom: 15px; color: #666;">100% Area Completion</h4>
-                <div class="service-options">
-                    <x-service.button category="completion" service="one-location" :price="170" label="1 Location(ex. Sixth Street)" />
-                    <x-service.button category="completion" service="whole-location" :price="500" label="Whole Location" />
-                </div>
+                
+                @if(isset($services['100% Area Completion']))
+                    <h4 style="font-size: 18px; margin-bottom: 15px; color: #666;">100% Area Completion</h4>
+                    <div class="service-options">
+                        @foreach($services['100% Area Completion'] as $service)
+                            <x-service.button 
+                                :category="$service->category" 
+                                :service="$service->slug" 
+                                :price="$service->price" 
+                                :label="$service->name" 
+                            />
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
 
         <x-service.payment-section />
-
         <x-service.order-summary />
 
         <div class="order-confirmation">
