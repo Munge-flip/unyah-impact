@@ -30,8 +30,8 @@ Route::prefix('v1')->group(function () {
 
 // Protected routes (requires authentication with Sanctum)
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/register', [AuthApiController::class, 'register']);
-    Route::post('/login', [AuthApiController::class, 'login']);
+    Route::post('/logout', [AuthApiController::class, 'logout']);
+    Route::get('/me', [AuthApiController::class, 'me']);
 
     // Get authenticated user info
     Route::get('/user', function (Request $request) {
