@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ServiceApiController;
 use App\Http\Controllers\Api\OrderApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\TransactionApiController;
+use App\Http\Controllers\Api\AuthApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,11 +24,15 @@ Route::prefix('v1')->group(function () {
     // Get all services (public access)
     Route::get('/services', [ServiceApiController::class, 'index']);
     Route::get('/services/{id}', [ServiceApiController::class, 'show']);
+    Route::post('/register', [AuthApiController::class, 'register']);
+    Route::post('/login', [AuthApiController::class, 'login']);
 });
 
 // Protected routes (requires authentication with Sanctum)
 Route::middleware('auth:sanctum')->group(function () {
-    
+    Route::post('/register', [AuthApiController::class, 'register']);
+    Route::post('/login', [AuthApiController::class, 'login']);
+
     // Get authenticated user info
     Route::get('/user', function (Request $request) {
         return response()->json([
