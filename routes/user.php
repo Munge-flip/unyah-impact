@@ -8,28 +8,21 @@ use App\Http\Controllers\TransactionController;
 
 Route::get('/', [UserController::class, 'index'])->name('dashboard');
 
+//User Profile Management
 Route::get('/edit', [UserController::class, 'edit'])->name('dashboard.edit');
-
 Route::get('/update', [UserController::class, 'editPassword'])->name('dashboard.update');
-
-Route::get('/order', [UserController::class, 'orders'])->name('order');
-
-Route::get('/order/{id}', [UserController::class, 'show'])->name('order.show');
-
-Route::post('/order', [OrderController::class, 'store'])->name('order.store');
-
-Route::get('/order/{id}/chat', [ChatController::class, 'show'])->name('order.chat');
-
-Route::post('/order/{id}/chat', [ChatController::class, 'store'])->name('chat.store');
-
 Route::patch('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
-
 Route::put('/password/update', [UserController::class, 'updatePassword'])->name('password.update');
 
+//User Order Management
+Route::get('/order', [UserController::class, 'orders'])->name('order');
+Route::get('/order/{id}', [UserController::class, 'show'])->name('order.show');
+Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+Route::get('/order/{id}/chat', [ChatController::class, 'show'])->name('order.chat');
+Route::post('/order/{id}/chat', [ChatController::class, 'store'])->name('chat.store');
+
+//User Transaction Management
 Route::patch('/order/{id}/pay', [App\Http\Controllers\UserController::class, 'payNow'])->name('order.pay');
-
 Route::get('/transactions', [TransactionController::class, 'userTransactions'])->name('transactions');
-
 Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions.show');
-
 Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
