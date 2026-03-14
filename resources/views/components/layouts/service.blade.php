@@ -9,29 +9,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/services.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <x-public.header/>
+    <div id="app">
+        <x-public.header/>
 
-    @if(isset($banner) && $banner)
-        <div class="banner">
-            <img src="{{ $banner }}" alt="{{ $title ?? 'Banner' }}">
-        </div>
-    @endif
-
-    <main class="services-container">
-        @if(isset($sidebar))
-            <aside class="sidebar">
-                {{ $sidebar }}
-            </aside>
+        @if(isset($banner) && $banner)
+            <div class="banner">
+                <img src="{{ $banner }}" alt="{{ $title ?? 'Banner' }}">
+            </div>
         @endif
 
-        <section class="content">
-            {{ $slot }}
-        </section>
-    </main>
+        <main class="services-container">
+            @if(isset($sidebar))
+                <aside class="sidebar">
+                    {{ $sidebar }}
+                </aside>
+            @endif
 
-    <x-footer/>
+            <section class="content">
+                {{ $slot }}
+            </section>
+        </main>
+
+        <x-footer/>
+    </div>
 
     @if(isset($jsFile))
         <script src="{{ asset('js/' . $jsFile) }}"></script>
