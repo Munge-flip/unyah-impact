@@ -1,24 +1,32 @@
 <x-layouts.public>
 
         <div class="body-container">
-            <div class="frame first-frame">
-                <a href="{{ route('services.genshin') }}">
-                    <section class="label genshin">Genshin Impact</section>
-                    <img src="/img/genshin.png" alt="" class="img1" />
-                </a>
-            </div>
-            <div class="frame second-frame">
-                <a href="{{ route('services.hsr') }}">
-                    <section class="label honkai">Honkai Star Rail</section>
-                    <img src="/img/hsr.png" alt="" class="img2" />
-                </a>
-            </div>
-            <div class="frame third-frame">
-                <a href="{{ route('services.zzz') }}">
-                    <section class="label zzz">Zenless Zone Zero</section>
-                    <img src="/img/zzz.png" alt="" class="img3" />
-                </a>
-            </div>
+            <service-card 
+                title="Genshin Impact" 
+                image="/img/genshin.png" 
+                link="{{ route('services.genshin') }}"
+                custom-class="first-frame"
+                label-class="genshin"
+                image-class="img1"
+            ></service-card>
+
+            <service-card 
+                title="Honkai Star Rail" 
+                image="/img/hsr.png" 
+                link="{{ route('services.hsr') }}"
+                custom-class="second-frame"
+                label-class="honkai"
+                image-class="img2"
+            ></service-card>
+
+            <service-card 
+                title="Zenless Zone Zero" 
+                image="/img/zzz.png" 
+                link="{{ route('services.zzz') }}"
+                custom-class="third-frame"
+                label-class="zzz"
+                image-class="img3"
+            ></service-card>
         </div>
 
 </x-layouts.public>

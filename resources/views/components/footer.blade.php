@@ -1,3 +1,1 @@
-<footer>
-    <p>2025 Copyright. All rights reserved.</p>
-</footer>
+<app-footer year="2025" text="Copyright. All rights reserved."></app-footer>

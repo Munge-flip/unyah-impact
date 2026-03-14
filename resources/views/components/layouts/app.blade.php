@@ -7,28 +7,29 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 <body>
-    <!-- Header Navigation -->
-    @if (isset($header))
-    {{ $header }}
-    @else
-    <x-user.header />
-    @endif
-
-    <main class="profile-container">
-        <!-- Sidebar Navigation -->
-        @if (isset($sidebar))
-        {{ $sidebar }}
+    <div id="app">
+        <!-- Header Navigation -->
+        @if (isset($header))
+        {{ $header }}
+        @else
+        <x-user.header />
         @endif
 
-        <!-- Main Content Area -->
-        {{ $slot }}
-    </main>
+        <main class="profile-container">
+            <!-- Sidebar Navigation -->
+            @if (isset($sidebar))
+            {{ $sidebar }}
+            @endif
 
-    <x-footer />
+            <!-- Main Content Area -->
+            {{ $slot }}
+        </main>
 
+        <x-footer />
+    </div>
 </body>
 </html>

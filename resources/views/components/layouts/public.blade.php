@@ -8,18 +8,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 <body>
-    <main>
+    <div id="app">
+        <main>
 
-    <x-public.header/>
+        <x-public.header/>
 
-    {{ $slot }}
+        {{ $slot }}
 
-    </main>
+        </main>
 
-    <x-footer/>
-
+        <x-footer/>
+    </div>
 </body>
 </html>
