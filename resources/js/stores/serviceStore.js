@@ -1,13 +1,18 @@
 import { reactive, computed } from 'vue';
 
 export const serviceStore = reactive({
-    game: 'Genshin Impact',
-    selectedServices: {}, // category: { name, price, id }
-    explorations: [],      // Array of region names
+    game: '', 
+    selectedServices: {}, 
+    explorations: [],      
+    worlds: [],            
+    hollowModes: [],       
     paymentMethod: '',
     
-    // Multiplier Logic
-    multiplierCategories: ['Maintenance', 'Regular Quests', 'Events', 'Endgame', 'Unlocking Waypoints & Statues', 'Chest Farming', 'Collecting oculi', '100% Area Completion'],
+    // Slugs from ServiceSeeder that should be multiplied
+    multiplierCategories: [
+        'waypoints', 'chest', 'oculi', 'completion', 
+        'simulated-clear', 'divergent', 'hollow-zero'
+    ],
 
     // Actions
     toggleService(category, serviceId, price, label) {
@@ -20,25 +25,41 @@ export const serviceStore = reactive({
 
     toggleRegion(regionName) {
         const index = this.explorations.indexOf(regionName);
-        if (index > -1) {
-            this.explorations.splice(index, 1);
-        } else {
-            this.explorations.push(regionName);
-        }
+        if (index > -1) this.explorations.splice(index, 1);
+        else this.explorations.push(regionName);
     },
 
-    // Computed Properties
+    toggleWorld(worldName) {
+        const index = this.worlds.indexOf(worldName);
+        if (index > -1) this.worlds.splice(index, 1);
+        else this.worlds.push(worldName);
+    },
+
+    toggleMode(modeName) {
+        const index = this.hollowModes.indexOf(modeName);
+        if (index > -1) this.hollowModes.splice(index, 1);
+        else this.hollowModes.push(modeName);
+    },
+
+    // Computed
     totalPriceRaw: computed(() => {
         let total = 0;
         const regionCount = serviceStore.explorations.length || 1;
+        const worldCount = serviceStore.worlds.length || 1;
+        const modeCount = serviceStore.hollowModes.length || 1;
         
         Object.keys(serviceStore.selectedServices).forEach(cat => {
             const item = serviceStore.selectedServices[cat];
             let multiplier = 1;
             
-            // Check if this category should be multiplied by region count
-            if (serviceStore.multiplierCategories.includes(cat) && serviceStore.explorations.length > 0) {
-                multiplier = regionCount;
+            if (serviceStore.multiplierCategories.includes(cat)) {
+                if (cat === 'simulated-clear' && serviceStore.worlds.length > 0) {
+                    multiplier = worldCount;
+                } else if (cat === 'hollow-zero' && serviceStore.hollowModes.length > 0) {
+                    multiplier = modeCount;
+                } else if (serviceStore.explorations.length > 0) {
+                    multiplier = regionCount;
+                }
             }
             total += (item.price * multiplier);
         });
@@ -52,8 +73,9 @@ export const serviceStore = reactive({
     serviceTypeString: computed(() => {
         const names = Object.values(serviceStore.selectedServices).map(s => s.name);
         let str = names.join(', ');
-        if (serviceStore.explorations.length > 0) {
-            str += ` (${serviceStore.explorations.join(', ')})`;
+        const extras = [...serviceStore.explorations, ...serviceStore.worlds, ...serviceStore.hollowModes];
+        if (extras.length > 0) {
+            str += ` (${extras.join(', ')})`;
         }
         return str;
     })

@@ -13,15 +13,23 @@
                     </div>
                 </div>
                 
-                <!-- Regions List -->
+                <!-- Extras Lists -->
                 <div v-if="serviceStore.explorations.length > 0" class="selected-item mt-4 p-2 bg-gray-100 rounded">
                     <strong>Regions:</strong>
                     <span>{{ serviceStore.explorations.join(', ') }}</span>
                 </div>
+                <div v-if="serviceStore.worlds.length > 0" class="selected-item mt-4 p-2 bg-gray-100 rounded">
+                    <strong>Worlds:</strong>
+                    <span>{{ serviceStore.worlds.join(', ') }}</span>
+                </div>
+                <div v-if="serviceStore.hollowModes.length > 0" class="selected-item mt-4 p-2 bg-gray-100 rounded">
+                    <strong>Modes:</strong>
+                    <span>{{ serviceStore.hollowModes.join(', ') }}</span>
+                </div>
             </div>
             
             <div class="total-price">
-                Total: ₱{{ totalPrice }}
+                Total: ₱{{ serviceStore.totalPriceRaw.toLocaleString() }}
             </div>
         </div>
 
@@ -49,31 +57,26 @@ const canPlaceOrder = computed(() => {
     return Object.keys(serviceStore.selectedServices).length > 0 && serviceStore.paymentMethod;
 });
 
-const totalPrice = computed(() => {
-    let total = 0;
-    const regionCount = serviceStore.explorations.length || 1;
-    
-    Object.keys(serviceStore.selectedServices).forEach(cat => {
-        const item = serviceStore.selectedServices[cat];
-        let multiplier = 1;
-        if (serviceStore.multiplierCategories.includes(cat) && serviceStore.explorations.length > 0) {
-            multiplier = regionCount;
-        }
-        total += (item.price * multiplier);
-    });
-    return total.toLocaleString();
-});
-
 function formatItemPrice(category, item) {
     let multiplier = 1;
-    if (serviceStore.multiplierCategories.includes(category) && serviceStore.explorations.length > 0) {
-        multiplier = serviceStore.explorations.length;
+    const regionCount = serviceStore.explorations.length;
+    const worldCount = serviceStore.worlds.length;
+    const modeCount = serviceStore.hollowModes.length;
+
+    if (serviceStore.multiplierCategories.includes(category)) {
+        if (category === 'simulated-clear' && worldCount > 0) {
+            multiplier = worldCount;
+        } else if (category === 'hollow-zero' && modeCount > 0) {
+            multiplier = modeCount;
+        } else if (regionCount > 0) {
+            multiplier = regionCount;
+        }
     }
     
     if (multiplier > 1) {
-        return `₱${item.price} × ${multiplier} = ₱${item.price * multiplier}`;
+        return `₱${item.price} × ${multiplier} = ₱${(item.price * multiplier).toLocaleString()}`;
     }
-    return `₱${item.price}`;
+    return `₱${item.price.toLocaleString()}`;
 }
 
 function submitForm() {
@@ -81,3 +84,18 @@ function submitForm() {
     if (form) form.submit();
 }
 </script>
+
+<style scoped>
+.placeholder-text {
+    color: #888;
+    font-style: italic;
+    font-size: 14px;
+}
+.order-summary-wrapper {
+    margin-top: 30px;
+}
+.mt-4 { margin-top: 1rem; }
+.p-2 { padding: 0.5rem; }
+.bg-gray-100 { background-color: #f3f4f6; }
+.rounded { border-radius: 0.25rem; }
+</style>
