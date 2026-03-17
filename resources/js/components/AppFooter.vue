@@ -20,7 +20,7 @@ const props = defineProps({
 </script>
 
 <style scoped>
-/* Relying on app.css for core footer styling:
+/*
 footer {
   display: flex;
   justify-content: center;

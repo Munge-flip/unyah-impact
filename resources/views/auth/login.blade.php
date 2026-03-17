@@ -1,36 +1,24 @@
 <x-layouts.guest title="Sign In">
-    <x-auth-card>
-
-        <x-slot:info>
+    <auth-card>
+        <template #promo>
             <h2>NEED AN ACCOUNT?</h2>
             <p>Sign up an account and enjoy the services with Hoyo Piloting service</p>
             <a href="{{ route('register') }}" class="submit-btn" style="text-decoration: none; display: inline-block; line-height: normal;">
                 Create Account
             </a>
-        </x-slot:info>
+        </template>
 
-        <x-slot:form>
+        <template #form>
             <h2>SIGN IN</h2>
-
-            <form class="form-content active" action="{{ route('login') }}" method="POST">
-                @csrf
-
-                @error('email')
-                <div class="alert-error">
-                    {{ $message }}
-                </div>
-                @enderror
-
-                <div class="form-group">
-                    <input type="email" name="email" placeholder="Email" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password" placeholder="Password" required>
-                </div>
-
-                <button type="submit" class="submit-btn">Sign In</button>
-            </form>
-        </x-slot:form>
-
-    </x-auth-card>
+            <login-form 
+                action="{{ route('login') }}" 
+                initial-email="{{ old('email') }}"
+                error-email="{{ $errors->first('email') }}"
+            >
+                <template #csrf>
+                    @csrf
+                </template>
+            </login-form>
+        </template>
+    </auth-card>
 </x-layouts.guest>

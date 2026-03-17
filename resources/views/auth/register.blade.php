@@ -1,40 +1,27 @@
 <x-layouts.guest title="Sign Up">
-    <x-auth-card>
+    <auth-card>
         
         {{-- LEFT SIDE: Tells user to go to Sign In --}}
-        <x-slot:info>
+        <template #promo>
             <h2>ALREADY HAVE AN ACCOUNT?</h2>
             <p>Sign in to our account and enjoy your service with Hoyo Piloting service</p>
             <a href="{{ route('login') }}" class="submit-btn" style="text-decoration: none; display: inline-block; line-height: normal;">
                 Sign In
             </a>
-        </x-slot:info>
+        </template>
 
-        <x-slot:form>
+        <template #form>
             <h2>SIGN UP</h2>
-            
-            <form class="form-content active" action="{{ route('register') }}" method="POST">
-                @csrf
-                
-                <div class="form-group">
-                    <input type="text" name="name" placeholder="Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" name="email" placeholder="Email" required>
-                </div>
-                <div class="form-group">
-                    <input type="tel" name="phone" placeholder="Phone Number" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password" placeholder="Password" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
-                </div>
+            <register-form 
+                action="{{ route('register') }}" 
+                :errors="{{ json_encode($errors->getMessages()) }}"
+                :old="{{ json_encode(old()) }}"
+            >
+                <template #csrf>
+                    @csrf
+                </template>
+            </register-form>
+        </template>
 
-                <button type="submit" class="submit-btn">Sign Up</button>
-            </form>
-        </x-slot:form>
-
-    </x-auth-card>
+    </auth-card>
 </x-layouts.guest>

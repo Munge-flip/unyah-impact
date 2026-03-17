@@ -20,7 +20,7 @@ body {
   display: flex;
   width: 100%;
   max-width: 1000px;
-  height: 450px;
+  min-height: 450px;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);

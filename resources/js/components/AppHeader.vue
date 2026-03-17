@@ -10,15 +10,12 @@
             </div>
             
             <ul>
-                <!-- Loop through the links passed from Blade -->
                 <li v-for="link in navLinks" :key="link.url">
                     <a :href="link.url" :class="link.class || ''">{{ link.label }}</a>
                 </li>
                 
-                <!-- Special Logout Button (optional, can also be passed in links) -->
                 <li v-if="isLoggedIn && logoutUrl">
                     <form method="POST" :action="logoutUrl" style="display: inline;">
-                        <!-- Note: We still need the CSRF token from Blade -->
                         <slot name="csrf"></slot>
                         <button type="submit" class="logout-btn">
                             Logout

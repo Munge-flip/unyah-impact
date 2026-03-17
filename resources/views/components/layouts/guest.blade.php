@@ -10,8 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href=" {{ asset('css/auth.css') }} ">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    {{ $slot }}
+    <div id="app">
+        {{ $slot }}
+    </div>
 </body>
 </html>

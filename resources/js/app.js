@@ -14,6 +14,9 @@ import WorldSelection from './components/WorldSelection.vue';
 import ModeSelection from './components/ModeSelection.vue';
 import PaymentSection from './components/PaymentSection.vue';
 import OrderSummary from './components/OrderSummary.vue';
+import AuthCard from './components/AuthCard.vue';
+import LoginForm from './components/LoginForm.vue';
+import RegisterForm from './components/RegisterForm.vue';
 
 const app = createApp({
     setup() {
@@ -32,5 +35,8 @@ app.component('world-selection', WorldSelection);
 app.component('mode-selection', ModeSelection);
 app.component('payment-section', PaymentSection);
 app.component('order-summary', OrderSummary);
+app.component('auth-card', AuthCard);
+app.component('login-form', LoginForm);
+app.component('register-form', RegisterForm);
 
 app.mount('#app');
