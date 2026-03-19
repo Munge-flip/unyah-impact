@@ -28,9 +28,7 @@
                                 <td>{{ $user->email }}</td>
                                 
                                 <td>
-                                    <span class="badge {{ $user->role === 'admin' ? 'completed' : 'pending' }}">
-                                        {{ ucfirst($user->role) }}
-                                    </span>
+                                    <status-badge status="{{ $user->role }}" type="role"></status-badge>
                                 </td>
 
                                 <td>{{ $user->created_at->format('m/d/Y') }}</td>

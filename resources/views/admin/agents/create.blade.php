@@ -5,11 +5,7 @@
             <a href="{{ route('admin.agent') }}" class="action-link">← Back to Agents</a>
         </div>
 
-        <div class="admin-card">
-            <div class="card-header">
-                <h3>Agent Information</h3>
-            </div>
-
+        <admin-card title="Agent Information" :use-body="false">
             <form action="{{ route('admin.agent.store') }}" method="POST" class="modal-form">
                 @csrf
 
@@ -42,6 +38,6 @@
                     <button type="submit" class="btn-primary">Add Agent</button>
                 </div>
             </form>
-        </div>
+        </admin-card>
     </section>
 </x-layouts.admin>

@@ -7,10 +7,7 @@
             </a>
         </div>
 
-        <div class="admin-card">
-            <div class="card-header">
-                <h3>Service Information: {{ $service->name }}</h3>
-            </div>
+        <admin-card title="Service Information: {{ $service->name }}" :use-body="false">
             <form action="{{ route('admin.services.update', $service->id) }}" method="POST" class="modal-form">
                 @csrf
                 @method('PUT')
@@ -74,6 +71,6 @@
                     <button type="submit" class="btn-primary">Update Service</button>
                 </div>
             </form>
-        </div>
+        </admin-card>
     </section>
 </x-layouts.admin>

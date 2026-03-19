@@ -4,107 +4,72 @@
             <h1>Dashboard Overview</h1>
 
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon orders-icon">
+                <stat-card title="Total Orders" number="{{ $totalOrders }}" trend="All time" :is-trend-up="true" icon-class="orders-icon">
+                    <template #icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"></path>
                         </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Total Orders</h3>
-                        <p class="stat-number">{{ $totalOrders }}</p>
-                        <span class="stat-trend up">All time</span>
-                    </div>
-                </div>
+                    </template>
+                </stat-card>
 
-                <div class="stat-card">
-                    <div class="stat-icon agents-icon">
+                <stat-card title="Active Agents" number="{{ $activeAgents }}" trend="Registered agents" icon-class="agents-icon">
+                    <template #icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                             <circle cx="9" cy="7" r="4"></circle>
                             <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                             <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                         </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Active Agents</h3>
-                        <p class="stat-number">{{ $activeAgents }}</p>
-                        <span class="stat-trend">Registered agents</span>
-                    </div>
-                </div>
+                    </template>
+                </stat-card>
 
-                <div class="stat-card">
-                    <div class="stat-icon users-icon">
+                <stat-card title="Total Users" number="{{ $totalUsers }}" trend="Registered customers" :is-trend-up="true" icon-class="users-icon">
+                    <template #icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Total Users</h3>
-                        <p class="stat-number">{{ $totalUsers }}</p>
-                        <span class="stat-trend up">Registered customers</span>
-                    </div>
-                </div>
+                    </template>
+                </stat-card>
 
-                <div class="stat-card">
-                    <div class="stat-icon revenue-icon">
+                <stat-card title="Revenue" number="{{ $revenue }}" trend="Total earnings" :is-trend-up="true" :is-currency="true" icon-class="revenue-icon">
+                    <template #icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="12" y1="1" x2="12" y2="23"></line>
                             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                         </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Revenue</h3>
-                        <p class="stat-number">₱{{ number_format($revenue, 2) }}</p>
-                        <span class="stat-trend up">Total earnings</span>
-                    </div>
-                </div>
+                    </template>
+                </stat-card>
             </div>
 
             {{-- NEW: Transaction Stats --}}
             <div class="stats-grid" style="margin-top: 20px;">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);">
+                <stat-card title="Pending Verifications" number="{{ $pendingTransactions }}" trend="Awaiting review" icon-color="linear-gradient(135deg, #f39c12 0%, #e67e22 100%)">
+                    <template #icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"></circle>
                             <polyline points="12 6 12 12 16 14"></polyline>
                         </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Pending Verifications</h3>
-                        <p class="stat-number">{{ $pendingTransactions }}</p>
-                        <span class="stat-trend">Awaiting review</span>
-                    </div>
-                </div>
+                    </template>
+                </stat-card>
 
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);">
+                <stat-card title="Verified Transactions" number="{{ $verifiedTransactions }}" trend="Approved payments" :is-trend-up="true" icon-color="linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)">
+                    <template #icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                             <polyline points="22 4 12 14.01 9 11.01"></polyline>
                         </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Verified Transactions</h3>
-                        <p class="stat-number">{{ $verifiedTransactions }}</p>
-                        <span class="stat-trend up">Approved payments</span>
-                    </div>
-                </div>
+                    </template>
+                </stat-card>
 
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);">
+                <stat-card title="Total Transactions" number="{{ $totalTransactions }}" trend="All time" icon-color="linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)">
+                    <template #icon>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="5" width="20" height="14" rx="2"></rect>
                             <line x1="2" y1="10" x2="22" y2="10"></line>
                         </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Total Transactions</h3>
-                        <p class="stat-number">{{ $totalTransactions }}</p>
-                        <span class="stat-trend">All time</span>
-                    </div>
-                </div>
+                    </template>
+                </stat-card>
             </div>
 
             {{-- Quick Actions --}}
@@ -172,10 +137,7 @@
                                         <p>
                                             <strong>Transaction #{{ $transaction->id }}</strong>
                                             - ₱{{ number_format($transaction->amount, 2) }}
-                                            <span class="badge {{ $transaction->status === 'verified' ? 'completed' : 'in-progress' }}" 
-                                                  style="margin-left: 10px; font-size: 11px;">
-                                                {{ ucfirst($transaction->status) }}
-                                            </span>
+                                            <status-badge status="{{ $transaction->status }}" style="margin-left: 10px; font-size: 11px;"></status-badge>
                                             <br>
                                             <small>{{ $transaction->user->name }} - Order #{{ $transaction->order_id }}</small>
                                         </p>

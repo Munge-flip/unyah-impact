@@ -7,10 +7,7 @@
             </a>
         </div>
 
-        <div class="admin-card">
-            <div class="card-header">
-                <h3>User Information: {{ $user->name }}</h3>
-            </div>
+        <admin-card title="User Information: {{ $user->name }}" :use-body="false">
             <form action="{{ route('admin.user.update', $user->id) }}" method="POST" class="modal-form">
                 @csrf
                 @method('PUT')
@@ -47,6 +44,6 @@
                     <button type="submit" class="btn-primary">Save Changes</button>
                 </div>
             </form>
-        </div>
+        </admin-card>
     </section>
 </x-layouts.admin>

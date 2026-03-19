@@ -9,21 +9,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <!-- Header Navigation -->
-    <x-admin.header />
+    <div id="app">
+        <!-- Header Navigation -->
+        <x-admin.header />
 
-    <main class="dashboard-container">
-        <!-- Sidebar Navigation -->
-        <x-admin.sidebar />
+        <main class="dashboard-container">
+            <!-- Sidebar Navigation -->
+            <x-admin.sidebar />
 
-        <!-- Main Content Area -->
-        {{ $slot }}
-    </main>
+            <!-- Main Content Area -->
+            {{ $slot }}
+        </main>
 
-    <x-footer />
+        <x-footer />
+    </div>
 
-    <script src="js/admin-dashboard.js"></script>
+    <script src="{{ asset('js/admin-dashboard.js') }}"></script>
 </body>
 </html>

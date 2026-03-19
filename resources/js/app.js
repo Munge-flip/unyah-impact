@@ -21,6 +21,9 @@ import InfoCard from './components/InfoCard.vue';
 import DetailRow from './components/DetailRow.vue';
 import StatusBadge from './components/StatusBadge.vue';
 import ProfileCard from './components/ProfileCard.vue';
+import StatCard from './components/StatCard.vue';
+import AgentCard from './components/AgentCard.vue';
+import AdminCard from './components/AdminCard.vue';
 
 const app = createApp({
     setup() {
@@ -46,5 +49,8 @@ app.component('info-card', InfoCard);
 app.component('detail-row', DetailRow);
 app.component('status-badge', StatusBadge);
 app.component('profile-card', ProfileCard);
+app.component('stat-card', StatCard);
+app.component('agent-card', AgentCard);
+app.component('admin-card', AdminCard);
 
 app.mount('#app');

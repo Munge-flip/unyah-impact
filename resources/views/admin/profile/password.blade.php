@@ -7,8 +7,8 @@
             </a>
         </div>
 
-        <div class="info-card">
-            <form action="{{ route('admin.profile.password.update') }}" method="POST">
+        <admin-card>
+            <form action="{{ route('admin.profile.password.update') }}" method="POST" class="modal-form">
                 @csrf
                 @method('PUT')
 
@@ -34,6 +34,6 @@
                     <button type="submit" class="btn-primary">Update Password</button>
                 </div>
             </form>
-        </div>
+        </admin-card>
     </section>
 </x-layouts.admin>

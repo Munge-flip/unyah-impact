@@ -58,9 +58,7 @@
                             <td>{{ $service->name }}</td>
                             <td>₱{{ number_format($service->price, 2) }}</td>
                             <td>
-                                <span class="badge {{ $service->is_active ? 'completed' : 'pending' }}">
-                                    {{ $service->is_active ? 'Active' : 'Inactive' }}
-                                </span>
+                                <status-badge status="{{ $service->is_active ? 'completed' : 'pending' }}"></status-badge>
                             </td>
                             <td>{{ $service->created_at->format('M d, Y') }}</td>
                             <td>

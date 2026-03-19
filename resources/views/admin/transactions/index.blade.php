@@ -44,17 +44,7 @@
                             <td style="text-transform: uppercase;">{{ $transaction->payment_method }}</td>
                             <td>{{ $transaction->transaction_reference ?? 'N/A' }}</td>
                             <td>
-                                @php
-                                $badgeClass = match($transaction->status) {
-                                    'verified' => 'completed',
-                                    'rejected' => 'pending',
-                                    'pending' => 'in-progress',
-                                    default => 'pending',
-                                };
-                                @endphp
-                                <span class="badge {{ $badgeClass }}">
-                                    {{ ucfirst($transaction->status) }}
-                                </span>
+                                <status-badge status="{{ $transaction->status }}"></status-badge>
                             </td>
                             <td>{{ $transaction->created_at->format('M d, Y') }}</td>
                             <td>

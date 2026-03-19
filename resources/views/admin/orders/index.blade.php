@@ -35,9 +35,7 @@
                             </td>
 
                             <td>
-                                <span class="badge {{ $order->payment_status === 'paid' ? 'paid' : 'unpaid' }}">
-                                    {{ ucfirst($order->payment_status) }}
-                                </span>
+                                <status-badge status="{{ $order->payment_status }}" type="payment"></status-badge>
                                 <div class="payment-meta">
                                     {{ $order->payment_method }}
                                 </div>
@@ -49,16 +47,7 @@
                             </td>
 
                             <td>
-                                @php
-                                $badgeClass = match($order->status) {
-                                'completed' => 'completed',
-                                'in-progress' => 'in-progress',
-                                default => 'pending',
-                                };
-                                @endphp
-                                <span class="badge {{ $badgeClass }}">
-                                    {{ ucfirst($order->status) }}
-                                </span>
+                                <status-badge status="{{ $order->status }}"></status-badge>
                             </td>
 
                             <td>₱{{ number_format($order->price, 2) }}</td>

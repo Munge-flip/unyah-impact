@@ -12,122 +12,74 @@
             </a>
         </div>
 
-        <div class="admin-card">
-            <div class="card-header">
+        <admin-card>
+            <template #header>
                 <div>
-                    <h3>Order #{{ $order->id }}</h3>
+                    <h3 style="margin: 0; font-size: 18px; color: #333;">Order #{{ $order->id }}</h3>
                     <span class="order-date">
                         {{ $order->created_at->format('M d, Y \a\t h:i A') }}
                     </span>
                 </div>
+            </template>
+            <template #action>
+                <status-badge status="{{ $order->status }}"></status-badge>
+            </template>
+        </admin-card>
 
-                @php
-                $statusClass = match($order->status) {
-                'completed' => 'completed',
-                'in-progress' => 'in-progress',
-                default => 'pending',
-                };
-                @endphp
-                <span class="badge {{ $statusClass }}">
-                    {{ ucfirst($order->status) }}
-                </span>
-            </div>
-        </div>
+        <admin-card title="Service Details">
+            <detail-row label="Game" value="{{ $order->game }}"></detail-row>
+            <detail-row label="Category" value="{{ ucfirst($order->service_category) }}"></detail-row>
+            <detail-row label="Service Type" value="{{ $order->service_type }}"></detail-row>
+            <detail-row label="Customer">
+                <strong>
+                    {{ $order->user->name ?? 'Unknown User' }}
+                    <span class="user-id-sub">(ID: #{{ $order->user_id }})</span>
+                </strong>
+            </detail-row>
+            <detail-row label="Amount Paid" value="{{ $order->price }}" :is-price="true"></detail-row>
+        </admin-card>
 
-        <div class="admin-card">
-            <div class="card-header">
-                <h3>Service Details</h3>
-            </div>
-            <div class="card-body">
-                <div class="detail-row">
-                    <span class="label">Game:</span>
-                    <strong>{{ $order->game }}</strong>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Category:</span>
-                    <strong>{{ ucfirst($order->service_category) }}</strong>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Service Type:</span>
-                    <strong>{{ $order->service_type }}</strong>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Customer:</span>
-                    <strong>
-                        {{ $order->user->name ?? 'Unknown User' }}
-                        <span class="user-id-sub">(ID: #{{ $order->user_id }})</span>
-                    </strong>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Amount Paid:</span>
-                    <span class="price">₱{{ number_format($order->price, 2) }}</span>
-                </div>
-            </div>
-        </div>
+        <admin-card title="Timeline">
+            <detail-row label="Order Placed" value="{{ $order->created_at->format('M d, Y') }}"></detail-row>
+            @if($order->status === 'completed')
+                <detail-row label="Completed On" value="{{ $order->updated_at->format('M d, Y') }}"></detail-row>
+            @else
+                <detail-row label="Status" value="In Progress..." value-class="status-text-pending"></detail-row>
+            @endif
+        </admin-card>
 
-        <div class="admin-card">
-            <div class="card-header">
-                <h3>Timeline</h3>
-            </div>
-            <div class="card-body">
-                <div class="detail-row">
-                    <span class="label">Order Placed:</span>
-                    <strong>{{ $order->created_at->format('M d, Y') }}</strong>
-                </div>
-                @if($order->status === 'completed')
-                <div class="detail-row">
-                    <span class="label">Completed On:</span>
-                    <strong>{{ $order->updated_at->format('M d, Y') }}</strong>
-                </div>
-                @else
-                <div class="detail-row">
-                    <span class="label">Status:</span>
-                    <strong class="status-text-pending">In Progress...</strong>
-                </div>
-                @endif
-            </div>
-        </div>
+        <admin-card title="Assignment">
+            <detail-row label="Current Agent" value="{{ $order->agent->name ?? 'Unassigned' }}"></detail-row>
 
-        <div class="admin-card">
-            <div class="card-header">
-                <h3>Assignment</h3>
-            </div>
-            <div class="card-body">
-                <div class="detail-row">
-                    <span class="label">Current Agent:</span>
-                    <strong>{{ $order->agent->name ?? 'Unassigned' }}</strong>
-                </div>
+            <form action="{{ route('admin.order.assign', $order->id) }}" method="POST" class="assignment-section">
+                @csrf
+                @method('PATCH')
 
-                <form action="{{ route('admin.order.assign', $order->id) }}" method="POST" class="assignment-section">
-                    @csrf
-                    @method('PATCH')
+                <div class="form-group">
+                    <label>Assign to Agent:</label>
+                    <div class="assignment-row">
+                        <select name="agent_id" class="search-input assignment-select">
+                            <option value="" disabled selected>Select an Agent</option>
+                            @foreach($agents as $agent)
+                            <option value="{{ $agent->id }}" {{ $order->agent_id == $agent->id ? 'selected' : '' }}>
+                                {{ $agent->name }}
+                            </option>
+                            @endforeach
+                        </select>
 
-                    <div class="form-group">
-                        <label>Assign to Agent:</label>
-                        <div class="assignment-row">
-                            <select name="agent_id" class="search-input assignment-select">
-                                <option value="" disabled selected>Select an Agent</option>
-                                @foreach($agents as $agent)
-                                <option value="{{ $agent->id }}" {{ $order->agent_id == $agent->id ? 'selected' : '' }}>
-                                    {{ $agent->name }}
-                                </option>
-                                @endforeach
-                            </select>
-
-                            <button type="submit" class="btn-primary">
-                                Assign
-                            </button>
-                        </div>
+                        <button type="submit" class="btn-primary">
+                            Assign
+                        </button>
                     </div>
-                </form>
-
-                @if($order->status !== 'completed')
-                <div class="mt-15">
-                    <button class="action-btn success w-100">Mark as Complete</button>
                 </div>
-                @endif
+            </form>
+
+            @if($order->status !== 'completed')
+            <div class="mt-15">
+                <button class="action-btn success w-100">Mark as Complete</button>
             </div>
-        </div>
+            @endif
+        </admin-card>
 
     </section>
 </x-layouts.admin>

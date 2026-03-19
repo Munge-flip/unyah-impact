@@ -7,10 +7,7 @@
             </a>
         </div>
 
-        <div class="admin-card">
-            <div class="card-header">
-                <h3>Service Information</h3>
-            </div>
+        <admin-card title="Service Information" :use-body="false">
             <form action="{{ route('admin.services.store') }}" method="POST" class="modal-form">
                 @csrf
 
@@ -73,6 +70,6 @@
                     <button type="submit" class="btn-primary">Create Service</button>
                 </div>
             </form>
-        </div>
+        </admin-card>
     </section>
 </x-layouts.admin>
