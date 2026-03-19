@@ -15,39 +15,19 @@
                             <strong>Transaction #{{ $transaction->id }}</strong>
                             <span class="order-date">{{ $transaction->created_at->format('M d, Y') }}</span>
                         </div>
-                        @php
-                        $statusClass = match($transaction->status) {
-                            'verified' => 'completed',
-                            'rejected' => 'pending',
-                            'pending' => 'in-progress',
-                            default => 'pending',
-                        };
-                        @endphp
-                        <span class="status-badge {{ $statusClass }}">
-                            {{ ucfirst($transaction->status) }}
-                        </span>
+                        <status-badge status="{{ $transaction->status }}"></status-badge>
                     </div>
 
                     <div class="order-details">
-                        <div class="detail-row">
-                            <span class="label">Order:</span>
+                        <detail-row label="Order">
                             <a href="{{ route('user.order.show', $transaction->order_id) }}" 
                                style="color: #667eea; text-decoration: underline;">
                                 Order #{{ $transaction->order_id }}
                             </a>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Amount:</span>
-                            <span>₱{{ number_format($transaction->amount, 2) }}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Payment Method:</span>
-                            <span style="text-transform: uppercase;">{{ $transaction->payment_method }}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Reference:</span>
-                            <span>{{ $transaction->transaction_reference ?? 'N/A' }}</span>
-                        </div>
+                        </detail-row>
+                        <detail-row label="Amount" value="{{ $transaction->amount }}" :is-price="true"></detail-row>
+                        <detail-row label="Payment Method" value="{{ $transaction->payment_method }}" value-class="text-uppercase"></detail-row>
+                        <detail-row label="Reference" value="{{ $transaction->transaction_reference ?? 'N/A' }}"></detail-row>
                     </div>
 
                     <div class="order-actions">

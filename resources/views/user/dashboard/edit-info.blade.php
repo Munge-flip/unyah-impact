@@ -11,7 +11,7 @@
             </a>
         </div>
 
-        <div class="info-card">
+        <info-card>
             
             <form action="{{ route('user.profile.update') }}" method="POST">
                 @csrf
@@ -41,6 +41,6 @@
                 </div>
             </form>
 
-        </div>
+        </info-card>
     </section>
 </x-layouts.app>

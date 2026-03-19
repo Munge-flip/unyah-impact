@@ -11,66 +11,42 @@
             </a>
         </div>
 
-        <div class="info-card">
-            <div class="card-header">
+        <info-card>
+            <template #header>
                 <div>
-                    <h3>Transaction #{{ $transaction->id }}</h3>
+                    <h3 style="margin: 0; font-size: 18px; color: #333;">Transaction #{{ $transaction->id }}</h3>
                     <span class="order-date">
                         {{ $transaction->created_at->format('M d, Y \a\t h:i A') }}
                     </span>
                 </div>
-                @php
-                $statusClass = match($transaction->status) {
-                    'verified' => 'completed',
-                    'rejected' => 'pending',
-                    'pending' => 'in-progress',
-                    default => 'pending',
-                };
-                @endphp
-                <span class="status-badge {{ $statusClass }}">
-                    {{ ucfirst($transaction->status) }}
-                </span>
-            </div>
-        </div>
+            </template>
+            <template #action>
+                <status-badge status="{{ $transaction->status }}"></status-badge>
+            </template>
+        </info-card>
 
-        <div class="info-card">
-            <h3>Payment Information</h3>
-            <div class="detail-row">
-                <span class="label">Amount Paid:</span>
-                <span class="price">₱{{ number_format($transaction->amount, 2) }}</span>
-            </div>
-            <div class="detail-row">
-                <span class="label">Payment Method:</span>
-                <strong style="text-transform: uppercase;">{{ $transaction->payment_method }}</strong>
-            </div>
-            <div class="detail-row">
-                <span class="label">Transaction Reference:</span>
-                <strong>{{ $transaction->transaction_reference ?? 'Not provided' }}</strong>
-            </div>
-            <div class="detail-row">
-                <span class="label">Payment Date:</span>
-                <strong>{{ $transaction->paid_at?->format('M d, Y h:i A') }}</strong>
-            </div>
-            <div class="detail-row">
-                <span class="label">Related Order:</span>
+        <info-card title="Payment Information" :use-body="true">
+            <detail-row label="Amount Paid" value="{{ $transaction->amount }}" :is-price="true"></detail-row>
+            <detail-row label="Payment Method" value="{{ $transaction->payment_method }}" value-class="text-uppercase"></detail-row>
+            <detail-row label="Transaction Reference" value="{{ $transaction->transaction_reference ?? 'Not provided' }}"></detail-row>
+            <detail-row label="Payment Date" value="{{ $transaction->paid_at?->format('M d, Y h:i A') }}"></detail-row>
+            <detail-row label="Related Order">
                 <a href="{{ route('user.order.show', $transaction->order_id) }}" 
                    style="color: #667eea; text-decoration: underline;">
                     Order #{{ $transaction->order_id }} - {{ $transaction->order->game }}
                 </a>
-            </div>
-        </div>
+            </detail-row>
+        </info-card>
 
         @if($transaction->payment_proof)
-        <div class="info-card">
-            <h3>Payment Proof</h3>
+        <info-card title="Payment Proof" :use-body="true">
             <img src="{{ asset('storage/' . $transaction->payment_proof) }}" 
                  alt="Payment Proof" 
                  style="max-width: 100%; border-radius: 10px; border: 2px solid #e0e0e0; margin-top: 15px;">
-        </div>
+        </info-card>
         @endif
 
-        <div class="info-card">
-            <h3>Status Information</h3>
+        <info-card title="Status Information" :use-body="true">
             @if($transaction->status === 'pending')
                 <p style="color: #f39c12; font-weight: 600;">
                     ⏳ Your payment is pending verification by our admin team.
@@ -83,9 +59,8 @@
                     ✅ Your payment has been verified!
                 </p>
                 @if($transaction->verified_at)
-                <div class="detail-row" style="margin-top: 10px;">
-                    <span class="label">Verified At:</span>
-                    <strong>{{ $transaction->verified_at->format('M d, Y h:i A') }}</strong>
+                <div style="margin-top: 10px;">
+                    <detail-row label="Verified At" value="{{ $transaction->verified_at->format('M d, Y h:i A') }}"></detail-row>
                 </div>
                 @endif
             @elseif($transaction->status === 'rejected')
@@ -102,6 +77,6 @@
                     Please contact support or submit a new payment with the correct details.
                 </p>
             @endif
-        </div>
+        </info-card>
     </section>
 </x-layouts.app>

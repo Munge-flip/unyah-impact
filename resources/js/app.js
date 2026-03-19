@@ -17,6 +17,10 @@ import OrderSummary from './components/OrderSummary.vue';
 import AuthCard from './components/AuthCard.vue';
 import LoginForm from './components/LoginForm.vue';
 import RegisterForm from './components/RegisterForm.vue';
+import InfoCard from './components/InfoCard.vue';
+import DetailRow from './components/DetailRow.vue';
+import StatusBadge from './components/StatusBadge.vue';
+import ProfileCard from './components/ProfileCard.vue';
 
 const app = createApp({
     setup() {
@@ -38,5 +42,9 @@ app.component('order-summary', OrderSummary);
 app.component('auth-card', AuthCard);
 app.component('login-form', LoginForm);
 app.component('register-form', RegisterForm);
+app.component('info-card', InfoCard);
+app.component('detail-row', DetailRow);
+app.component('status-badge', StatusBadge);
+app.component('profile-card', ProfileCard);
 
 app.mount('#app');

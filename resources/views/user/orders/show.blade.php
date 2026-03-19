@@ -11,114 +11,64 @@
             </a>
         </div>
 
-        <div class="info-card">
-            <div class="card-header">
+        <info-card>
+            <template #header>
                 <div>
-                    <h3>Order #{{ $order->id }}</h3>
+                    <h3 style="margin: 0; font-size: 18px; color: #333;">Order #{{ $order->id }}</h3>
                     <span class="order-date">
                         {{ $order->created_at->format('M d, Y \a\t h:i A') }}
                     </span>
                 </div>
-                @php
-                    $statusClass = match($order->status) {
-                        'completed' => 'completed',
-                        'in-progress' => 'in-progress',
-                        default => 'pending',
-                    };
-                @endphp
-                <span class="status-badge {{ $statusClass }}">
-                    {{ ucfirst($order->status) }}
-                </span>
-            </div>
-        </div>
+            </template>
+            <template #action>
+                <status-badge status="{{ $order->status }}"></status-badge>
+            </template>
+        </info-card>
 
-        <div class="info-card">
-            <h3>Service Details</h3>
-            <div class="card-body"> <div class="detail-row">
-                    <span class="label">Game:</span>
-                    <strong>{{ $order->game }}</strong>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Category:</span>
-                    <strong>{{ ucfirst($order->service_category) }}</strong>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Service Type:</span>
-                    <strong>{{ $order->service_type }}</strong>
-                </div>
+        <info-card title="Service Details" :use-body="true">
+            <detail-row label="Game" value="{{ $order->game }}"></detail-row>
+            <detail-row label="Category" value="{{ ucfirst($order->service_category) }}"></detail-row>
+            <detail-row label="Service Type" value="{{ $order->service_type }}"></detail-row>
 
-                <div class="detail-row align-center">
-                    <span class="label">Amount:</span>
-                    <div class="flex-row-gap">
-                        <span class="price">₱{{ number_format($order->price, 2) }}</span>
+            <detail-row label="Amount" :align-center="true">
+                <span class="price">₱{{ number_format($order->price, 2) }}</span>
 
-                        @php
-                        $paymentBadge = match($order->payment_status) {
-                            'paid' => ['class' => 'completed', 'text' => 'Paid'],
-                            'pending_verification' => ['class' => 'in-progress', 'text' => 'Pending Verification'],
-                            default => ['class' => 'pending', 'text' => 'Unpaid'],
-                        };
-                        @endphp
-                        
-                        <span class="badge {{ $paymentBadge['class'] }}">
-                            {{ $paymentBadge['text'] }}
-                        </span>
+                <status-badge status="{{ $order->payment_status }}" type="payment"></status-badge>
 
-                        @if($order->payment_status === 'unpaid')
-                            <button type="button" id="btnPayNow" class="btn-primary btn-sm">
-                                Submit Payment
-                            </button>
-                        @elseif($order->payment_status === 'pending_verification')
-                            <a href="{{ route('user.transactions.show', $order->transaction->id) }}" class="btn-secondary btn-sm">
-                                View Transaction
-                            </a>
-                        @endif
-                    </div>
-                </div>
-
-                <div class="detail-row">
-                    <span class="label">Payment Method:</span>
-                    <strong class="text-uppercase">
-                        {{ $order->payment_method ?? 'N/A' }}
-                    </strong>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-card">
-            <h3>Timeline</h3>
-            <div class="card-body">
-                <div class="detail-row">
-                    <span class="label">Order Placed:</span>
-                    <strong>{{ $order->created_at->format('M d, Y') }}</strong>
-                </div>
-                @if($order->status === 'completed')
-                <div class="detail-row">
-                    <span class="label">Completed On:</span>
-                    <strong>{{ $order->updated_at->format('M d, Y') }}</strong>
-                </div>
-                @else
-                <div class="detail-row">
-                    <span class="label">Status:</span>
-                    <strong class="status-text-pending">Work in progress...</strong>
-                </div>
+                @if($order->payment_status === 'unpaid')
+                    <button type="button" id="btnPayNow" class="btn-primary btn-sm">
+                        Submit Payment
+                    </button>
+                @elseif($order->payment_status === 'pending_verification')
+                    <a href="{{ route('user.transactions.show', $order->transaction->id) }}" class="btn-secondary btn-sm">
+                        View Transaction
+                    </a>
                 @endif
-            </div>
-        </div>
+            </detail-row>
 
-        <div class="info-card">
-            <h3>Assigned Pilot</h3>
-            <div class="card-body">
-                <div class="detail-row">
-                    <span class="label">Pilot:</span>
-                    @if($order->agent)
-                        <strong>{{ $order->agent->name }}</strong>
-                    @else
-                        <span class="text-pilot-missing">Finding a pilot...</span>
-                    @endif
-                </div>
-            </div>
-        </div>
+            <detail-row label="Payment Method">
+                <strong class="text-uppercase">{{ $order->payment_method ?? 'N/A' }}</strong>
+            </detail-row>
+        </info-card>
+
+        <info-card title="Timeline" :use-body="true">
+            <detail-row label="Order Placed" value="{{ $order->created_at->format('M d, Y') }}"></detail-row>
+            @if($order->status === 'completed')
+                <detail-row label="Completed On" value="{{ $order->updated_at->format('M d, Y') }}"></detail-row>
+            @else
+                <detail-row label="Status" value="Work in progress..." value-class="status-text-pending"></detail-row>
+            @endif
+        </info-card>
+
+        <info-card title="Assigned Pilot" :use-body="true">
+            <detail-row label="Pilot">
+                @if($order->agent)
+                    <strong>{{ $order->agent->name }}</strong>
+                @else
+                    <span class="text-pilot-missing">Finding a pilot...</span>
+                @endif
+            </detail-row>
+        </info-card>
     </section>
 
     {{-- Payment Modal --}}
