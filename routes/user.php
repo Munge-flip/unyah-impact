@@ -5,8 +5,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\Api\OrderApiController;
 
 Route::get('/', [UserController::class, 'index'])->name('dashboard');
+Route::get('/api/orders', [OrderApiController::class, 'index'])->name('api.orders');
 
 //User Profile Management
 Route::get('/edit', [UserController::class, 'edit'])->name('dashboard.edit');

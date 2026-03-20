@@ -14,31 +14,30 @@ class OrderApiController extends Controller
      */
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = Order::with(['user', 'agent']);
 
-        // Filter by game
+        // Security: If not admin, only show own orders
+        if ($user->role !== 'admin') {
+            $query->where('user_id', $user->id);
+        } else {
+            // Admin can filter by user_id if they want
+            if ($request->has('user_id')) {
+                $query->where('user_id', $request->user_id);
+            }
+        }
+
+        // Filter by agent_id (if agent or admin)
+        if ($user->role !== 'user' && $request->has('agent_id')) {
+            $query->where('agent_id', $request->agent_id);
+        }
+
+        // Other filters
         if ($request->has('game')) {
             $query->where('game', $request->game);
         }
-
-        // Filter by status
         if ($request->has('status')) {
             $query->where('status', $request->status);
-        }
-
-        // Filter by payment status
-        if ($request->has('payment_status')) {
-            $query->where('payment_status', $request->payment_status);
-        }
-
-        // Filter by user_id (for user's own orders)
-        if ($request->has('user_id')) {
-            $query->where('user_id', $request->user_id);
-        }
-
-        // Filter by agent_id
-        if ($request->has('agent_id')) {
-            $query->where('agent_id', $request->agent_id);
         }
 
         $orders = $query->orderBy('created_at', 'desc')->get();
