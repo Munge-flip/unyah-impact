@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\OrderApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\TransactionApiController;
 use App\Http\Controllers\Api\AuthApiController;
+use App\Http\Controllers\Api\DashboardApiController;
 
 /*
 |--------------------------------------------------------------------------

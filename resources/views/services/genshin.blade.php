@@ -16,9 +16,9 @@
         <input type="hidden" name="game" value="Genshin Impact">
         
         <!-- Bind hidden inputs to the store -->
-        <input type="hidden" name="service_category" :value="serviceStore.category">
-        <input type="hidden" name="service_type" :value="serviceStore.service">
-        <input type="hidden" name="price" :value="serviceStore.price">
+        <input type="hidden" name="service_category" :value="serviceStore.categoryString">
+        <input type="hidden" name="service_type" :value="serviceStore.serviceTypeString">
+        <input type="hidden" name="price" :value="serviceStore.totalPriceRaw">
         <input type="hidden" name="payment_method" :value="serviceStore.paymentMethod">
         
         <div class="service-section">

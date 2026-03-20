@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ServiceManagementController;
+use App\Http\Controllers\Api\DashboardApiController;
 
 Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+Route::get('/api/stats', [DashboardApiController::class, 'index'])->name('api.stats');
 
 // Admin Profile Routes
 Route::get('/profile', [AdminController::class, 'profile'])->name('profile.index');

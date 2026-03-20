@@ -25,6 +25,7 @@ import StatCard from './components/StatCard.vue';
 import AgentCard from './components/AgentCard.vue';
 import AdminCard from './components/AdminCard.vue';
 import AgentProfileCard from './components/AgentProfileCard.vue';
+import AdminDashboardOverview from './components/AdminDashboardOverview.vue';
 
 const app = createApp({
     setup() {
@@ -54,5 +55,6 @@ app.component('stat-card', StatCard);
 app.component('agent-card', AgentCard);
 app.component('admin-card', AdminCard);
 app.component('agent-profile-card', AgentProfileCard);
+app.component('admin-dashboard-overview', AdminDashboardOverview);
 
 app.mount('#app');
