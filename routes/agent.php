@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\Api\OrderApiController;
 
 Route::get('/', [AgentController::class, 'index'])->name('dashboard');
+Route::get('/api/stats', [AgentController::class, 'apiStats'])->name('api.stats');
+Route::get('/api/orders', [OrderApiController::class, 'index'])->name('api.orders');
 
 //Agent Profile Management
 Route::get('/edit', [AgentController::class, 'edit'])->name('dashboard.edit');

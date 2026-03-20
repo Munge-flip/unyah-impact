@@ -9,6 +9,7 @@
                 handling="{{ $ordersHandling }}" 
                 completed="{{ $completedCount }}" 
                 rate="{{ $completionRate }}"
+                api-url="/agent/api/stats"
             ></agent-profile-card>
 
             <info-card title="Personal Information" manage-route="{{ route('agent.dashboard.edit') }}">

@@ -31,6 +31,26 @@ class AgentController extends Controller
             'completionRate'
         ));
     }
+
+    public function apiStats()
+    {
+        $agent = Auth::user();
+        $ordersHandling = $agent->tasks()->where('status', '!=', 'completed')->count();
+        $completedCount = $agent->tasks()->where('status', 'completed')->count();
+        $totalAssigned = $agent->tasks()->count();
+        $completionRate = $totalAssigned > 0
+            ? round(($completedCount / $totalAssigned) * 100) . '%'
+            : '0%';
+
+        return response()->json([
+            'success' => true,
+            'stats' => [
+                'handling' => $ordersHandling,
+                'completed' => $completedCount,
+                'rate' => $completionRate
+            ]
+        ]);
+    }
     public function order()
     {
         $orders = Auth::user()->tasks()
