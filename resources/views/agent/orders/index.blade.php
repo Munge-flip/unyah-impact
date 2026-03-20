@@ -13,31 +13,13 @@
                             <span class="order-date">{{ $order->created_at->format('M d') }}</span>
                         </div>
 
-                        @php
-                        $statusClass = match($order->status) {
-                        'completed' => 'completed',
-                        'in-progress' => 'in-progress',
-                        default => 'pending',
-                        };
-                        @endphp
-                        <span class="badge {{ $statusClass }}">
-                            {{ ucfirst($order->status) }}
-                        </span>
+                        <status-badge status="{{ $order->status }}"></status-badge>
                     </div>
 
                     <div class="order-details">
-                        <div class="detail-row">
-                            <span class="label">Game:</span>
-                            <span>{{ $order->game }}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Service:</span>
-                            <span>{{ $order->service_type }}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Customer:</span>
-                            <span>{{ $order->user->name ?? 'Unknown' }}</span>
-                        </div>
+                        <detail-row label="Game" value="{{ $order->game }}"></detail-row>
+                        <detail-row label="Service" value="{{ $order->service_type }}"></detail-row>
+                        <detail-row label="Customer" value="{{ $order->user->name ?? 'Unknown' }}"></detail-row>
                     </div>
 
                     <div class="order-actions">

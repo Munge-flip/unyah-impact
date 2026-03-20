@@ -9,21 +9,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <!-- Header Navigation -->
-    <x-agent.header/>
+    <div id="app">
+        <!-- Header Navigation -->
+        <x-agent.header/>
 
-    <main class="dashboard-container">
-        <!-- Sidebar Navigation -->
-        <x-agent.sidebar/>
+        <main class="dashboard-container">
+            <!-- Sidebar Navigation -->
+            <x-agent.sidebar/>
 
-        <!-- Main Content Area -->
-        {{ $slot }}
-    </main>
+            <!-- Main Content Area -->
+            {{ $slot }}
+        </main>
 
-    <x-footer/>
+        <x-footer/>
+    </div>
 
-    <script src="js/agent-dashboard.js"></script>
+    <script src="{{ asset('js/agent-dashboard.js') }}"></script>
 </body>
 </html>
