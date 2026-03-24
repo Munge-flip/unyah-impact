@@ -51,7 +51,6 @@ class UserController extends Controller
         return redirect()->route('user.dashboard')->with('success', 'Profile updated successfully.');
     }
 
-    // 2. Handle Password Update
     public function updatePassword(Request $request)
     {
         $validated = $request->validate([

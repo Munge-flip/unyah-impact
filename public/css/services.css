@@ -291,15 +291,15 @@
 }
 
 /* ========== HSR REGION BACKGROUNDS ========== */
-.herta-bg {
-  background-image: url(/img/Herta-Space-Station\ banner.png);
+.herta-space-station-bg {
+  background-image: url(/img/Herta\ banner.png);
 }
 
-.jarilo-bg {
+.jarilo-vi-bg {
   background-image: url(/img/jarilo\ banner.png);
 }
 
-.xianzhou-bg {
+.xianzhou-luofu-bg {
   background-image: url(/img/xianzhou\ banner.png);
 }
 
