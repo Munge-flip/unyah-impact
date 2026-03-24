@@ -113,6 +113,6 @@ class TransactionController extends Controller
             return back()->with('error', 'No payment proof available.');
         }
 
-        return Storage::disk('public')->download($transaction->payment_proof)
+        return Storage::disk('public')->download($transaction->payment_proof);
     }
 }
