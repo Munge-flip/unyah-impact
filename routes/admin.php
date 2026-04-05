@@ -5,9 +5,20 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ServiceManagementController;
 use App\Http\Controllers\Api\DashboardApiController;
+use App\Http\Controllers\Api\OrderApiController;
+use App\Http\Controllers\Api\TransactionApiController;
 
 Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 Route::get('/api/stats', [DashboardApiController::class, 'index'])->name('api.stats');
+
+// Admin API for Management (Session-based)
+Route::prefix('api')->name('api.')->group(function() {
+    Route::get('/orders', [OrderApiController::class, 'index'])->name('orders.index');
+    Route::patch('/orders/{id}', [OrderApiController::class, 'update'])->name('orders.update');
+    Route::delete('/orders/{id}', [OrderApiController::class, 'destroy'])->name('orders.destroy');
+    
+    Route::get('/transactions', [TransactionApiController::class, 'index'])->name('transactions.index');
+});
 
 // Admin Profile Routes
 Route::get('/profile', [AdminController::class, 'profile'])->name('profile.index');

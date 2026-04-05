@@ -17,11 +17,14 @@ class OrderApiController extends Controller
         $user = $request->user();
         $query = Order::with(['user', 'agent']);
 
-        // Security: If not admin, only show own orders
+        // Logic for Admin vs User
         if ($user->role !== 'admin') {
             $query->where('user_id', $user->id);
         } else {
-            // Admin can filter by user_id if they want
+            // ADMIN: Only show orders that have been VERIFIED (paid)
+            // This prevents unverified orders from appearing in the assignment list
+            $query->where('payment_status', 'paid');
+
             if ($request->has('user_id')) {
                 $query->where('user_id', $request->user_id);
             }
@@ -40,12 +43,29 @@ class OrderApiController extends Controller
             $query->where('status', $request->status);
         }
 
-        $orders = $query->orderBy('created_at', 'desc')->get();
+        // Instant Search Logic
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('id', 'like', "%{$search}%")
+                  ->orWhere('game', 'like', "%{$search}%")
+                  ->orWhere('service_type', 'like', "%{$search}%")
+                  ->orWhere('service_category', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->orderBy('created_at', 'desc')->paginate($request->get('per_page', 10));
 
         return response()->json([
             'success' => true,
             'message' => 'Orders retrieved successfully',
-            'data' => $orders
+            'data' => $orders->items(),
+            'meta' => [
+                'current_page' => $orders->currentPage(),
+                'last_page' => $orders->lastPage(),
+                'per_page' => $orders->perPage(),
+                'total' => $orders->total(),
+            ]
         ], 200);
     }
 

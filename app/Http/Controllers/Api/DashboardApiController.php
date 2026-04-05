@@ -17,6 +17,7 @@ class DashboardApiController extends Controller
     {
         try {
             $totalOrders = Order::count();
+            $verifiedOrders = Order::where('payment_status', 'paid')->count();
             $activeAgents = User::where('role', 'agent')->count();
             $totalUsers = User::where('role', 'user')->count();
             $revenue = Order::where('status', 'completed')->sum('price');

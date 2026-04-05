@@ -213,6 +213,7 @@ header nav ul li a.active {
   font-size: 13px;
   font-weight: 600;
   display: inline-block;
+  white-space: nowrap;
 }
 
 .badge.pending {
@@ -235,6 +236,7 @@ header nav ul li a.active {
   border-radius: 20px;
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .status-badge.pending {

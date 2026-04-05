@@ -27,6 +27,9 @@ import AdminCard from './components/AdminCard.vue';
 import AgentProfileCard from './components/AgentProfileCard.vue';
 import AdminDashboardOverview from './components/AdminDashboardOverview.vue';
 import OrderHistoryList from './components/OrderHistoryList.vue';
+import AdminOrderTable from './components/AdminOrderTable.vue';
+import AdminTransactionTable from './components/AdminTransactionTable.vue';
+import AdminOrderDetails from './components/AdminOrderDetails.vue';
 
 const app = createApp({
     setup() {
@@ -34,7 +37,6 @@ const app = createApp({
     }
 });
 
-// Register All Components
 app.component('example-component', ExampleComponent);
 app.component('service-card', ServiceCard);
 app.component('app-header', AppHeader);
@@ -59,5 +61,8 @@ app.component('admin-card', AdminCard);
 app.component('agent-profile-card', AgentProfileCard);
 app.component('admin-dashboard-overview', AdminDashboardOverview);
 app.component('order-history-list', OrderHistoryList);
+app.component('admin-order-table', AdminOrderTable);
+app.component('admin-transaction-table', AdminTransactionTable);
+app.component('admin-order-details', AdminOrderDetails);
 
 app.mount('#app');

@@ -21,22 +21,28 @@ class TransactionApiController extends Controller
             $query->where('status', $request->status);
         }
 
-        // Filter by user_id
-        if ($request->has('user_id')) {
-            $query->where('user_id', $request->user_id);
+        // Search logic (Reference or User Name)
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('transaction_reference', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($uq) use ($search) {
+                      $uq->where('name', 'like', "%{$search}%");
+                  });
+            });
         }
 
-        // Filter by payment method
-        if ($request->has('payment_method')) {
-            $query->where('payment_method', $request->payment_method);
-        }
-
-        $transactions = $query->orderBy('created_at', 'desc')->get();
+        $transactions = $query->orderBy('created_at', 'desc')->paginate($request->get('per_page', 10));
 
         return response()->json([
             'success' => true,
             'message' => 'Transactions retrieved successfully',
-            'data' => $transactions
+            'data' => $transactions->items(),
+            'meta' => [
+                'current_page' => $transactions->currentPage(),
+                'last_page' => $transactions->lastPage(),
+                'total' => $transactions->total(),
+            ]
         ], 200);
     }
 
