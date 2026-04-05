@@ -15,6 +15,9 @@
         @csrf
         <input type="hidden" name="game" value="Genshin Impact">
         
+        <!-- API Data Loader -->
+        <service-catalog-loader game="Genshin Impact"></service-catalog-loader>
+
         <!-- Bind hidden inputs to the store -->
         <input type="hidden" name="service_category" :value="serviceStore.categoryString">
         <input type="hidden" name="service_type" :value="serviceStore.serviceTypeString">
@@ -24,25 +27,11 @@
         <div class="service-section">
             <h2>Choose a service</h2>
 
-            {{-- 1. TOP SECTION --}}
-            @php
-                $topCategories = ['Maintenance', 'Regular Quests', 'Events', 'Endgame'];
-            @endphp
-
-            @foreach($topCategories as $categoryName)
-                @if(isset($services[$categoryName]))
-                    <service-category title="{{ $categoryName }}">
-                        @foreach($services[$categoryName] as $service)
-                            <service-button 
-                                category="{{ $service->category }}" 
-                                service="{{ $service->slug }}" 
-                                :price="{{ $service->price }}" 
-                                label="{{ $service->name }}" 
-                            ></service-button>
-                        @endforeach
-                    </service-category>
-                @endif
-            @endforeach
+            {{-- 1. TOP SECTION (NOW API DRIVEN) --}}
+            <service-category title="Maintenance" api-category="Maintenance"></service-category>
+            <service-category title="Regular Quests" api-category="Regular Quests"></service-category>
+            <service-category title="Events" api-category="Events"></service-category>
+            <service-category title="Endgame" api-category="Endgame"></service-category>
 
             {{-- 2. MIDDLE SECTION: Explorations --}}
             <service-category 
@@ -60,30 +49,11 @@
                 ]"></exploration-grid>
             </service-category>
 
-            {{-- 3. BOTTOM SECTION --}}
-            @php
-                $bottomCategories = [
-                    'Unlocking Waypoints & Statues', 
-                    'Chest Farming', 
-                    'Collecting oculi', 
-                    '100% Area Completion'
-                ];
-            @endphp
-
-            @foreach($bottomCategories as $categoryName)
-                @if(isset($services[$categoryName]))
-                    <service-category title="{{ $categoryName }}">
-                        @foreach($services[$categoryName] as $service)
-                            <service-button 
-                                category="{{ $service->category }}" 
-                                service="{{ $service->slug }}" 
-                                :price="{{ $service->price }}" 
-                                label="{{ $service->name }}" 
-                            ></service-button>
-                        @endforeach
-                    </service-category>
-                @endif
-            @endforeach
+            {{-- 3. BOTTOM SECTION (NOW API DRIVEN) --}}
+            <service-category title="Unlocking Waypoints & Statues" api-category="Unlocking Waypoints & Statues"></service-category>
+            <service-category title="Chest Farming" api-category="Chest Farming"></service-category>
+            <service-category title="Collecting oculi" api-category="Collecting oculi"></service-category>
+            <service-category title="100% Area Completion" api-category="100% Area Completion"></service-category>
         </div>
 
         <!-- Use Vue components for payment and summary -->

@@ -1,7 +1,10 @@
 import { reactive, computed } from 'vue';
+import axios from 'axios';
 
 export const serviceStore = reactive({
     game: '', 
+    allServices: [], // Raw data from API
+    loading: false,
     selectedServices: {}, 
     explorations: [],      
     worlds: [],            
@@ -15,6 +18,26 @@ export const serviceStore = reactive({
     ],
 
     // Actions
+    async fetchServices(gameName) {
+        this.loading = true;
+        this.game = gameName;
+        try {
+            const response = await axios.get('/api/v1/services', {
+                params: { 
+                    game: gameName,
+                    is_active: 1
+                }
+            });
+            if (response.data.success) {
+                this.allServices = response.data.data;
+            }
+        } catch (error) {
+            console.error('Failed to fetch services:', error);
+        } finally {
+            this.loading = false;
+        }
+    },
+
     toggleService(category, serviceId, price, label) {
         if (this.selectedServices[category] && this.selectedServices[category].id === serviceId) {
             delete this.selectedServices[category];
@@ -39,6 +62,11 @@ export const serviceStore = reactive({
         const index = this.hollowModes.indexOf(modeName);
         if (index > -1) this.hollowModes.splice(index, 1);
         else this.hollowModes.push(modeName);
+    },
+
+    // Getters
+    getServicesByCategory(categoryName) {
+        return this.allServices.filter(s => s.category_name === categoryName);
     },
 
     // Computed

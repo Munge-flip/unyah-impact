@@ -11,6 +11,10 @@
     <form id="serviceForm" action="{{ route('user.order.store') }}" method="POST">
         @csrf
         <input type="hidden" name="game" value="Zenless Zone Zero">
+        
+        <!-- API Data Loader -->
+        <service-catalog-loader game="Zenless Zone Zero"></service-catalog-loader>
+
         <input type="hidden" name="service_category" :value="serviceStore.categoryString">
         <input type="hidden" name="service_type" :value="serviceStore.serviceTypeString">
         <input type="hidden" name="price" :value="serviceStore.totalPriceRaw">
@@ -20,62 +24,21 @@
             <h2>Choose a service</h2>
 
             {{-- 1. Standard Categories --}}
-            @php
-                $standardCategories = ['Maintenance', 'Regular Quests', 'Events', 'Endgame'];
-            @endphp
-
-            @foreach($standardCategories as $categoryName)
-                @if(isset($services[$categoryName]))
-                    <service-category title="{{ $categoryName }}">
-                        @foreach($services[$categoryName] as $service)
-                            <service-button 
-                                category="{{ $service->category }}" 
-                                service="{{ $service->slug }}" 
-                                :price="{{ $service->price }}" 
-                                label="{{ $service->name }}" 
-                            ></service-button>
-                        @endforeach
-                    </service-category>
-                @endif
-            @endforeach
+            <service-category title="Maintenance" api-category="Maintenance"></service-category>
+            <service-category title="Regular Quests" api-category="Regular Quests"></service-category>
+            <service-category title="Events" api-category="Events"></service-category>
+            <service-category title="Endgame" api-category="Endgame"></service-category>
 
             {{-- 2. Hollow Zero --}}
-            @if(isset($services['Hollow Zero']))
-                <service-category title="Hollow Zero" description="Choose a Mode" :custom-layout="true">
-                    <mode-selection :items="[
-                        {'slug': 'lost-void', 'name': 'Lost Void'},
-                        {'slug': 'withered-domain', 'name': 'Withered Domain'},
-                    ]"></mode-selection>
-
-                    <div class="service-options" style="margin-top: 20px">
-                        @foreach($services['Hollow Zero'] as $service)
-                            <service-button 
-                                category="{{ $service->category }}" 
-                                service="{{ $service->slug }}" 
-                                :price="{{ $service->price }}" 
-                                label="{{ $service->name }}" 
-                            ></service-button>
-                        @endforeach
-                    </div>
-                </service-category>
-            @endif
+            <service-category title="Hollow Zero" description="Choose a Mode" :custom-layout="true" api-category="Hollow Zero">
+                <mode-selection :items="[
+                    {'slug': 'lost-void', 'name': 'Lost Void'},
+                    {'slug': 'withered-domain', 'name': 'Withered Domain'},
+                ]"></mode-selection>
+            </service-category>
 
             {{-- 3. Explorations / Completion --}}
-            <service-category title="Explorations" :custom-layout="true">
-                @if(isset($services['100% Area Completion']))
-                    <h4 style="font-size: 18px; margin-bottom: 15px; color: #666;">100% Area Completion</h4>
-                    <div class="service-options">
-                        @foreach($services['100% Area Completion'] as $service)
-                            <service-button 
-                                category="{{ $service->category }}" 
-                                service="{{ $service->slug }}" 
-                                :price="{{ $service->price }}" 
-                                label="{{ $service->name }}" 
-                            ></service-button>
-                        @endforeach
-                    </div>
-                @endif
-            </service-category>
+            <service-category title="Explorations" :custom-layout="true" api-category="100% Area Completion"></service-category>
         </div>
 
         <payment-section></payment-section>

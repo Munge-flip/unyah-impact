@@ -7,6 +7,10 @@
         @csrf
 
         <input type="hidden" name="game" value="Honkai Star Rail">
+        
+        <!-- API Data Loader -->
+        <service-catalog-loader game="Honkai Star Rail"></service-catalog-loader>
+
         <input type="hidden" name="service_category" :value="serviceStore.categoryString">
         <input type="hidden" name="service_type" :value="serviceStore.serviceTypeString">
         <input type="hidden" name="price" :value="serviceStore.totalPriceRaw">
@@ -16,60 +20,22 @@
             <h2>Choose a service</h2>
 
             {{-- 1. Standard Categories --}}
-            @php
-                $standardCategories = ['Maintenance', 'Regular Quests', 'Events', 'Endgame'];
-            @endphp
-
-            @foreach($standardCategories as $categoryName)
-                @if(isset($services[$categoryName]))
-                    <service-category title="{{ $categoryName }}">
-                        @foreach($services[$categoryName] as $service)
-                            <service-button 
-                                category="{{ $service->category }}" 
-                                service="{{ $service->slug }}" 
-                                :price="{{ $service->price }}" 
-                                label="{{ $service->name }}" 
-                            ></service-button>
-                        @endforeach
-                    </service-category>
-                @endif
-            @endforeach
+            <service-category title="Maintenance" api-category="Maintenance"></service-category>
+            <service-category title="Regular Quests" api-category="Regular Quests"></service-category>
+            <service-category title="Events" api-category="Events"></service-category>
+            <service-category title="Endgame" api-category="Endgame"></service-category>
 
             {{-- 2. Simulated Universe --}}
-            @if(isset($services['Simulated Universe']))
-                <service-category title="Simulated Universe" description="Choose a World">
-                    <world-selection :items="[
-                        {'slug': 'swarm-disaster', 'name': 'Swarm Disaster'},
-                        {'slug': 'gold-gears', 'name': 'Gold and Gears'},
-                        {'slug': 'unknowable-domain', 'name': 'Unknowable Domain'},
-                    ]"></world-selection>
-
-                    <div class="world-selection" style="margin-top: 20px">
-                        @foreach($services['Simulated Universe'] as $service)
-                            <service-button 
-                                category="{{ $service->category }}" 
-                                service="{{ $service->slug }}" 
-                                :price="{{ $service->price }}" 
-                                label="{{ $service->name }}" 
-                            ></service-button>
-                        @endforeach
-                    </div>
-                </service-category>
-            @endif
+            <service-category title="Simulated Universe" description="Choose a World" api-category="Simulated Universe">
+                <world-selection :items="[
+                    {'slug': 'swarm-disaster', 'name': 'Swarm Disaster'},
+                    {'slug': 'gold-gears', 'name': 'Gold and Gears'},
+                    {'slug': 'unknowable-domain', 'name': 'Unknowable Domain'},
+                ]"></world-selection>
+            </service-category>
 
             {{-- 3. Divergent Universe --}}
-            @if(isset($services['Divergent Universe']))
-                <service-category title="Divergent Universe">
-                    @foreach($services['Divergent Universe'] as $service)
-                        <service-button 
-                            category="{{ $service->category }}" 
-                            service="{{ $service->slug }}" 
-                            :price="{{ $service->price }}" 
-                            label="{{ $service->name }}" 
-                        ></service-button>
-                    @endforeach
-                </service-category>
-            @endif
+            <service-category title="Divergent Universe" api-category="Divergent Universe"></service-category>
 
             {{-- 4. Explorations --}}
             <service-category title="Explorations" description="Select regions for your services" :custom-layout="true">
@@ -83,18 +49,7 @@
             </service-category>
 
             {{-- 5. 100% Area Completion --}}
-            @if(isset($services['100% Area Completion']))
-                <service-category title="100% Area Completion">
-                    @foreach($services['100% Area Completion'] as $service)
-                        <service-button 
-                            category="{{ $service->category }}" 
-                            service="{{ $service->slug }}" 
-                            :price="{{ $service->price }}" 
-                            label="{{ $service->name }}" 
-                        ></service-button>
-                    @endforeach
-                </service-category>
-            @endif
+            <service-category title="100% Area Completion" api-category="100% Area Completion"></service-category>
 
         </div>
 
