@@ -3,10 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\Api\OrderApiController;
+use App\Http\Controllers\Api\ChatApiController;
 
 Route::get('/', [AgentController::class, 'index'])->name('dashboard');
 Route::get('/api/stats', [AgentController::class, 'apiStats'])->name('api.stats');
 Route::get('/api/orders', [OrderApiController::class, 'index'])->name('api.orders');
+
+// API for Live Chat
+Route::get('/api/orders/{orderId}/messages', [ChatApiController::class, 'index']);
+Route::post('/api/orders/{orderId}/messages', [ChatApiController::class, 'store']);
 
 //Agent Profile Management
 Route::get('/edit', [AgentController::class, 'edit'])->name('dashboard.edit');

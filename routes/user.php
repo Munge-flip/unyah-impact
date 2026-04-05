@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Api\OrderApiController;
+use App\Http\Controllers\Api\ChatApiController;
 
 Route::get('/', [UserController::class, 'index'])->name('dashboard');
 Route::get('/api/orders', [OrderApiController::class, 'index'])->name('api.orders');
@@ -22,6 +23,10 @@ Route::get('/order/{id}', [UserController::class, 'show'])->name('order.show');
 Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 Route::get('/order/{id}/chat', [ChatController::class, 'show'])->name('order.chat');
 Route::post('/order/{id}/chat', [ChatController::class, 'store'])->name('chat.store');
+
+// API for Live Chat
+Route::get('/api/orders/{orderId}/messages', [ChatApiController::class, 'index']);
+Route::post('/api/orders/{orderId}/messages', [ChatApiController::class, 'store']);
 
 //User Transaction Management
 Route::patch('/order/{id}/pay', [App\Http\Controllers\UserController::class, 'payNow'])->name('order.pay');

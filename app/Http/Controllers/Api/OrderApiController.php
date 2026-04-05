@@ -17,25 +17,28 @@ class OrderApiController extends Controller
         $user = $request->user();
         $query = Order::with(['user', 'agent']);
 
-        // Logic for Admin vs User
-        if ($user->role !== 'admin') {
-            $query->where('user_id', $user->id);
-        } else {
+        // Role-Based Filtering Logic
+        if ($user->role === 'admin') {
             // ADMIN: Only show orders that have been VERIFIED (paid)
-            // This prevents unverified orders from appearing in the assignment list
             $query->where('payment_status', 'paid');
-
+            
             if ($request->has('user_id')) {
                 $query->where('user_id', $request->user_id);
             }
+            if ($request->has('agent_id')) {
+                $query->where('agent_id', $request->agent_id);
+            }
+        } 
+        elseif ($user->role === 'agent') {
+            // AGENT: Only show orders ASSIGNED to this agent
+            $query->where('agent_id', $user->id);
+        } 
+        else {
+            // USER: Only show orders PLACED by this user
+            $query->where('user_id', $user->id);
         }
 
-        // Filter by agent_id (if agent or admin)
-        if ($user->role !== 'user' && $request->has('agent_id')) {
-            $query->where('agent_id', $request->agent_id);
-        }
-
-        // Other filters
+        // Other shared filters
         if ($request->has('game')) {
             $query->where('game', $request->game);
         }
