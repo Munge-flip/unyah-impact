@@ -12,29 +12,32 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view("user.dashboard.index");
+        return view("app");
     }
     public function orders()
     {
-        $user = Auth::user();
-
-        $orders = $user->orders()->orderBy('created_at', 'desc')->paginate(5);
-
-        return view("user.orders.index", compact('orders'));
+        return view("app");
     }
     public function show($id)
     {
-        $order = Auth::user()->orders()->findOrFail($id);
+        $order = Auth::user()->orders()->with(['user', 'agent', 'transaction'])->findOrFail($id);
 
-        return view('user.orders.show', compact('order'));
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'data' => $order
+            ]);
+        }
+
+        return view('app');
     }
     public function edit()
     {
-        return view('user.dashboard.edit-info');
+        return view('app');
     }
     public function editPassword()
     {
-        return view('user.dashboard.edit-password');
+        return view('app');
     }
     public function updateProfile(Request $request)
     {
@@ -47,6 +50,14 @@ class UserController extends Controller
         ]);
 
         $user->update($validated);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile updated successfully.',
+                'user' => $user
+            ]);
+        }
 
         return redirect()->route('user.dashboard')->with('success', 'Profile updated successfully.');
     }
@@ -62,6 +73,13 @@ class UserController extends Controller
         Auth::user()->update([
             'password' => Hash::make($validated['password']),
         ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Password changed successfully.'
+            ]);
+        }
 
         return redirect()->route('user.dashboard')->with('success', 'Password changed successfully.');
     }

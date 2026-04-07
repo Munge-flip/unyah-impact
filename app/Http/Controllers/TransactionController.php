@@ -12,21 +12,35 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::with(['user', 'order', 'verifiedBy'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
-
-        return view('admin.transactions.index', compact('transactions'));
+        if (request()->expectsJson()) {
+            $transactions = Transaction::with(['user', 'order', 'verifiedBy'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(15);
+            return response()->json($transactions);
+        }
+        return view('app');
     }
 
     public function userTransactions()
     {
-        $transactions = Auth::user()->transactions()
-            ->with('order')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        if (request()->expectsJson()) {
+            $transactions = Auth::user()->transactions()
+                ->with('order')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+            
+            return response()->json([
+                'success' => true,
+                'data' => $transactions->items(),
+                'meta' => [
+                    'current_page' => $transactions->currentPage(),
+                    'last_page' => $transactions->lastPage(),
+                    'total' => $transactions->total(),
+                ]
+            ]);
+        }
 
-        return view('user.transactions.index', compact('transactions'));
+        return view('app');
     }
 
     public function show($id)
@@ -34,14 +48,20 @@ class TransactionController extends Controller
         $transaction = Transaction::with(['user', 'order', 'verifiedBy'])->findOrFail($id);
 
         if (Auth::user()->role === 'user' && $transaction->user_id !== Auth::id()) {
+            if (request()->expectsJson()) {
+                return response()->json(['message' => 'Unauthorized access'], 403);
+            }
             abort(403, 'Unauthorized access');
         }
 
-        if (Auth::user()->role === 'admin') {
-            return view('admin.transactions.show', compact('transaction'));
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'data' => $transaction
+            ]);
         }
 
-        return view('user.transactions.show', compact('transaction'));
+        return view('app');
     }
 
     public function store(Request $request)
@@ -55,6 +75,12 @@ class TransactionController extends Controller
         $order = Order::findOrFail($validated['order_id']);
 
         if ($order->transaction) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Transaction already exists for this order.'
+                ], 422);
+            }
             return back()->with('error', 'Transaction already exists for this order.');
         }
 
@@ -75,6 +101,14 @@ class TransactionController extends Controller
 
         $order->payment_status = 'pending_verification';
         $order->save();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment submitted! Waiting for admin verification.',
+                'data' => $transaction->load('order')
+            ]);
+        }
 
         return redirect()->route('user.transactions.show', $transaction->id)
             ->with('success', 'Payment submitted! Waiting for admin verification.');
@@ -100,6 +134,14 @@ class TransactionController extends Controller
         } else {
             $transaction->order->payment_status = 'unpaid';
             $transaction->order->save();
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Transaction ' . $validated['status'] . ' successfully!',
+                'data' => $transaction->fresh()->load(['user', 'order', 'verifiedBy'])
+            ]);
         }
 
         return back()->with('success', 'Transaction ' . $validated['status'] . ' successfully!');

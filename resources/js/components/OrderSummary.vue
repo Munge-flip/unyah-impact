@@ -52,8 +52,10 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { serviceStore } from '../stores/serviceStore';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
+const router = useRouter();
 const submitting = ref(false);
 
 const canPlaceOrder = computed(() => {
@@ -96,9 +98,8 @@ async function submitForm() {
         });
 
         if (response.data.success) {
-            // Since we're in transition to full SPA, we'll use window.location
-            // but we can also use router.push if the route exists
-            window.location.href = response.data.redirect;
+            // Smooth SPA navigation
+            router.push(response.data.redirect);
         }
     } catch (error) {
         console.error('Order placement failed:', error);

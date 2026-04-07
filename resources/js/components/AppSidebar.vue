@@ -6,7 +6,7 @@
         :key="item.route" 
         :to="item.route"
         class="menu-btn"
-        active-class="active"
+        exact-active-class="active"
       >
         <span v-html="item.icon"></span>
         {{ item.label }}

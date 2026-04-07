@@ -4,11 +4,21 @@ import { createRouter, createWebHistory } from 'vue-router';
 const PublicLayout = () => import('../layouts/PublicLayout.vue');
 const AuthLayout = () => import('../layouts/AuthLayout.vue');
 const ServiceLayout = () => import('../layouts/ServiceLayout.vue');
+const UserLayout = () => import('../layouts/UserLayout.vue');
 
 // Pages
 const HomeView = () => import('../views/public/HomeView.vue');
 const LoginView = () => import('../views/auth/LoginView.vue');
 const RegisterView = () => import('../views/auth/RegisterView.vue');
+
+// User Pages
+const UserDashboardView = () => import('../views/user/UserDashboardView.vue');
+const UserEditInfoView = () => import('../views/user/UserEditInfoView.vue');
+const UserEditPasswordView = () => import('../views/user/UserEditPasswordView.vue');
+const UserOrdersIndexView = () => import('../views/user/UserOrdersIndexView.vue');
+const UserOrderShowView = () => import('../views/user/UserOrderShowView.vue');
+const UserTransactionsIndexView = () => import('../views/user/UserTransactionsIndexView.vue');
+const UserTransactionShowView = () => import('../views/user/UserTransactionShowView.vue');
 
 // Service Views
 const GenshinView = () => import('../views/public/GenshinView.vue');
@@ -69,6 +79,47 @@ const routes = [
                         'Wait for an agent to confirm and ask a few questions before proceeding.'
                     ]
                 }
+            }
+        ]
+    },
+    {
+        path: '/user',
+        component: UserLayout,
+        children: [
+            {
+                path: '',
+                name: 'user.dashboard',
+                component: UserDashboardView
+            },
+            {
+                path: 'edit',
+                name: 'user.dashboard.edit',
+                component: UserEditInfoView
+            },
+            {
+                path: 'update',
+                name: 'user.dashboard.update',
+                component: UserEditPasswordView
+            },
+            {
+                path: 'order',
+                name: 'user.order',
+                component: UserOrdersIndexView
+            },
+            {
+                path: 'order/:id',
+                name: 'user.order.show',
+                component: UserOrderShowView
+            },
+            {
+                path: 'transactions',
+                name: 'user.transactions',
+                component: UserTransactionsIndexView
+            },
+            {
+                path: 'transactions/:id',
+                name: 'user.transactions.show',
+                component: UserTransactionShowView
             }
         ]
     },
