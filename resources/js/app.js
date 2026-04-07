@@ -35,6 +35,7 @@ import AdminTransactionTable from './components/AdminTransactionTable.vue';
 import AdminOrderDetails from './components/AdminOrderDetails.vue';
 import ChatBox from './components/ChatBox.vue';
 import ServiceCatalogLoader from './components/ServiceCatalogLoader.vue';
+import ServiceSidebar from './components/ServiceSidebar.vue';
 
 const app = createApp(App);
 
@@ -75,5 +76,6 @@ app.component('admin-transaction-table', AdminTransactionTable);
 app.component('admin-order-details', AdminOrderDetails);
 app.component('chat-box', ChatBox);
 app.component('service-catalog-loader', ServiceCatalogLoader);
+app.component('service-sidebar', ServiceSidebar);
 
 app.mount('#app');

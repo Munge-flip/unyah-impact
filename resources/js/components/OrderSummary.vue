@@ -41,17 +41,20 @@
                 type="button" 
                 @click="submitForm"
                 class="submit-btn"
-                :disabled="!canPlaceOrder"
+                :disabled="!canPlaceOrder || submitting"
             >
-                Get Service
+                {{ submitting ? 'Processing...' : 'Get Service' }}
             </button>
         </div>
     </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { serviceStore } from '../stores/serviceStore';
+import axios from 'axios';
+
+const submitting = ref(false);
 
 const canPlaceOrder = computed(() => {
     return Object.keys(serviceStore.selectedServices).length > 0 && serviceStore.paymentMethod;
@@ -79,9 +82,30 @@ function formatItemPrice(category, item) {
     return `₱${item.price.toLocaleString()}`;
 }
 
-function submitForm() {
-    const form = document.getElementById('serviceForm');
-    if (form) form.submit();
+async function submitForm() {
+    if (!canPlaceOrder.value || submitting.value) return;
+
+    submitting.value = true;
+    try {
+        const response = await axios.post('/user/order', {
+            game: serviceStore.game,
+            service_category: serviceStore.categoryString,
+            service_type: serviceStore.serviceTypeString,
+            price: serviceStore.totalPriceRaw,
+            payment_method: serviceStore.paymentMethod
+        });
+
+        if (response.data.success) {
+            // Since we're in transition to full SPA, we'll use window.location
+            // but we can also use router.push if the route exists
+            window.location.href = response.data.redirect;
+        }
+    } catch (error) {
+        console.error('Order placement failed:', error);
+        alert('Failed to place order. Please check your inputs and ensure you are logged in.');
+    } finally {
+        submitting.value = false;
+    }
 }
 </script>
 
@@ -98,4 +122,8 @@ function submitForm() {
 .p-2 { padding: 0.5rem; }
 .bg-gray-100 { background-color: #f3f4f6; }
 .rounded { border-radius: 0.25rem; }
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 </style>

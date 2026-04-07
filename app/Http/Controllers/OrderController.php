@@ -31,6 +31,15 @@ class OrderController extends Controller
             'payment_status' => 'unpaid', 
         ]);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Order placed! Please submit your payment details below.',
+                'order_id' => $order->id,
+                'redirect' => "/user/order/{$order->id}"
+            ]);
+        }
+
         return redirect()->route('user.order.show', $order->id) // Redirect directly to the order to pay
             ->with('success', 'Order placed! Please submit your payment details below.');
     }

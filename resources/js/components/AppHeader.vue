@@ -46,19 +46,18 @@ const props = defineProps({
 const loggingOut = ref(false);
 
 async function handleLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-        loggingOut.value = true;
-        try {
-            await axios.post('/logout');
-            window.location.href = '/login'; // Refresh to clear session and state
-        } catch (error) {
+    loggingOut.value = true;
+    try {
+        await axios.post('/logout');
+        window.User = undefined;
+        window.location.href = '/login'; // Refresh to clear session and state
+    } catch (error) {
             console.error('Logout failed:', error);
             alert('Logout failed. Please try again.');
         } finally {
             loggingOut.value = false;
         }
     }
-}
 </script>
 
 <style scoped>
