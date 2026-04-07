@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
-        return view('auth.login');
+        return view('app');
     }
     public function login(Request $request)
     {
@@ -19,29 +19,48 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            $user = Auth::user();
 
-            $role = Auth::user()->role;
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'user' => $user,
+                    'redirect' => $user->role === 'admin' ? '/admin' : ($user->role === 'agent' ? '/agent' : '/user')
+                ]);
+            }
 
-            if ($role === 'admin') {
+            if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
 
-            if ($role === 'agent') {
+            if ($user->role === 'agent') {
                 return redirect()->route('agent.dashboard');
             }
 
             return redirect()->route('public.index');
         }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'The provided credentials do not match our records.',
+                'errors' => ['email' => ['The provided credentials do not match our records.']]
+            ], 422);
+        }
+
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
+
     public function showRegister()
     {
-        return view('auth.register');
+        return view('app'); // SPA entry point
     }
+
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -61,14 +80,27 @@ class AuthController extends Controller
 
         Auth::login($user);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'user' => $user,
+                'redirect' => '/user'
+            ]);
+        }
+
         return redirect()->route('public.index');
     }
+
     public function logout(Request $request)
     {
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'redirect' => '/login']);
+        }
 
         return redirect()->route('public.index');
     }

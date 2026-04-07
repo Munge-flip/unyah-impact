@@ -3,24 +3,25 @@
         <nav>
             <div class="weblogo-container">
                 <div class="weblogo-frame">
-                    <a :href="homeUrl">
+                    <router-link :to="homeUrl">
                         <img :src="logoUrl" alt="Logo" class="logo" />
-                    </a>
+                    </router-link>
                 </div>
             </div>
             
+            <div v-if="roleInfo" class="admin-info">
+                <span>{{ roleInfo }}</span>
+            </div>
+
             <ul>
                 <li v-for="link in navLinks" :key="link.url">
-                    <a :href="link.url" :class="link.class || ''">{{ link.label }}</a>
+                    <router-link :to="link.url" :class="link.class || ''" active-class="active">{{ link.label }}</router-link>
                 </li>
                 
-                <li v-if="isLoggedIn && logoutUrl">
-                    <form method="POST" :action="logoutUrl" style="display: inline;">
-                        <slot name="csrf"></slot>
-                        <button type="submit" class="logout-btn">
-                            Logout
-                        </button>
-                    </form>
+                <li v-if="isLoggedIn">
+                    <button @click="handleLogout" class="logout-btn" :disabled="loggingOut">
+                        {{ loggingOut ? 'Logging out...' : 'Logout' }}
+                    </button>
                 </li>
             </ul>
         </nav>
@@ -28,18 +29,36 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { ref, computed } from 'vue';
+import axios from 'axios';
 
 const props = defineProps({
     logoUrl: { type: String, default: '/img/weblogo.png' },
     homeUrl: { type: String, default: '/' },
     isLoggedIn: { type: Boolean, default: false },
-    logoutUrl: { type: String, default: '' },
     navLinks: {
         type: Array,
         default: () => []
-    }
+    },
+    roleInfo: { type: String, default: '' }
 });
+
+const loggingOut = ref(false);
+
+async function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        loggingOut.value = true;
+        try {
+            await axios.post('/logout');
+            window.location.href = '/login'; // Refresh to clear session and state
+        } catch (error) {
+            console.error('Logout failed:', error);
+            alert('Logout failed. Please try again.');
+        } finally {
+            loggingOut.value = false;
+        }
+    }
+}
 </script>
 
 <style scoped>
@@ -59,7 +78,8 @@ header nav ul li a {
   border-radius: 4px;
 }
 
-header nav ul li a:hover {
+header nav ul li a:hover,
+header nav ul li a.active {
   color: #a78bfa;
   background-color: rgba(167, 139, 250, 0.1);
 }
@@ -80,10 +100,11 @@ header nav ul li a:hover {
   border-radius: 4px;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white !important;
-  font-size: 16px !important;
-  padding: 8px 20px !important;
+.admin-info {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 20px;
+  flex: 1;
 }
 </style>

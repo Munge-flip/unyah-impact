@@ -1,9 +1,9 @@
 <template>
     <div :class="['frame', customClass]">
-        <a :href="link">
+        <router-link :to="link">
             <section :class="['label', labelClass]">{{ title }}</section>
             <img :src="image" :alt="title" :class="imageClass" />
-        </a>
+        </router-link>
     </div>
 </template>
 

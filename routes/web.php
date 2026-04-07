@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\AuthController;
 
-Route::get('/', [PageController::class, 'index'])->name('public.index');
+Route::get('/', function () {
+    return view('app');
+})->name('public.index');
 
 Route::prefix('services')->name('services.')->group(base_path('routes/services.php'));
 
@@ -28,3 +30,8 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:agent')
         ->group(base_path('routes/agent.php'));
 });
+
+// SPA Catch-all
+Route::get('/{any}', function () {
+    return view('app');
+})->where('any', '.*');

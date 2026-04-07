@@ -1,59 +1,84 @@
 <template>
-  <form class="form-content active" :action="action" method="POST">
-    <!-- Traditional CSRF Token for Laravel standard POST -->
-    <slot name="csrf"></slot>
-
-    <div v-if="errorEmail" class="alert-error">
-      {{ errorEmail }}
+  <div class="form-content active">
+    <div v-if="errorMsg" class="alert-error">
+      {{ errorMsg }}
     </div>
 
-    <div class="form-group">
-      <input 
-        type="email" 
-        name="email" 
-        placeholder="Email" 
-        required 
-        v-model="email"
-        :class="{ 'has-error': errorEmail }"
-      >
-    </div>
-    
-    <div class="form-group">
-      <input 
-        type="password" 
-        name="password" 
-        placeholder="Password" 
-        required 
-        v-model="password"
-      >
-    </div>
+    <form @submit.prevent="handleLogin">
+      <div class="form-group">
+        <input 
+          type="email" 
+          placeholder="Email" 
+          required 
+          v-model="email"
+          :class="{ 'has-error': errors.email }"
+          :disabled="loading"
+        >
+        <span v-if="errors.email" class="text-error">{{ errors.email[0] }}</span>
+      </div>
+      
+      <div class="form-group">
+        <input 
+          type="password" 
+          placeholder="Password" 
+          required 
+          v-model="password"
+          :disabled="loading"
+        >
+      </div>
 
-    <button type="submit" class="submit-btn">Sign In</button>
-  </form>
+      <button type="submit" class="submit-btn" :disabled="loading">
+        {{ loading ? 'Signing in...' : 'Sign In' }}
+      </button>
+    </form>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
+import axios from 'axios';
 
-const props = defineProps({
-  action: {
-    type: String,
-    required: true
-  },
-  errorEmail: {
-    type: String,
-    default: ''
-  },
-  initialEmail: {
-    type: String,
-    default: ''
-  }
-});
-
-const email = ref(props.initialEmail);
+const email = ref('');
 const password = ref('');
+const loading = ref(false);
+const errorMsg = ref('');
+const errors = reactive({});
+
+async function handleLogin() {
+    loading.value = true;
+    errorMsg.value = '';
+    Object.keys(errors).forEach(key => delete errors[key]);
+
+    try {
+        const response = await axios.post('/login', {
+            email: email.value,
+            password: password.value
+        });
+
+        if (response.data.success) {
+            // Update global user state if necessary
+            window.User = response.data.user;
+            window.location.href = response.data.redirect;
+        }
+    } catch (error) {
+        if (error.response && error.response.status === 422) {
+            Object.assign(errors, error.response.data.errors);
+            errorMsg.value = error.response.data.message;
+        } else {
+            errorMsg.value = 'An unexpected error occurred. Please try again.';
+        }
+    } finally {
+        loading.value = false;
+    }
+}
 </script>
 
 <style scoped>
-/* Inheriting styles from auth.css */
+.text-error {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-left: 20px;
+  display: block;
+}
 </style>

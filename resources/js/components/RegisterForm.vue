@@ -1,97 +1,120 @@
 <template>
-  <form class="form-content active" :action="action" method="POST">
-    <!-- Traditional CSRF Token for Laravel standard POST -->
-    <slot name="csrf"></slot>
-
-    <div class="form-group">
-      <input 
-        type="text" 
-        name="name" 
-        placeholder="Name" 
-        required 
-        v-model="name"
-        :class="{ 'has-error': errors.name }"
-      >
-      <span v-if="errors.name" class="text-error">{{ errors.name[0] }}</span>
+  <div class="form-content active">
+    <div v-if="errorMsg" class="alert-error">
+      {{ errorMsg }}
     </div>
 
-    <div class="form-group">
-      <input 
-        type="email" 
-        name="email" 
-        placeholder="Email" 
-        required 
-        v-model="email"
-        :class="{ 'has-error': errors.email }"
-      >
-      <span v-if="errors.email" class="text-error">{{ errors.email[0] }}</span>
-    </div>
+    <form @submit.prevent="handleRegister">
+      <div class="form-group">
+        <input 
+          type="text" 
+          placeholder="Name" 
+          required 
+          v-model="name"
+          :class="{ 'has-error': errors.name }"
+          :disabled="loading"
+        >
+        <span v-if="errors.name" class="text-error">{{ errors.name[0] }}</span>
+      </div>
 
-    <div class="form-group">
-      <input 
-        type="tel" 
-        name="phone" 
-        placeholder="Phone Number" 
-        required 
-        v-model="phone"
-        :class="{ 'has-error': errors.phone }"
-      >
-      <span v-if="errors.phone" class="text-error">{{ errors.phone[0] }}</span>
-    </div>
+      <div class="form-group">
+        <input 
+          type="email" 
+          placeholder="Email" 
+          required 
+          v-model="email"
+          :class="{ 'has-error': errors.email }"
+          :disabled="loading"
+        >
+        <span v-if="errors.email" class="text-error">{{ errors.email[0] }}</span>
+      </div>
 
-    <div class="form-group">
-      <input 
-        type="password" 
-        name="password" 
-        placeholder="Password" 
-        required 
-        v-model="password"
-        :class="{ 'has-error': errors.password }"
-      >
-      <span v-if="errors.password" class="text-error">{{ errors.password[0] }}</span>
-    </div>
+      <div class="form-group">
+        <input 
+          type="tel" 
+          placeholder="Phone Number" 
+          required 
+          v-model="phone"
+          :class="{ 'has-error': errors.phone }"
+          :disabled="loading"
+        >
+        <span v-if="errors.phone" class="text-error">{{ errors.phone[0] }}</span>
+      </div>
 
-    <div class="form-group">
-      <input 
-        type="password" 
-        name="password_confirmation" 
-        placeholder="Confirm Password" 
-        required 
-        v-model="passwordConfirmation"
-      >
-    </div>
+      <div class="form-group">
+        <input 
+          type="password" 
+          placeholder="Password" 
+          required 
+          v-model="password"
+          :class="{ 'has-error': errors.password }"
+          :disabled="loading"
+        >
+        <span v-if="errors.password" class="text-error">{{ errors.password[0] }}</span>
+      </div>
 
-    <button type="submit" class="submit-btn">Sign Up</button>
-  </form>
+      <div class="form-group">
+        <input 
+          type="password" 
+          placeholder="Confirm Password" 
+          required 
+          v-model="passwordConfirmation"
+          :disabled="loading"
+        >
+      </div>
+
+      <button type="submit" class="submit-btn" :disabled="loading">
+        {{ loading ? 'Signing up...' : 'Sign Up' }}
+      </button>
+    </form>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
+import axios from 'axios';
 
-const props = defineProps({
-  action: {
-    type: String,
-    required: true
-  },
-  errors: {
-    type: Object,
-    default: () => ({})
-  },
-  old: {
-    type: Object,
-    default: () => ({})
-  }
-});
-
-const name = ref(props.old.name || '');
-const email = ref(props.old.email || '');
-const phone = ref(props.old.phone || '');
+const name = ref('');
+const email = ref('');
+const phone = ref('');
 const password = ref('');
 const passwordConfirmation = ref('');
+const loading = ref(false);
+const errorMsg = ref('');
+const errors = reactive({});
+
+async function handleRegister() {
+    loading.value = true;
+    errorMsg.value = '';
+    Object.keys(errors).forEach(key => delete errors[key]);
+
+    try {
+        const response = await axios.post('/register', {
+            name: name.value,
+            email: email.value,
+            phone: phone.value,
+            password: password.value,
+            password_confirmation: passwordConfirmation.value
+        });
+
+        if (response.data.success) {
+            window.User = response.data.user;
+            window.location.href = response.data.redirect;
+        }
+    } catch (error) {
+        if (error.response && error.response.status === 422) {
+            Object.assign(errors, error.response.data.errors);
+            errorMsg.value = error.response.data.message;
+        } else {
+            errorMsg.value = 'An unexpected error occurred. Please try again.';
+        }
+    } finally {
+        loading.value = false;
+    }
+}
 </script>
 
 <style scoped>
-/* Inheriting styles from auth.css */
 .text-error {
   color: #e74c3c;
   font-size: 12px;
