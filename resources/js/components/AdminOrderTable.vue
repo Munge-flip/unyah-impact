@@ -55,7 +55,7 @@
               <td>{{ formatDate(order.created_at) }}</td>
               <td>
                 <router-link :to="`/admin/order/${order.id}`" class="action-link">View</router-link>
-                <button @click="deleteOrder(order.id)" class="action-link delete">Delete</button>
+                <button @click="confirmDelete(order)" class="action-link delete">Delete</button>
               </td>
             </tr>
             <tr v-if="orders.length === 0" class="empty-state-row">
@@ -88,12 +88,34 @@
         </button>
       </nav>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div v-if="showDeleteModal" class="modal" style="display: block;">
+      <div class="modal-content modal-small">
+        <div class="modal-header">
+          <h2>Delete Order?</h2>
+          <span class="close-modal" @click="showDeleteModal = false">&times;</span>
+        </div>
+        <div class="modal-body text-center" style="padding: 30px;">
+          <p class="mb-20">Are you sure you want to delete Order #{{ orderToDelete?.id }}? This action cannot be undone.</p>
+          <div class="modal-actions" style="display: flex; gap: 10px;">
+            <button type="button" @click="showDeleteModal = false" class="btn-secondary flex-1">
+              Cancel
+            </button>
+            <button type="button" @click="handleDelete" class="btn-danger flex-1" :disabled="deleting">
+              {{ deleting ? 'Deleting...' : 'Yes, Delete' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
+import StatusBadge from './StatusBadge.vue';
 
 const props = defineProps({
   apiUrl: { type: String, required: true }
@@ -108,6 +130,11 @@ const pagination = ref({
   total: 0
 });
 let searchTimeout = null;
+
+// Delete Modal State
+const showDeleteModal = ref(false);
+const orderToDelete = ref(null);
+const deleting = ref(false);
 
 async function fetchOrders(page = 1) {
   loading.value = true;
@@ -135,16 +162,26 @@ function changePage(page) {
   }
 }
 
-async function deleteOrder(id) {
-  if (!confirm('Are you sure you want to delete this order?')) return;
+function confirmDelete(order) {
+  orderToDelete.value = order;
+  showDeleteModal.value = true;
+}
+
+async function handleDelete() {
+  if (!orderToDelete.value) return;
+  deleting.value = true;
   
   try {
-    const response = await axios.delete(`${props.apiUrl}/${id}`);
+    const response = await axios.delete(`${props.apiUrl}/${orderToDelete.value.id}`);
     if (response.data.success) {
+      showDeleteModal.value = false;
       fetchOrders(pagination.value.current_page);
     }
   } catch (error) {
     alert('Failed to delete order. ' + (error.response?.data?.message || ''));
+  } finally {
+    deleting.value = false;
+    orderToDelete.value = null;
   }
 }
 
@@ -174,4 +211,39 @@ onMounted(() => fetchOrders());
 .ml-2 { margin-left: 0.5rem; }
 .pagination { display: flex; align-items: center; justify-content: center; }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  padding: 0;
+  border-radius: 15px;
+  overflow: hidden;
+  max-width: 400px;
+  width: 90%;
+}
+.modal-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.close-modal {
+  cursor: pointer;
+  font-size: 24px;
+}
+.modal-body {
+  padding: 20px;
+}
+.mb-20 { margin-bottom: 20px; }
+.flex-1 { flex: 1; }
 </style>

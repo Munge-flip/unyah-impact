@@ -131,8 +131,8 @@ async function handleVerify() {
   try {
     const response = await axios.patch(`/api/v1/admin/transactions/${transaction.value.id}/verify`, verifyForm);
     if (response.data.success) {
-      alert(response.data.message);
-      fetchTransaction();
+      // Redirect to orders table instead of alert
+      router.push('/admin/order');
     }
   } catch (error) {
     alert('Failed to verify transaction.');
