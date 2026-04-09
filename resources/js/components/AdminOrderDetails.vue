@@ -2,7 +2,7 @@
   <div v-if="orderData" class="order-details-container">
     <div class="section-header">
       <h1>Order Details</h1>
-      <a href="/admin/order" class="action-link">← Back to Orders</a>
+      <router-link to="/admin/order" class="action-link">← Back to Orders</router-link>
     </div>
 
     <!-- Status Card -->

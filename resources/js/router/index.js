@@ -5,6 +5,7 @@ const PublicLayout = () => import('../layouts/PublicLayout.vue');
 const AuthLayout = () => import('../layouts/AuthLayout.vue');
 const ServiceLayout = () => import('../layouts/ServiceLayout.vue');
 const UserLayout = () => import('../layouts/UserLayout.vue');
+const AdminLayout = () => import('../layouts/AdminLayout.vue');
 
 // Pages
 const HomeView = () => import('../views/public/HomeView.vue');
@@ -19,6 +20,23 @@ const UserOrdersIndexView = () => import('../views/user/UserOrdersIndexView.vue'
 const UserOrderShowView = () => import('../views/user/UserOrderShowView.vue');
 const UserTransactionsIndexView = () => import('../views/user/UserTransactionsIndexView.vue');
 const UserTransactionShowView = () => import('../views/user/UserTransactionShowView.vue');
+
+// Admin Pages
+const AdminDashboardView = () => import('../views/admin/AdminDashboardView.vue');
+const AdminAgentsIndexView = () => import('../views/admin/AdminAgentsIndexView.vue');
+const AdminAgentCreateView = () => import('../views/admin/AdminAgentCreateView.vue');
+const AdminOrdersIndexView = () => import('../views/admin/AdminOrdersIndexView.vue');
+const AdminOrderShowView = () => import('../views/admin/AdminOrderShowView.vue');
+const AdminProfileIndexView = () => import('../views/admin/AdminProfileIndexView.vue');
+const AdminProfileEditView = () => import('../views/admin/AdminProfileEditView.vue');
+const AdminProfilePasswordView = () => import('../views/admin/AdminProfilePasswordView.vue');
+const AdminServicesIndexView = () => import('../views/admin/AdminServicesIndexView.vue');
+const AdminServiceCreateView = () => import('../views/admin/AdminServiceCreateView.vue');
+const AdminServiceEditView = () => import('../views/admin/AdminServiceEditView.vue');
+const AdminTransactionsIndexView = () => import('../views/admin/AdminTransactionsIndexView.vue');
+const AdminTransactionShowView = () => import('../views/admin/AdminTransactionShowView.vue');
+const AdminUsersIndexView = () => import('../views/admin/AdminUsersIndexView.vue');
+const AdminUserEditView = () => import('../views/admin/AdminUserEditView.vue');
 
 // Service Views
 const GenshinView = () => import('../views/public/GenshinView.vue');
@@ -120,6 +138,87 @@ const routes = [
                 path: 'transactions/:id',
                 name: 'user.transactions.show',
                 component: UserTransactionShowView
+            }
+        ]
+    },
+    {
+        path: '/admin',
+        component: AdminLayout,
+        children: [
+            {
+                path: '',
+                name: 'admin.dashboard',
+                component: AdminDashboardView
+            },
+            {
+                path: 'agent',
+                name: 'admin.agent',
+                component: AdminAgentsIndexView
+            },
+            {
+                path: 'agent/create',
+                name: 'admin.agent.create',
+                component: AdminAgentCreateView
+            },
+            {
+                path: 'order',
+                name: 'admin.order',
+                component: AdminOrdersIndexView
+            },
+            {
+                path: 'order/:id',
+                name: 'admin.order.show',
+                component: AdminOrderShowView
+            },
+            {
+                path: 'profile',
+                name: 'admin.profile.index',
+                component: AdminProfileIndexView
+            },
+            {
+                path: 'profile/edit',
+                name: 'admin.profile.edit',
+                component: AdminProfileEditView
+            },
+            {
+                path: 'profile/password',
+                name: 'admin.profile.password',
+                component: AdminProfilePasswordView
+            },
+            {
+                path: 'services',
+                name: 'admin.services',
+                component: AdminServicesIndexView
+            },
+            {
+                path: 'services/create',
+                name: 'admin.services.create',
+                component: AdminServiceCreateView
+            },
+            {
+                path: 'services/:id/edit',
+                name: 'admin.services.edit',
+                component: AdminServiceEditView
+            },
+            {
+                path: 'transactions',
+                name: 'admin.transactions',
+                component: AdminTransactionsIndexView
+            },
+            {
+                path: 'transactions/:id',
+                name: 'admin.transactions.show',
+                component: AdminTransactionShowView
+            },
+            {
+                path: 'user',
+                name: 'admin.user',
+                component: AdminUsersIndexView
+            },
+            {
+                path: 'user/:id/edit',
+                name: 'admin.user.edit',
+                component: AdminUserEditView
             }
         ]
     },
