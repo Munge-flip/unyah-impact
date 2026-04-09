@@ -38,6 +38,7 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { authStore } from '../stores/authStore';
 
 const router = useRouter();
 const email = ref('');
@@ -58,18 +59,11 @@ async function handleLogin() {
         });
 
         if (response.data.success) {
-            // Correctly extract nested data
+            // Update reactive auth store
+            authStore.setUser(response.data.data.user, response.data.data.token);
+
+            // Derive redirect
             const userData = response.data.data.user;
-            const token = response.data.data.token;
-
-            // Update global user state
-            window.User = userData;
-            
-            // Store token for future API calls
-            localStorage.setItem('auth_token', token);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-            // Derive redirect if not provided by API
             const redirectPath = response.data.redirect || 
                                 (userData.role === 'admin' ? '/admin' : 
                                 (userData.role === 'agent' ? '/agent' : '/user'));

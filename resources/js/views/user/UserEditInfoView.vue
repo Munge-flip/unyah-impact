@@ -46,10 +46,11 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { authStore } from '../../stores/authStore';
 import InfoCard from '../../components/InfoCard.vue';
 
 const router = useRouter();
-const user = window.User || {};
+const user = authStore.user || {};
 
 const form = reactive({
   name: user.name || '',
@@ -69,7 +70,8 @@ async function handleUpdate() {
   try {
     const response = await axios.patch('/api/v1/user/profile', form);
     if (response.data.success) {
-      window.User = response.data.user;
+      // Update store
+      authStore.setUser(response.data.user);
       successMsg.value = response.data.message;
       setTimeout(() => {
         router.push('/user');

@@ -1,7 +1,7 @@
 <template>
   <div id="public-layout">
     <main>
-      <app-header :nav-links="navLinks" :is-logged-in="isLoggedIn" />
+      <app-header :nav-links="navLinks" />
       <router-view />
     </main>
     <app-footer />
@@ -10,10 +10,9 @@
 
 <script setup>
 import { computed } from 'vue';
+import { authStore } from '../stores/authStore';
 import AppHeader from '../components/AppHeader.vue';
 import AppFooter from '../components/AppFooter.vue';
-
-const isLoggedIn = computed(() => !!window.User);
 
 // In a real SPA, we would get this from a UserStore
 const navLinks = computed(() => {
@@ -21,7 +20,7 @@ const navLinks = computed(() => {
     { label: 'Home', url: '/' }
   ];
   
-  if (isLoggedIn.value) {
+  if (authStore.user) {
     links.push({ label: 'Profile', url: '/user', exact: true });
     links.push({ label: 'Track Order', url: '/user/order' });
   } else {

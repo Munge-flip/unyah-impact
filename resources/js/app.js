@@ -1,6 +1,7 @@
 import './bootstrap';
 import { createApp } from 'vue';
 import { serviceStore } from './stores/serviceStore';
+import { authStore } from './stores/authStore';
 import router from './router';
 import App from './App.vue';
 
@@ -37,45 +38,53 @@ import ChatBox from './components/ChatBox.vue';
 import ServiceCatalogLoader from './components/ServiceCatalogLoader.vue';
 import ServiceSidebar from './components/ServiceSidebar.vue';
 
-const app = createApp(App);
+async function initApp() {
+    // Re-hydrate session
+    await authStore.init();
 
-// Setup Store
-app.provide('serviceStore', serviceStore);
+    const app = createApp(App);
 
-// Use Router
-app.use(router);
+    // Setup Stores
+    app.provide('serviceStore', serviceStore);
+    app.provide('authStore', authStore);
 
-// Register All Components
-app.component('example-component', ExampleComponent);
-app.component('service-card', ServiceCard);
-app.component('app-header', AppHeader);
-app.component('app-footer', AppFooter);
-app.component('app-sidebar', AppSidebar);
-app.component('service-button', ServiceButton);
-app.component('service-category', ServiceCategory);
-app.component('exploration-grid', ExplorationGrid);
-app.component('world-selection', WorldSelection);
-app.component('mode-selection', ModeSelection);
-app.component('payment-section', PaymentSection);
-app.component('order-summary', OrderSummary);
-app.component('auth-card', AuthCard);
-app.component('login-form', LoginForm);
-app.component('register-form', RegisterForm);
-app.component('info-card', InfoCard);
-app.component('detail-row', DetailRow);
-app.component('status-badge', StatusBadge);
-app.component('profile-card', ProfileCard);
-app.component('stat-card', StatCard);
-app.component('agent-card', AgentCard);
-app.component('admin-card', AdminCard);
-app.component('agent-profile-card', AgentProfileCard);
-app.component('admin-dashboard-overview', AdminDashboardOverview);
-app.component('order-history-list', OrderHistoryList);
-app.component('admin-order-table', AdminOrderTable);
-app.component('admin-transaction-table', AdminTransactionTable);
-app.component('admin-order-details', AdminOrderDetails);
-app.component('chat-box', ChatBox);
-app.component('service-catalog-loader', ServiceCatalogLoader);
-app.component('service-sidebar', ServiceSidebar);
+    // Use Router
+    app.use(router);
 
-app.mount('#app');
+    // Register All Components
+    app.component('example-component', ExampleComponent);
+    app.component('service-card', ServiceCard);
+    app.component('app-header', AppHeader);
+    app.component('app-footer', AppFooter);
+    app.component('app-sidebar', AppSidebar);
+    app.component('service-button', ServiceButton);
+    app.component('service-category', ServiceCategory);
+    app.component('exploration-grid', ExplorationGrid);
+    app.component('world-selection', WorldSelection);
+    app.component('mode-selection', ModeSelection);
+    app.component('payment-section', PaymentSection);
+    app.component('order-summary', OrderSummary);
+    app.component('auth-card', AuthCard);
+    app.component('login-form', LoginForm);
+    app.component('register-form', RegisterForm);
+    app.component('info-card', InfoCard);
+    app.component('detail-row', DetailRow);
+    app.component('status-badge', StatusBadge);
+    app.component('profile-card', ProfileCard);
+    app.component('stat-card', StatCard);
+    app.component('agent-card', AgentCard);
+    app.component('admin-card', AdminCard);
+    app.component('agent-profile-card', AgentProfileCard);
+    app.component('admin-dashboard-overview', AdminDashboardOverview);
+    app.component('order-history-list', OrderHistoryList);
+    app.component('admin-order-table', AdminOrderTable);
+    app.component('admin-transaction-table', AdminTransactionTable);
+    app.component('admin-order-details', AdminOrderDetails);
+    app.component('chat-box', ChatBox);
+    app.component('service-catalog-loader', ServiceCatalogLoader);
+    app.component('service-sidebar', ServiceSidebar);
+
+    app.mount('#app');
+}
+
+initApp();

@@ -23,9 +23,9 @@
                     </router-link>
                 </li>
                 
-                <li v-if="isLoggedIn">
-                    <button @click="handleLogout" class="logout-btn" :disabled="loggingOut">
-                        {{ loggingOut ? 'Logging out...' : 'Logout' }}
+                <li v-if="authStore.user">
+                    <button @click="authStore.logout().then(() => router.push('/login'))" class="logout-btn" :disabled="authStore.loading">
+                        {{ authStore.loading ? 'Logging out...' : 'Logout' }}
                     </button>
                 </li>
             </ul>
@@ -36,12 +36,12 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
+import { authStore } from '../stores/authStore';
 
 const props = defineProps({
     logoUrl: { type: String, default: '/img/weblogo.png' },
     homeUrl: { type: String, default: '/' },
-    isLoggedIn: { type: Boolean, default: false },
+    isLoggedIn: { type: Boolean, default: false }, // Kept for prop compatibility
     navLinks: {
         type: Array,
         default: () => []
@@ -51,7 +51,6 @@ const props = defineProps({
 
 const route = useRoute();
 const router = useRouter();
-const loggingOut = ref(false);
 
 function isLinkActive(link) {
     if (link.exact) {
@@ -59,23 +58,6 @@ function isLinkActive(link) {
     }
     if (link.url === '/') return route.path === '/';
     return route.path.startsWith(link.url);
-}
-
-async function handleLogout() {
-    loggingOut.value = true;
-    try {
-        await axios.post('/api/logout');
-        window.User = undefined;
-        localStorage.removeItem('auth_token');
-        delete axios.defaults.headers.common['Authorization'];
-        // Clean SPA redirect
-        router.push('/login');
-    } catch (error) {
-        console.error('Logout failed:', error);
-        alert('Logout failed. Please try again.');
-    } finally {
-        loggingOut.value = false;
-    }
 }
 </script>
 

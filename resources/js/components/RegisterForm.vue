@@ -74,6 +74,7 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { authStore } from '../stores/authStore';
 
 const router = useRouter();
 const name = ref('');
@@ -91,7 +92,7 @@ async function handleRegister() {
     Object.keys(errors).forEach(key => delete errors[key]);
 
     try {
-        const response = await axios.post('/register', {
+        const response = await axios.post('/api/v1/register', {
             name: name.value,
             email: email.value,
             phone: phone.value,
@@ -100,8 +101,8 @@ async function handleRegister() {
         });
 
         if (response.data.success) {
-            // Update global user state
-            window.User = response.data.user;
+            // Update reactive auth store
+            authStore.setUser(response.data.user, response.data.token);
             // Smooth SPA navigation
             router.push(response.data.redirect);
         }
