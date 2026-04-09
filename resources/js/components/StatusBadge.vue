@@ -9,7 +9,7 @@ import { computed } from 'vue';
 
 const props = defineProps({
   status: { type: String, required: true },
-  type: { type: String, default: 'order' } // 'order', 'payment', 'role'
+  type: { type: String, default: 'order' } // 'order', 'payment', 'role', 'service'
 });
 
 const baseClass = computed(() => {
@@ -18,7 +18,7 @@ const baseClass = computed(() => {
 
 const badgeClass = computed(() => {
   if (props.type === 'payment') {
-    if (props.status === 'paid') return 'completed'; // or 'paid' based on CSS
+    if (props.status === 'paid') return 'completed';
     if (props.status === 'pending_verification') return 'in-progress';
     return 'pending'; // unpaid
   }
@@ -26,6 +26,10 @@ const badgeClass = computed(() => {
   if (props.type === 'role') {
     if (props.status === 'admin') return 'completed';
     return 'pending';
+  }
+
+  if (props.type === 'service') {
+    return props.status === 'active' ? 'completed' : 'pending';
   }
 
   // order/transaction statuses
@@ -40,6 +44,11 @@ const displayStatus = computed(() => {
     if (props.status === 'paid') return 'Paid';
     if (props.status === 'unpaid') return 'Unpaid';
   }
+  
+  if (props.type === 'service') {
+    return props.status === 'active' ? 'Active' : 'Inactive';
+  }
+
   return props.status.charAt(0).toUpperCase() + props.status.slice(1);
 });
 </script>

@@ -59,7 +59,7 @@
               <td>{{ service.name }}</td>
               <td>₱{{ formatPrice(service.price) }}</td>
               <td>
-                <status-badge :status="service.is_active ? 'completed' : 'pending'"></status-badge>
+                <status-badge :status="service.is_active ? 'active' : 'inactive'" type="service"></status-badge>
               </td>
               <td>{{ formatDate(service.created_at) }}</td>
               <td>
@@ -70,7 +70,7 @@
                   {{ service.is_active ? 'Deactivate' : 'Activate' }}
                 </button>
 
-                <button @click="deleteService(service.id)" class="action-link delete">Delete</button>
+                <button @click="confirmDelete(service)" class="action-link delete">Delete</button>
               </td>
             </tr>
             <tr v-if="services.length === 0" class="empty-state-row">
@@ -101,6 +101,27 @@
         </button>
       </nav>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div v-if="showDeleteModal" class="modal" style="display: block;">
+      <div class="modal-content modal-small">
+        <div class="modal-header">
+          <h2>Delete Service?</h2>
+          <span class="close-modal" @click="showDeleteModal = false">&times;</span>
+        </div>
+        <div class="modal-body text-center" style="padding: 30px;">
+          <p class="mb-20">Are you sure you want to delete <strong>{{ serviceToDelete?.name }}</strong>? This action cannot be undone.</p>
+          <div class="modal-actions" style="display: flex; gap: 10px;">
+            <button type="button" @click="showDeleteModal = false" class="btn-secondary flex-1">
+              Cancel
+            </button>
+            <button type="button" @click="handleDelete" class="btn-danger flex-1" :disabled="deleting">
+              {{ deleting ? 'Deleting...' : 'Yes, Delete' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -121,6 +142,11 @@ const pagination = ref({
   last_page: 1,
   total: 0
 });
+
+// Delete Modal State
+const showDeleteModal = ref(false);
+const serviceToDelete = ref(null);
+const deleting = ref(false);
 
 async function fetchServices(page = 1) {
   loading.value = true;
@@ -165,15 +191,25 @@ async function toggleStatus(service) {
   }
 }
 
-async function deleteService(id) {
-  if (!confirm('Are you sure you want to delete this service?')) return;
+function confirmDelete(service) {
+  serviceToDelete.value = service;
+  showDeleteModal.value = true;
+}
+
+async function handleDelete() {
+  if (!serviceToDelete.value) return;
+  deleting.value = true;
   try {
-    const response = await axios.delete(`/api/v1/admin/services/${id}`);
+    const response = await axios.delete(`/api/v1/admin/services/${serviceToDelete.value.id}`);
     if (response.data.success) {
+      showDeleteModal.value = false;
       fetchServices(pagination.value.current_page);
     }
   } catch (error) {
     alert('Failed to delete service.');
+  } finally {
+    deleting.value = false;
+    serviceToDelete.value = null;
   }
 }
 
@@ -223,4 +259,39 @@ onMounted(() => fetchServices());
   align-items: center;
   gap: 10px;
 }
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  padding: 0;
+  border-radius: 15px;
+  overflow: hidden;
+  max-width: 400px;
+  width: 90%;
+}
+.modal-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.close-modal {
+  cursor: pointer;
+  font-size: 24px;
+}
+.modal-body {
+  padding: 20px;
+}
+.mb-20 { margin-bottom: 20px; }
+.flex-1 { flex: 1; }
 </style>
