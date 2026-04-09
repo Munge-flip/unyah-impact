@@ -20,44 +20,52 @@ class OrderApiController extends Controller
         // Role-Based Filtering Logic
         if ($user->role === 'admin') {
             // ADMIN: Only show orders that have been VERIFIED (paid)
-            $query->where('payment_status', 'paid');
+            $query->select('orders.*')
+                ->leftJoin('transactions', function($join) {
+                    $join->on('orders.id', '=', 'transactions.order_id')
+                         ->where('transactions.status', '=', 'verified');
+                })
+                ->where('orders.payment_status', 'paid')
+                ->orderByRaw('transactions.verified_at DESC'); // Recently approved first
             
             if ($request->has('user_id')) {
-                $query->where('user_id', $request->user_id);
+                $query->where('orders.user_id', $request->user_id);
             }
             if ($request->has('agent_id')) {
-                $query->where('agent_id', $request->agent_id);
+                $query->where('orders.agent_id', $request->agent_id);
             }
         } 
         elseif ($user->role === 'agent') {
             // AGENT: Only show orders ASSIGNED to this agent
-            $query->where('agent_id', $user->id);
+            $query->where('agent_id', $user->id)
+                  ->orderBy('created_at', 'desc');
         } 
         else {
             // USER: Only show orders PLACED by this user
-            $query->where('user_id', $user->id);
+            $query->where('user_id', $user->id)
+                  ->orderBy('created_at', 'desc');
         }
 
         // Other shared filters
         if ($request->has('game')) {
-            $query->where('game', $request->game);
+            $query->where('orders.game', $request->game);
         }
         if ($request->has('status')) {
-            $query->where('status', $request->status);
+            $query->where('orders.status', $request->status);
         }
 
         // Instant Search Logic
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('id', 'like', "%{$search}%")
-                  ->orWhere('game', 'like', "%{$search}%")
-                  ->orWhere('service_type', 'like', "%{$search}%")
-                  ->orWhere('service_category', 'like', "%{$search}%");
+                $q->where('orders.id', 'like', "%{$search}%")
+                  ->orWhere('orders.game', 'like', "%{$search}%")
+                  ->orWhere('orders.service_type', 'like', "%{$search}%")
+                  ->orWhere('orders.service_category', 'like', "%{$search}%");
             });
         }
 
-        $orders = $query->orderBy('created_at', 'desc')->paginate($request->get('per_page', 10));
+        $orders = $query->paginate($request->get('per_page', 10));
 
         return response()->json([
             'success' => true,

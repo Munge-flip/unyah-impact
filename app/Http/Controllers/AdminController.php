@@ -74,8 +74,14 @@ class AdminController extends Controller
         $verifiedTransactions = \App\Models\Transaction::where('status', 'verified')->count();
         $totalTransactions = \App\Models\Transaction::count();
 
-        $recentOrders = Order::with('user')
-            ->latest()
+        $recentOrders = Order::select('orders.*')
+            ->leftJoin('transactions', function($join) {
+                $join->on('orders.id', '=', 'transactions.order_id')
+                     ->where('transactions.status', '=', 'verified');
+            })
+            ->with('user')
+            ->orderByRaw('transactions.verified_at DESC')
+            ->orderBy('orders.created_at', 'desc')
             ->take(5)
             ->get();
 
@@ -145,8 +151,14 @@ class AdminController extends Controller
 
     public function order()
     {
-        $orders = Order::with(['user', 'agent'])
-            ->orderBy('created_at', 'desc')
+        $orders = Order::select('orders.*')
+            ->leftJoin('transactions', function($join) {
+                $join->on('orders.id', '=', 'transactions.order_id')
+                     ->where('transactions.status', '=', 'verified');
+            })
+            ->with(['user', 'agent', 'transaction'])
+            ->orderByRaw('transactions.verified_at DESC') // Prioritize verified, newest first
+            ->orderBy('orders.created_at', 'desc')        // Then by creation date
             ->paginate(10);
 
         return response()->json([
