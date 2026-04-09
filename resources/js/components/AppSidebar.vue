@@ -29,7 +29,12 @@ const route = useRoute();
 
 function isLinkActive(item) {
   if (item.exact) {
-    return route.path === item.route;
+    // Check for exact match OR if current path is in the includes array
+    if (route.path === item.route) return true;
+    if (item.includes && Array.isArray(item.includes)) {
+      return item.includes.includes(route.path);
+    }
+    return false;
   }
   // Standard prefix matching for items like /user/order matching /user/order/31
   return route.path.startsWith(item.route);
