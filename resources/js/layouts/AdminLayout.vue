@@ -23,13 +23,14 @@ import { computed } from 'vue';
 
 const navLinks = [
   { label: 'Home', url: '/' },
-  { label: 'Profile', url: '/admin/profile' }
+  { label: 'Profile', url: '/admin/profile', exact: true }
 ];
 
 const adminMenu = [
   { 
     label: 'Overview', 
     route: '/admin', 
+    exact: true,
     icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>' 
   },
   { 
