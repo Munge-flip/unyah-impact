@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import axios from 'axios';
 
 const props = defineProps({
@@ -100,9 +100,10 @@ const pagination = ref({
   total: 0
 });
 let searchTimeout = null;
+let pollInterval = null;
 
-async function fetchTransactions(page = 1) {
-  loading.value = true;
+async function fetchTransactions(page = 1, showLoading = true) {
+  if (showLoading) loading.value = true;
   try {
     const response = await axios.get(props.apiUrl, {
       params: { 
@@ -117,8 +118,18 @@ async function fetchTransactions(page = 1) {
   } catch (error) {
     console.error('Failed to fetch transactions:', error);
   } finally {
-    loading.value = false;
+    if (showLoading) loading.value = false;
   }
+}
+
+function startPolling() {
+  // Refresh data every 30 seconds
+  pollInterval = setInterval(() => {
+    // Only auto-refresh if we are on page 1 and not searching
+    if (pagination.value.current_page === 1 && !searchQuery.value) {
+      fetchTransactions(1, false); // false = silent refresh without spinner
+    }
+  }, 30000);
 }
 
 function changePage(page) {
@@ -144,7 +155,14 @@ function formatPrice(val) {
   return Number(val).toLocaleString(undefined, { minimumFractionDigits: 2 });
 }
 
-onMounted(() => fetchTransactions());
+onMounted(() => {
+  fetchTransactions();
+  startPolling();
+});
+
+onUnmounted(() => {
+  if (pollInterval) clearInterval(pollInterval);
+});
 </script>
 
 <style scoped>

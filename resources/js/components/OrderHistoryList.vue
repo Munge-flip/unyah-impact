@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import axios from 'axios';
 
 const props = defineProps({
@@ -74,9 +74,10 @@ const orders = ref([]);
 const loading = ref(true);
 const searchQuery = ref('');
 let searchTimeout = null;
+let pollInterval = null;
 
-async function fetchOrders() {
-  loading.value = true;
+async function fetchOrders(showLoading = true) {
+  if (showLoading) loading.value = true;
   try {
     const response = await axios.get(props.apiUrl, {
       params: { search: searchQuery.value }
@@ -88,7 +89,7 @@ async function fetchOrders() {
   } catch (error) {
     console.error('Failed to fetch orders:', error);
   } finally {
-    loading.value = false;
+    if (showLoading) loading.value = false;
   }
 }
 
@@ -109,7 +110,19 @@ function formatPrice(val) {
   return Number(val).toLocaleString(undefined, { minimumFractionDigits: 2 });
 }
 
-onMounted(fetchOrders);
+onMounted(() => {
+  fetchOrders();
+  // Refresh every 30 seconds silently
+  pollInterval = setInterval(() => {
+    if (!searchQuery.value) {
+      fetchOrders(false);
+    }
+  }, 30000);
+});
+
+onUnmounted(() => {
+  if (pollInterval) clearInterval(pollInterval);
+});
 </script>
 
 <style scoped>

@@ -113,7 +113,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import axios from 'axios';
 import StatusBadge from './StatusBadge.vue';
 
@@ -130,14 +130,15 @@ const pagination = ref({
   total: 0
 });
 let searchTimeout = null;
+let pollInterval = null;
 
 // Delete Modal State
 const showDeleteModal = ref(false);
 const orderToDelete = ref(null);
 const deleting = ref(false);
 
-async function fetchOrders(page = 1) {
-  loading.value = true;
+async function fetchOrders(page = 1, showLoading = true) {
+  if (showLoading) loading.value = true;
   try {
     const response = await axios.get(props.apiUrl, {
       params: { 
@@ -152,8 +153,17 @@ async function fetchOrders(page = 1) {
   } catch (error) {
     console.error('Failed to fetch orders:', error);
   } finally {
-    loading.value = false;
+    if (showLoading) loading.value = false;
   }
+}
+
+function startPolling() {
+  pollInterval = setInterval(() => {
+    // Only auto-refresh if we are on page 1 and not searching or in a modal
+    if (pagination.value.current_page === 1 && !searchQuery.value && !showDeleteModal.value) {
+      fetchOrders(1, false);
+    }
+  }, 30000);
 }
 
 function changePage(page) {
@@ -203,7 +213,14 @@ function formatPrice(val) {
   return Number(val).toLocaleString(undefined, { minimumFractionDigits: 2 });
 }
 
-onMounted(() => fetchOrders());
+onMounted(() => {
+  fetchOrders();
+  startPolling();
+});
+
+onUnmounted(() => {
+  if (pollInterval) clearInterval(pollInterval);
+});
 </script>
 
 <style scoped>

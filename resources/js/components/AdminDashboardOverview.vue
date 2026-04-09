@@ -144,7 +144,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
 
 const props = defineProps({
@@ -159,6 +159,7 @@ const recentOrders = ref(props.initialOrders);
 const recentTransactions = ref(props.initialTransactions);
 const activeTab = ref('orders');
 const loading = ref(false);
+let pollInterval = null;
 
 const activeTabStyle = {
   padding: '10px 20px',
@@ -179,8 +180,8 @@ const inactiveTabStyle = {
   color: '#888'
 };
 
-async function refreshStats() {
-  loading.value = true;
+async function refreshStats(showLoading = true) {
+  if (showLoading) loading.value = true;
   try {
     const response = await axios.get(props.apiUrl);
     if (response.data.success) {
@@ -190,16 +191,22 @@ async function refreshStats() {
     }
   } catch (error) {
     console.error('Failed to refresh stats:', error);
-    alert('Error refreshing data from database.');
+    if (showLoading) alert('Error refreshing data from database.');
   } finally {
-    loading.value = false;
+    if (showLoading) loading.value = false;
   }
 }
 
-// Optional: Auto-refresh every 30 seconds
-// onMounted(() => {
-//   setInterval(refreshStats, 30000);
-// });
+onMounted(() => {
+  // Auto-refresh every 30 seconds
+  pollInterval = setInterval(() => {
+    refreshStats(false); // Silent refresh
+  }, 30000);
+});
+
+onUnmounted(() => {
+  if (pollInterval) clearInterval(pollInterval);
+});
 </script>
 
 <style scoped>
