@@ -123,13 +123,14 @@
 
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import InfoCard from '../../components/InfoCard.vue';
 import DetailRow from '../../components/DetailRow.vue';
 import StatusBadge from '../../components/StatusBadge.vue';
 
 const route = useRoute();
+const router = useRouter();
 const order = ref(null);
 const loading = ref(true);
 const showModal = ref(false);
@@ -177,8 +178,8 @@ async function handlePaymentSubmit() {
     });
     if (response.data.success) {
       showModal.value = false;
-      alert('Payment submitted! It is now pending verification.');
-      await fetchOrder(); // Refresh data to get the new transaction ID
+      // Redirect to transaction details instead of alert
+      router.push(`/user/transactions/${response.data.data.id}`);
     }
   } catch (error) {
     console.error('Payment submission failed:', error);
