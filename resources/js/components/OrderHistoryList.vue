@@ -44,17 +44,17 @@
         </div>
 
         <div class="order-actions">
-          <a :href="`${viewBaseUrl}/${order.id}`" class="action-btn primary">View</a>
-          <a :href="`${viewBaseUrl}/${order.id}/chat`" class="action-btn secondary">
+          <router-link :to="`${viewBaseUrl}/${order.id}`" class="action-btn primary">View</router-link>
+          <router-link :to="`${viewBaseUrl}/${order.id}/chat`" class="action-btn secondary">
             Chat with {{ isAgent ? 'User' : 'Agent' }}
-          </a>
+          </router-link>
         </div>
       </div>
 
       <!-- Empty State -->
       <div v-if="orders.length === 0" class="order-card" style="text-align: center; color: #888;">
         <p v-if="searchQuery">No orders matching "{{ searchQuery }}"</p>
-        <p v-else>No orders found. <a v-if="!isAgent" href="/" style="color: #667eea;">Book a service now!</a></p>
+        <p v-else>No orders found. <router-link v-if="!isAgent" to="/" style="color: #667eea;">Book a service now!</router-link></p>
       </div>
     </template>
   </div>

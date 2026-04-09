@@ -35,7 +35,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
 const props = defineProps({
@@ -50,6 +50,7 @@ const props = defineProps({
 });
 
 const route = useRoute();
+const router = useRouter();
 const loggingOut = ref(false);
 
 function isLinkActive(link) {
@@ -65,7 +66,8 @@ async function handleLogout() {
     try {
         await axios.post('/logout');
         window.User = undefined;
-        window.location.href = '/login';
+        // Clean SPA redirect
+        router.push('/login');
     } catch (error) {
         console.error('Logout failed:', error);
         alert('Logout failed. Please try again.');

@@ -1,32 +1,28 @@
 <template>
   <div class="info-card">
-    <div v-if="title || $slots.header || manageRoute" class="card-header">
-      <div v-if="$slots.header" style="flex: 1;">
-        <slot name="header"></slot>
-      </div>
-      <h3 v-else>{{ title }}</h3>
-      
-      <a v-if="manageRoute" :href="manageRoute" class="edit-btn">Manage →</a>
-      <slot name="action"></slot>
+    <div class="card-header">
+      <slot name="header">
+        <h3 v-if="title">{{ title }}</h3>
+      </slot>
+      <slot name="action">
+        <router-link v-if="manageRoute" :to="manageRoute" class="edit-btn">Manage →</router-link>
+      </slot>
     </div>
     
-    <div :class="{'info-body': useBody}">
+    <div :class="{ 'card-body': useBody }">
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   title: String,
   manageRoute: String,
-  useBody: {
-    type: Boolean,
-    default: false
-  }
+  useBody: { type: Boolean, default: false }
 });
 </script>
 
 <style scoped>
-/* Inheriting from dashboard.css */
+/* Core styles inherited from app.css */
 </style>

@@ -2,54 +2,56 @@
   <div class="agent-card">
     <div class="agent-header">
       <div class="agent-avatar">
-        {{ initials }}
+        {{ getInitials(name) }}
       </div>
       <div class="agent-info">
-        <h3>{{ agent.name }}</h3>
-        <p class="agent-id">ID: #{{ agent.id }}</p>
+        <h3>{{ name }}</h3>
+        <span class="agent-id">ID: #{{ id }}</span>
       </div>
-      <div class="agent-stats">
-        <span class="stat-badge">{{ agent.tasks_count || 0 }} Active Orders</span>
+      <div class="agent-status">
+        <span class="stat-badge">{{ status }}</span>
       </div>
     </div>
 
     <div class="agent-details">
       <div class="detail-item">
-        <span>Orders Handling:</span>
-        <strong>{{ agent.tasks_count || 0 }}</strong>
+        <span>Active Orders:</span>
+        <strong>{{ activeOrders }}</strong>
       </div>
       <div class="detail-item">
-        <span>Status:</span>
-        <span class="badge in-progress">Active</span>
+        <span>Completed:</span>
+        <strong>{{ completedOrders }}</strong>
       </div>
     </div>
 
     <div class="agent-actions">
-      <a v-if="ordersRoute" :href="ordersRoute" class="btn-secondary">
+      <router-link v-if="ordersRoute" :to="ordersRoute" class="btn-secondary">
         View Orders
-      </a>
-      <a v-if="manageRoute" :href="manageRoute" class="btn-danger">
-        Manage
-      </a>
+      </router-link>
+      <router-link v-if="manageRoute" :to="manageRoute" class="btn-danger">
+        Manage Agent
+      </router-link>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
-
 const props = defineProps({
-  agent: { type: Object, required: true },
-  ordersRoute: { type: String, default: '' },
-  manageRoute: { type: String, default: '' }
+  id: [Number, String],
+  name: String,
+  status: { type: String, default: 'Active' },
+  activeOrders: { type: Number, default: 0 },
+  completedOrders: { type: Number, default: 0 },
+  ordersRoute: String,
+  manageRoute: String
 });
 
-const initials = computed(() => {
-  if (!props.agent.name) return '??';
-  return props.agent.name.substring(0, 2).toUpperCase();
-});
+function getInitials(name) {
+  if (!name) return '??';
+  return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+}
 </script>
 
 <style scoped>
-/* Inheriting from dashboard.css */
+/* Inherits from dashboard.css */
 </style>

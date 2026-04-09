@@ -72,8 +72,10 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
+const router = useRouter();
 const name = ref('');
 const email = ref('');
 const phone = ref('');
@@ -98,8 +100,10 @@ async function handleRegister() {
         });
 
         if (response.data.success) {
+            // Update global user state
             window.User = response.data.user;
-            window.location.href = response.data.redirect;
+            // Smooth SPA navigation
+            router.push(response.data.redirect);
         }
     } catch (error) {
         if (error.response && error.response.status === 422) {

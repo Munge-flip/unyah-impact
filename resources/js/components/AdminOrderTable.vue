@@ -54,7 +54,7 @@
               <td>₱{{ formatPrice(order.price) }}</td>
               <td>{{ formatDate(order.created_at) }}</td>
               <td>
-                <a :href="`/admin/order/${order.id}`" class="action-link">View</a>
+                <router-link :to="`/admin/order/${order.id}`" class="action-link">View</router-link>
                 <button @click="deleteOrder(order.id)" class="action-link delete">Delete</button>
               </td>
             </tr>

@@ -36,9 +36,9 @@
             <tr v-for="t in transactions" :key="t.id">
               <td>#{{ t.id }}</td>
               <td>
-                <a :href="`/admin/order/${t.order_id}`" style="color: #667eea; text-decoration: underline;">
+                <router-link :to="`/admin/order/${t.order_id}`" style="color: #667eea; text-decoration: underline;">
                   #{{ t.order_id }}
-                </a>
+                </router-link>
               </td>
               <td>{{ t.user?.name || 'Unknown' }}</td>
               <td>₱{{ formatPrice(t.amount) }}</td>
@@ -49,7 +49,7 @@
               </td>
               <td>{{ formatDate(t.created_at) }}</td>
               <td>
-                <a :href="`/admin/transactions/${t.id}`" class="action-link">View Details</a>
+                <router-link :to="`/admin/transactions/${t.id}`" class="action-link">View Details</router-link>
               </td>
             </tr>
             <tr v-if="transactions.length === 0" class="empty-state-row">
