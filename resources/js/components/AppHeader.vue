@@ -15,7 +15,12 @@
 
             <ul>
                 <li v-for="link in navLinks" :key="link.url">
-                    <router-link :to="link.url" :class="link.class || ''" active-class="active">{{ link.label }}</router-link>
+                    <router-link 
+                        :to="link.url" 
+                        :class="[link.class || '', { 'active': isLinkActive(link) }]" 
+                    >
+                        {{ link.label }}
+                    </router-link>
                 </li>
                 
                 <li v-if="isLoggedIn">
@@ -30,6 +35,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import axios from 'axios';
 
 const props = defineProps({
@@ -43,21 +49,30 @@ const props = defineProps({
     roleInfo: { type: String, default: '' }
 });
 
+const route = useRoute();
 const loggingOut = ref(false);
+
+function isLinkActive(link) {
+    if (link.exact) {
+        return route.path === link.url;
+    }
+    if (link.url === '/') return route.path === '/';
+    return route.path.startsWith(link.url);
+}
 
 async function handleLogout() {
     loggingOut.value = true;
     try {
         await axios.post('/logout');
         window.User = undefined;
-        window.location.href = '/login'; // Refresh to clear session and state
+        window.location.href = '/login';
     } catch (error) {
-            console.error('Logout failed:', error);
-            alert('Logout failed. Please try again.');
-        } finally {
-            loggingOut.value = false;
-        }
+        console.error('Logout failed:', error);
+        alert('Logout failed. Please try again.');
+    } finally {
+        loggingOut.value = false;
     }
+}
 </script>
 
 <style scoped>

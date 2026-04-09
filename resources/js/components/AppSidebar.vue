@@ -6,7 +6,7 @@
         :key="item.route" 
         :to="item.route"
         class="menu-btn"
-        exact-active-class="active"
+        :class="{ 'active': isLinkActive(item) }"
       >
         <span v-html="item.icon"></span>
         {{ item.label }}
@@ -16,13 +16,24 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router';
+
 const props = defineProps({
   menuItems: {
     type: Array,
     required: true,
-    // Expected structure: { label: 'Home', route: '/', icon: '<svg>...' }
   }
 });
+
+const route = useRoute();
+
+function isLinkActive(item) {
+  if (item.exact) {
+    return route.path === item.route;
+  }
+  // Standard prefix matching for items like /user/order matching /user/order/31
+  return route.path.startsWith(item.route);
+}
 </script>
 
 <style scoped>

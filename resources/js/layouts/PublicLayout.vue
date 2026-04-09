@@ -22,7 +22,7 @@ const navLinks = computed(() => {
   ];
   
   if (isLoggedIn.value) {
-    links.push({ label: 'Profile', url: '/user' });
+    links.push({ label: 'Profile', url: '/user', exact: true });
     links.push({ label: 'Track Order', url: '/user/order' });
   } else {
     links.push({ label: 'Sign In', url: '/login' });

@@ -36,11 +36,11 @@ class OrderController extends Controller
                 'success' => true,
                 'message' => 'Order placed! Please submit your payment details below.',
                 'order_id' => $order->id,
-                'redirect' => "/user/transactions"
+                'redirect' => "/user/order/{$order->id}"
             ]);
         }
 
-        return redirect()->route('user.transactions') // Redirect to transactions
+        return redirect()->route('user.order.show', $order->id) // Redirect to specific order
             ->with('success', 'Order placed! Please submit your payment details below.');
     }
 }
