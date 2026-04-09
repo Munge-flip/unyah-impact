@@ -89,7 +89,7 @@ async function submitForm() {
 
     submitting.value = true;
     try {
-        const response = await axios.post('/user/order', {
+        const response = await axios.post('/api/v1/user/orders', {
             game: serviceStore.game,
             service_category: serviceStore.categoryString,
             service_type: serviceStore.serviceTypeString,

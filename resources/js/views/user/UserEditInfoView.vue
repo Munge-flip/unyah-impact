@@ -67,7 +67,7 @@ async function handleUpdate() {
   Object.keys(errors).forEach(key => delete errors[key]);
 
   try {
-    const response = await axios.patch('/user/profile/update', form);
+    const response = await axios.patch('/api/v1/user/profile', form);
     if (response.data.success) {
       window.User = response.data.user;
       successMsg.value = response.data.message;

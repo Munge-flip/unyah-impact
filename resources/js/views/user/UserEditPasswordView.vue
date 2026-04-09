@@ -70,7 +70,7 @@ async function handleUpdate() {
   Object.keys(errors).forEach(key => delete errors[key]);
 
   try {
-    const response = await axios.put('/user/password/update', form);
+    const response = await axios.put('/api/v1/user/password', form);
     if (response.data.success) {
       successMsg.value = response.data.message;
       form.current_password = '';

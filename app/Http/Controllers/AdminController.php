@@ -13,12 +13,18 @@ class AdminController extends Controller
 {
     public function profile()
     {
-        return view('admin.profile.index');
+        return response()->json([
+            'success' => true,
+            'data' => Auth::user()
+        ]);
     }
+
     public function editProfile()
     {
-        return view('admin.profile.edit');
+        // In SPA, this just returns the same user data or redirects handled by frontend
+        return $this->profile();
     }
+
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
@@ -31,16 +37,11 @@ class AdminController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('admin.profile.index')
-            ->with('success', 'Profile updated successfully.');
-    }
-
-    /**
-     * Show change password form
-     */
-    public function editPassword()
-    {
-        return view('admin.profile.password');
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile updated successfully.',
+            'data' => $user
+        ]);
     }
 
     /**
@@ -57,8 +58,10 @@ class AdminController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return redirect()->route('admin.profile.index')
-            ->with('success', 'Password changed successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Password changed successfully.'
+        ]);
     }
 
     public function index()
@@ -81,23 +84,28 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        return view("admin.dashboard", compact(
-            'totalOrders',
-            'activeAgents',
-            'totalUsers',
-            'revenue',
-            'recentOrders',
-            'pendingTransactions',
-            'verifiedTransactions',
-            'totalTransactions',
-            'recentTransactions'
-
-        ));
+        return response()->json([
+            'success' => true,
+            'stats' => [
+                'totalOrders' => $totalOrders,
+                'activeAgents' => $activeAgents,
+                'totalUsers' => $totalUsers,
+                'revenue' => (float) $revenue,
+                'pendingTransactions' => $pendingTransactions,
+                'verifiedTransactions' => $verifiedTransactions,
+                'totalTransactions' => $totalTransactions,
+            ],
+            'recentOrders' => $recentOrders,
+            'recentTransactions' => $recentTransactions
+        ]);
     }
+
     public function create()
     {
-        return view('admin.agents.create');
+        // Not used in SPA, frontend handles form
+        return response()->json(['success' => true]);
     }
+
     public function agent()
     {
         $agents = User::where('role', 'agent')
@@ -105,8 +113,12 @@ class AdminController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view("admin.agents.index", compact('agents'));
+        return response()->json([
+            'success' => true,
+            'data' => $agents
+        ]);
     }
+
     public function storeAgent(Request $request)
     {
         $validated = $request->validate([
@@ -115,7 +127,8 @@ class AdminController extends Controller
             'phone' => 'required|string|max:20',
             'password' => 'required|string|min:8',
         ]);
-        User::create([
+
+        $agent = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],
@@ -123,36 +136,72 @@ class AdminController extends Controller
             'role' => 'agent',
         ]);
 
-        return redirect()->route('admin.agent')->with('success', 'Agent added successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'Agent added successfully',
+            'data' => $agent
+        ], 201);
     }
+
     public function order()
     {
         $orders = Order::with(['user', 'agent'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view("admin.orders.index", compact('orders'));
+        return response()->json([
+            'success' => true,
+            'data' => $orders->items(),
+            'meta' => [
+                'current_page' => $orders->currentPage(),
+                'last_page' => $orders->lastPage(),
+                'total' => $orders->total(),
+            ]
+        ]);
     }
+
     public function destroyOrder($id)
     {
         Order::findOrFail($id)->delete();
-        return back()->with('success', 'Order deleted successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'Order deleted successfully'
+        ]);
     }
+
     public function user()
     {
         $users = User::orderBy('created_at', 'desc')->paginate(10);
-        return view("admin.users.index", compact('users'));
+        
+        return response()->json([
+            'success' => true,
+            'data' => $users->items(),
+            'meta' => [
+                'current_page' => $users->currentPage(),
+                'last_page' => $users->lastPage(),
+                'total' => $users->total(),
+            ]
+        ]);
     }
+
     public function destroyUser($id)
     {
         User::findOrFail($id)->delete();
-        return back()->with('success', 'User deleted successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully'
+        ]);
     }
+
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('admin.users.edit', compact('user'));
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ]);
     }
+
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -174,16 +223,28 @@ class AdminController extends Controller
             $user->password = Hash::make($validated['password']);
         }
         $user->save();
-        return redirect()->route('admin.user')->with('success', 'User updated successfully');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User updated successfully',
+            'data' => $user
+        ]);
     }
+
     public function show($id)
     {
         $order = Order::with(['user', 'agent'])->findOrFail($id);
-
         $agents = User::where('role', 'agent')->get();
 
-        return view('admin.orders.show', compact('order', 'agents'));
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'order' => $order,
+                'agents' => $agents
+            ]
+        ]);
     }
+
     public function assignAgent(Request $request, $id)
     {
         $order = Order::findOrFail($id);
@@ -198,6 +259,10 @@ class AdminController extends Controller
         }
         $order->save();
 
-        return back()->with('success', 'Agent assigned successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Agent assigned successfully.',
+            'data' => $order->load(['user', 'agent'])
+        ]);
     }
 }

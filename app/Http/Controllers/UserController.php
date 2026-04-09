@@ -12,33 +12,50 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view("app");
+        return response()->json([
+            'success' => true,
+            'data' => Auth::user()
+        ]);
     }
+
     public function orders()
     {
-        return view("app");
+        $orders = Auth::user()->orders()
+            ->with(['agent', 'transaction'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return response()->json([
+            'success' => true,
+            'data' => $orders->items(),
+            'meta' => [
+                'current_page' => $orders->currentPage(),
+                'last_page' => $orders->lastPage(),
+                'total' => $orders->total(),
+            ]
+        ]);
     }
+
     public function show($id)
     {
         $order = Auth::user()->orders()->with(['user', 'agent', 'transaction'])->findOrFail($id);
 
-        if (request()->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'data' => $order
-            ]);
-        }
-
-        return view('app');
+        return response()->json([
+            'success' => true,
+            'data' => $order
+        ]);
     }
+
     public function edit()
     {
-        return view('app');
+        return $this->index();
     }
+
     public function editPassword()
     {
-        return view('app');
+        return $this->index();
     }
+
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
@@ -51,18 +68,13 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        if ($request->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Profile updated successfully.',
-                'user' => $user
-            ]);
-        }
-
-        return redirect()->route('user.dashboard')->with('success', 'Profile updated successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile updated successfully.',
+            'user' => $user
+        ]);
     }
 
-    // 2. Handle Password Update
     public function updatePassword(Request $request)
     {
         $validated = $request->validate([
@@ -74,15 +86,12 @@ class UserController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        if ($request->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Password changed successfully.'
-            ]);
-        }
-
-        return redirect()->route('user.dashboard')->with('success', 'Password changed successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Password changed successfully.'
+        ]);
     }
+
     public function payNow($id)
     {
         $order = Auth::user()->orders()->findOrFail($id);
@@ -90,6 +99,10 @@ class UserController extends Controller
         $order->payment_status = 'paid';
         $order->save();
 
-        return back()->with('success', 'Payment successful!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment successful!',
+            'data' => $order
+        ]);
     }
 }

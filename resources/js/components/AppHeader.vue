@@ -64,8 +64,10 @@ function isLinkActive(link) {
 async function handleLogout() {
     loggingOut.value = true;
     try {
-        await axios.post('/logout');
+        await axios.post('/api/logout');
         window.User = undefined;
+        localStorage.removeItem('auth_token');
+        delete axios.defaults.headers.common['Authorization'];
         // Clean SPA redirect
         router.push('/login');
     } catch (error) {

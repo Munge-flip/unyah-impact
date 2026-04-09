@@ -15,7 +15,10 @@ class ServiceController extends Controller
             ->get()
             ->groupBy('category_name');
 
-        return view('services.genshin', compact('services'));
+        return response()->json([
+            'success' => true,
+            'data' => $services
+        ]);
     }
 
     public function hsr()
@@ -25,7 +28,10 @@ class ServiceController extends Controller
             ->get()
             ->groupBy('category_name');
 
-        return view('services.hsr', compact('services'));
+        return response()->json([
+            'success' => true,
+            'data' => $services
+        ]);
     }
 
     public function zzz()
@@ -35,6 +41,9 @@ class ServiceController extends Controller
             ->get()
             ->groupBy('category_name');
 
-        return view('services.zzz', compact('services'));
+        return response()->json([
+            'success' => true,
+            'data' => $services
+        ]);
     }
 }

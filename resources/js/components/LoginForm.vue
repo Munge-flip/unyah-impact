@@ -52,16 +52,30 @@ async function handleLogin() {
     Object.keys(errors).forEach(key => delete errors[key]);
 
     try {
-        const response = await axios.post('/login', {
+        const response = await axios.post('/api/v1/login', {
             email: email.value,
             password: password.value
         });
 
         if (response.data.success) {
+            // Correctly extract nested data
+            const userData = response.data.data.user;
+            const token = response.data.data.token;
+
             // Update global user state
-            window.User = response.data.user;
+            window.User = userData;
+            
+            // Store token for future API calls
+            localStorage.setItem('auth_token', token);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+            // Derive redirect if not provided by API
+            const redirectPath = response.data.redirect || 
+                                (userData.role === 'admin' ? '/admin' : 
+                                (userData.role === 'agent' ? '/agent' : '/user'));
+
             // Smooth SPA navigation
-            router.push(response.data.redirect);
+            router.push(redirectPath);
         }
     } catch (error) {
         if (error.response && error.response.status === 422) {

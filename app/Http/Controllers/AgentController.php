@@ -12,24 +12,7 @@ class AgentController extends Controller
 {
     public function index()
     {
-        $agent = Auth::user();
-
-        $ordersHandling = $agent->tasks()->where('status', '!=', 'completed')->count();
-
-        $completedCount = $agent->tasks()->where('status', 'completed')->count();
-
-        $totalAssigned = $agent->tasks()->count();
-
-        $completionRate = $totalAssigned > 0
-            ? round(($completedCount / $totalAssigned) * 100) . '%'
-            : '0%';
-
-        return view("agent.dashboard.index", compact(
-            'agent',
-            'ordersHandling',
-            'completedCount',
-            'completionRate'
-        ));
+        return $this->apiStats();
     }
 
     public function apiStats()
@@ -44,6 +27,7 @@ class AgentController extends Controller
 
         return response()->json([
             'success' => true,
+            'agent' => $agent,
             'stats' => [
                 'handling' => $ordersHandling,
                 'completed' => $completedCount,
@@ -51,6 +35,7 @@ class AgentController extends Controller
             ]
         ]);
     }
+
     public function order()
     {
         $orders = Auth::user()->tasks()
@@ -58,21 +43,39 @@ class AgentController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(5);
 
-        return view("agent.orders.index", compact('orders'));
+        return response()->json([
+            'success' => true,
+            'data' => $orders->items(),
+            'meta' => [
+                'current_page' => $orders->currentPage(),
+                'last_page' => $orders->lastPage(),
+                'total' => $orders->total(),
+            ]
+        ]);
     }
+
     public function edit()
     {
-        return view('agent.dashboard.edit-info');
+        return response()->json([
+            'success' => true,
+            'data' => Auth::user()
+        ]);
     }
+
     public function update()
     {
-        return view('agent.dashboard.edit-password');
+        return $this->edit();
     }
+
     public function show($id)
     {
         $order = Auth::user()->tasks()->with('user')->findOrFail($id);
-        return view('agent.orders.show', compact('order'));
+        return response()->json([
+            'success' => true,
+            'data' => $order
+        ]);
     }
+
     public function completeOrder($id)
     {
         $order = Auth::user()->tasks()->findOrFail($id);
@@ -80,8 +83,13 @@ class AgentController extends Controller
         $order->status = 'completed';
         $order->save();
 
-        return back()->with('success', 'Order marked as completed.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Order marked as completed.',
+            'data' => $order
+        ]);
     }
+
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
@@ -94,7 +102,11 @@ class AgentController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('agent.dashboard')->with('success', 'Profile updated successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile updated successfully.',
+            'data' => $user
+        ]);
     }
 
     public function updatePassword(Request $request)
@@ -108,6 +120,9 @@ class AgentController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return redirect()->route('agent.dashboard')->with('success', 'Password changed successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Password changed successfully.'
+        ]);
     }
 }

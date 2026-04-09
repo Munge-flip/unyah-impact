@@ -2,7 +2,7 @@
   <div class="content-section">
     <h1>Order History</h1>
     <order-history-list 
-      api-url="/user/api/orders" 
+      api-url="/api/v1/user/orders" 
       view-base-url="/user/order"
     ></order-history-list>
   </div>

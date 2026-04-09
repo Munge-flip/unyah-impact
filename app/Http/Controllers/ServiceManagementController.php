@@ -32,7 +32,7 @@ class ServiceManagementController extends Controller
 
         $services = $query->orderBy('game')->orderBy('category_name')->paginate(15);
 
-        return view('admin.services.index', compact('services'));
+        return response()->json($services);
     }
 
     /**
@@ -40,7 +40,7 @@ class ServiceManagementController extends Controller
      */
     public function create()
     {
-        return view('admin.services.create');
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -66,7 +66,7 @@ class ServiceManagementController extends Controller
         // Auto-generate name slug (lowercase, hyphenated)
         $nameSlug = Str::slug($validated['name']);
 
-        Service::create([
+        $service = Service::create([
             'game' => $validated['game'],
             'category_name' => $categoryName, // Display name
             'category' => $categorySlug, // Slug for JS logic
@@ -77,8 +77,11 @@ class ServiceManagementController extends Controller
             'is_active' => $validated['is_active'] ?? true,
         ]);
 
-        return redirect()->route('admin.services.index')
-            ->with('success', 'Service created successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Service created successfully!',
+            'data' => $service
+        ], 201);
     }
 
     /**
@@ -87,7 +90,10 @@ class ServiceManagementController extends Controller
     public function edit($id)
     {
         $service = Service::findOrFail($id);
-        return view('admin.services.edit', compact('service'));
+        return response()->json([
+            'success' => true,
+            'data' => $service
+        ]);
     }
 
     /**
@@ -122,8 +128,11 @@ class ServiceManagementController extends Controller
             'is_active' => $validated['is_active'] ?? $service->is_active,
         ]);
 
-        return redirect()->route('admin.services.index')
-            ->with('success', 'Service updated successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Service updated successfully!',
+            'data' => $service
+        ]);
     }
 
     /**
@@ -134,7 +143,10 @@ class ServiceManagementController extends Controller
         $service = Service::findOrFail($id);
         $service->delete();
 
-        return back()->with('success', 'Service deleted successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Service deleted successfully!'
+        ]);
     }
 
     /**
@@ -146,6 +158,10 @@ class ServiceManagementController extends Controller
         $service->is_active = !$service->is_active;
         $service->save();
 
-        return back()->with('success', 'Service status updated!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Service status updated!',
+            'is_active' => $service->is_active
+        ]);
     }
 }

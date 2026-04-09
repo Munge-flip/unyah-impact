@@ -98,7 +98,7 @@ const loading = ref(true);
 
 async function fetchTransaction() {
   try {
-    const response = await axios.get(`/user/transactions/${route.params.id}`, {
+    const response = await axios.get(`/api/v1/user/transactions/${route.params.id}`, {
         headers: { 'Accept': 'application/json' }
     });
     if (response.data.success) {

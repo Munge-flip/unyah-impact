@@ -142,7 +142,7 @@ const paymentForm = reactive({
 
 async function fetchOrder() {
   try {
-    const response = await axios.get(`/user/order/${route.params.id}`, {
+    const response = await axios.get(`/api/v1/user/orders/${route.params.id}`, {
         headers: { 'Accept': 'application/json' }
     });
     if (response.data.success) {
@@ -169,7 +169,7 @@ async function handlePaymentSubmit() {
   }
 
   try {
-    const response = await axios.post('/user/transactions', formData, {
+    const response = await axios.post('/api/v1/user/transactions', formData, {
       headers: { 
           'Content-Type': 'multipart/form-data',
           'Accept': 'application/json'

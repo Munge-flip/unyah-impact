@@ -54,7 +54,7 @@ const loading = ref(true);
 
 async function fetchTransactions() {
   try {
-    const response = await axios.get('/user/transactions');
+    const response = await axios.get('/api/v1/user/transactions');
     if (response.data.success) {
       // The API currently doesn't use the 'data' envelope consistently
       // Let's check how userTransactions returns data
