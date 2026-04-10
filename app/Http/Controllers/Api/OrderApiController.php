@@ -20,30 +20,25 @@ class OrderApiController extends Controller
         // Role-Based Filtering Logic
         if ($user->role === 'admin') {
             // ADMIN: Only show orders that have been VERIFIED (paid)
-            $query->select('orders.*')
-                ->leftJoin('transactions', function($join) {
-                    $join->on('orders.id', '=', 'transactions.order_id')
-                         ->where('transactions.status', '=', 'verified');
-                })
-                ->where('orders.payment_status', 'paid')
-                ->orderByRaw('transactions.verified_at DESC'); // Recently approved first
+            $query->where('payment_status', 'paid')
+                  ->orderBy('updated_at', 'desc'); // Recently acted upon first
             
             if ($request->has('user_id')) {
-                $query->where('orders.user_id', $request->user_id);
+                $query->where('user_id', $request->user_id);
             }
             if ($request->has('agent_id')) {
-                $query->where('orders.agent_id', $request->agent_id);
+                $query->where('agent_id', $request->agent_id);
             }
         } 
         elseif ($user->role === 'agent') {
             // AGENT: Only show orders ASSIGNED to this agent
             $query->where('agent_id', $user->id)
-                  ->orderBy('created_at', 'desc');
+                  ->orderBy('updated_at', 'desc');
         } 
         else {
             // USER: Only show orders PLACED by this user
-            $query->where('user_id', $user->id)
-                  ->orderBy('created_at', 'desc');
+            $query->orderBy('created_at', 'desc')
+                  ->where('user_id', $user->id);
         }
 
         // Other shared filters

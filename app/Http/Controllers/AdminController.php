@@ -80,8 +80,7 @@ class AdminController extends Controller
                      ->where('transactions.status', '=', 'verified');
             })
             ->with('user')
-            ->orderByRaw('transactions.verified_at DESC')
-            ->orderBy('orders.created_at', 'desc')
+            ->orderBy('orders.updated_at', 'desc')
             ->take(5)
             ->get();
 
@@ -157,8 +156,7 @@ class AdminController extends Controller
                      ->where('transactions.status', '=', 'verified');
             })
             ->with(['user', 'agent', 'transaction'])
-            ->orderByRaw('transactions.verified_at DESC') // Prioritize verified, newest first
-            ->orderBy('orders.created_at', 'desc')        // Then by creation date
+            ->orderBy('orders.updated_at', 'desc') // Recently acted upon first
             ->paginate(10);
 
         return response()->json([

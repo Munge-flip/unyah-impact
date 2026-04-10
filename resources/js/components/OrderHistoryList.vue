@@ -14,7 +14,7 @@
       </div>
       
       <div v-if="searchQuery" class="text-muted" style="margin-top: 10px; font-size: 13px;">
-        Found {{ orders.length }} result(s) for "{{ searchQuery }}"
+        Found {{ pagination.total }} result(s) for "{{ searchQuery }}"
       </div>
     </div>
 
@@ -56,13 +56,38 @@
         <p v-if="searchQuery">No orders matching "{{ searchQuery }}"</p>
         <p v-else>No orders found. <router-link v-if="!isAgent" to="/" style="color: #667eea;">Book a service now!</router-link></p>
       </div>
+
+      <!-- Pagination Controls -->
+      <div v-if="pagination.last_page > 1" class="pagination-wrapper">
+        <nav class="pagination">
+          <button 
+            @click="changePage(pagination.current_page - 1)" 
+            :disabled="pagination.current_page === 1"
+            class="btn-secondary btn-sm"
+          >
+            Previous
+          </button>
+          
+          <span class="p-2">Page {{ pagination.current_page }} of {{ pagination.last_page }}</span>
+
+          <button 
+            @click="changePage(pagination.current_page + 1)" 
+            :disabled="pagination.current_page === pagination.last_page"
+            class="btn-secondary btn-sm"
+          >
+            Next
+          </button>
+        </nav>
+      </div>
     </template>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch, reactive } from 'vue';
 import axios from 'axios';
+import StatusBadge from './StatusBadge.vue';
+import DetailRow from './DetailRow.vue';
 
 const props = defineProps({
   apiUrl: { type: String, required: true },
@@ -73,18 +98,28 @@ const props = defineProps({
 const orders = ref([]);
 const loading = ref(true);
 const searchQuery = ref('');
+const pagination = reactive({
+  current_page: 1,
+  last_page: 1,
+  total: 0
+});
 let searchTimeout = null;
 let pollInterval = null;
 
-async function fetchOrders(showLoading = true) {
+async function fetchOrders(page = 1, showLoading = true) {
   if (showLoading) loading.value = true;
   try {
     const response = await axios.get(props.apiUrl, {
-      params: { search: searchQuery.value }
+      params: { 
+        search: searchQuery.value,
+        page: page 
+      }
     });
     if (response.data.success) {
-      // API now returns { data: { data: [...], meta: {...} } }
       orders.value = response.data.data;
+      pagination.current_page = response.data.meta.current_page;
+      pagination.last_page = response.data.meta.last_page;
+      pagination.total = response.data.meta.total;
     }
   } catch (error) {
     console.error('Failed to fetch orders:', error);
@@ -93,11 +128,17 @@ async function fetchOrders(showLoading = true) {
   }
 }
 
+function changePage(page) {
+  if (page >= 1 && page <= pagination.last_page) {
+    fetchOrders(page);
+  }
+}
+
 // Debounced Search Logic
 watch(searchQuery, () => {
   if (searchTimeout) clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
-    fetchOrders();
+    fetchOrders(1);
   }, 300);
 });
 
@@ -111,11 +152,11 @@ function formatPrice(val) {
 }
 
 onMounted(() => {
-  fetchOrders();
-  // Refresh every 30 seconds silently
+  fetchOrders(1);
+  // Refresh every 30 seconds silently if on page 1
   pollInterval = setInterval(() => {
-    if (!searchQuery.value) {
-      fetchOrders(false);
+    if (!searchQuery.value && pagination.current_page === 1) {
+      fetchOrders(1, false);
     }
   }, 30000);
 });
@@ -139,5 +180,19 @@ onUnmounted(() => {
 .search-input:focus {
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
     transform: scale(1.02);
+}
+.pagination-wrapper {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>
