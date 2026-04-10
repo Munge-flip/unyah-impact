@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { authStore } from '../stores/authStore';
 
 // Layouts
 const PublicLayout = () => import('../layouts/PublicLayout.vue');
@@ -114,6 +115,7 @@ const routes = [
     {
         path: '/user',
         component: UserLayout,
+        meta: { requiresAuth: true, role: 'user' },
         children: [
             {
                 path: '',
@@ -160,6 +162,7 @@ const routes = [
     {
         path: '/admin',
         component: AdminLayout,
+        meta: { requiresAuth: true, role: 'admin' },
         children: [
             {
                 path: '',
@@ -246,6 +249,7 @@ const routes = [
     {
         path: '/agent',
         component: AgentLayout,
+        meta: { requiresAuth: true, role: 'agent' },
         children: [
             {
                 path: '',
@@ -282,6 +286,7 @@ const routes = [
     {
         path: '/',
         component: AuthLayout,
+        meta: { requiresGuest: true },
         children: [
             {
                 path: 'login',
@@ -308,6 +313,42 @@ const router = createRouter({
         // Otherwise, always scroll to top
         return { top: 0 };
     }
+});
+
+router.beforeEach((to, from, next) => {
+    const user = authStore.user;
+    const token = localStorage.getItem('auth_token');
+
+    // Check if the route requires authentication
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    // Check if the route requires guest access only (login/register)
+    const requiresGuest = to.matched.some(record => record.meta.requiresGuest);
+    // Check if the route requires a specific role
+    const requiredRole = to.matched.find(record => record.meta.role)?.meta.role;
+
+    if (requiresAuth && !token) {
+        // Redirect to login if not authenticated
+        return next({ name: 'login' });
+    }
+
+    if (requiresAuth && requiredRole && user?.role !== requiredRole) {
+        // Redirect based on actual role if trying to access unauthorized area
+        if (user?.role === 'admin') return next({ name: 'admin.dashboard' });
+        if (user?.role === 'agent') return next({ name: 'agent.dashboard' });
+        if (user?.role === 'user') return next({ name: 'user.dashboard' });
+        return next({ name: 'home' });
+    }
+
+    if (requiresGuest && token) {
+        // Redirect logged-in users away from guest-only pages
+        if (user?.role === 'admin') return next({ name: 'admin.dashboard' });
+        if (user?.role === 'agent') return next({ name: 'agent.dashboard' });
+        if (user?.role === 'user') return next({ name: 'home' }); // Redirect users to landing instead of dashboard
+        return next({ name: 'home' });
+    }
+
+    // Proceed to the route
+    next();
 });
 
 export default router;
