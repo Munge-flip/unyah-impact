@@ -98,6 +98,9 @@ async function submitForm() {
         });
 
         if (response.data.success) {
+            // Reset selection state
+            serviceStore.resetSelection();
+            
             // Smooth SPA navigation
             router.push(response.data.redirect);
         }

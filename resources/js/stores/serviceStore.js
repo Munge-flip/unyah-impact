@@ -20,6 +20,12 @@ export const serviceStore = reactive({
     // Actions
     async fetchServices(gameName) {
         this.loading = true;
+        
+        // Reset selection if changing games
+        if (this.game !== gameName) {
+            this.resetSelection();
+        }
+        
         this.game = gameName;
         try {
             const response = await axios.get('/api/v1/services', {
@@ -62,6 +68,14 @@ export const serviceStore = reactive({
         const index = this.hollowModes.indexOf(modeName);
         if (index > -1) this.hollowModes.splice(index, 1);
         else this.hollowModes.push(modeName);
+    },
+
+    resetSelection() {
+        this.selectedServices = {};
+        this.explorations = [];
+        this.worlds = [];
+        this.hollowModes = [];
+        this.paymentMethod = '';
     },
 
     // Getters
