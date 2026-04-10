@@ -6,6 +6,7 @@ const AuthLayout = () => import('../layouts/AuthLayout.vue');
 const ServiceLayout = () => import('../layouts/ServiceLayout.vue');
 const UserLayout = () => import('../layouts/UserLayout.vue');
 const AdminLayout = () => import('../layouts/AdminLayout.vue');
+const AgentLayout = () => import('../layouts/AgentLayout.vue');
 
 // Pages
 const HomeView = () => import('../views/public/HomeView.vue');
@@ -18,6 +19,7 @@ const UserEditInfoView = () => import('../views/user/UserEditInfoView.vue');
 const UserEditPasswordView = () => import('../views/user/UserEditPasswordView.vue');
 const UserOrdersIndexView = () => import('../views/user/UserOrdersIndexView.vue');
 const UserOrderShowView = () => import('../views/user/UserOrderShowView.vue');
+const UserOrderChatView = () => import('../views/user/UserOrderChatView.vue');
 const UserTransactionsIndexView = () => import('../views/user/UserTransactionsIndexView.vue');
 const UserTransactionShowView = () => import('../views/user/UserTransactionShowView.vue');
 
@@ -27,6 +29,7 @@ const AdminAgentsIndexView = () => import('../views/admin/AdminAgentsIndexView.v
 const AdminAgentCreateView = () => import('../views/admin/AdminAgentCreateView.vue');
 const AdminOrdersIndexView = () => import('../views/admin/AdminOrdersIndexView.vue');
 const AdminOrderShowView = () => import('../views/admin/AdminOrderShowView.vue');
+const AdminOrderChatView = () => import('../views/admin/AdminOrderChatView.vue');
 const AdminProfileIndexView = () => import('../views/admin/AdminProfileIndexView.vue');
 const AdminProfileEditView = () => import('../views/admin/AdminProfileEditView.vue');
 const AdminProfilePasswordView = () => import('../views/admin/AdminProfilePasswordView.vue');
@@ -37,6 +40,14 @@ const AdminTransactionsIndexView = () => import('../views/admin/AdminTransaction
 const AdminTransactionShowView = () => import('../views/admin/AdminTransactionShowView.vue');
 const AdminUsersIndexView = () => import('../views/admin/AdminUsersIndexView.vue');
 const AdminUserEditView = () => import('../views/admin/AdminUserEditView.vue');
+
+// Agent Pages
+const AgentDashboardView = () => import('../views/agent/AgentDashboardView.vue');
+const AgentEditInfoView = () => import('../views/agent/AgentEditInfoView.vue');
+const AgentEditPasswordView = () => import('../views/agent/AgentEditPasswordView.vue');
+const AgentOrdersIndexView = () => import('../views/agent/AgentOrdersIndexView.vue');
+const AgentOrderShowView = () => import('../views/agent/AgentOrderShowView.vue');
+const AgentOrderChatView = () => import('../views/agent/AgentOrderChatView.vue');
 
 // Service Views
 const GenshinView = () => import('../views/public/GenshinView.vue');
@@ -130,6 +141,11 @@ const routes = [
                 component: UserOrderShowView
             },
             {
+                path: 'order/:id/chat',
+                name: 'user.order.chat',
+                component: UserOrderChatView
+            },
+            {
                 path: 'transactions',
                 name: 'user.transactions',
                 component: UserTransactionsIndexView
@@ -169,6 +185,11 @@ const routes = [
                 path: 'order/:id',
                 name: 'admin.order.show',
                 component: AdminOrderShowView
+            },
+            {
+                path: 'order/:id/chat',
+                name: 'admin.order.chat',
+                component: AdminOrderChatView
             },
             {
                 path: 'profile',
@@ -219,6 +240,42 @@ const routes = [
                 path: 'user/:id/edit',
                 name: 'admin.user.edit',
                 component: AdminUserEditView
+            }
+        ]
+    },
+    {
+        path: '/agent',
+        component: AgentLayout,
+        children: [
+            {
+                path: '',
+                name: 'agent.dashboard',
+                component: AgentDashboardView
+            },
+            {
+                path: 'edit',
+                name: 'agent.dashboard.edit',
+                component: AgentEditInfoView
+            },
+            {
+                path: 'update',
+                name: 'agent.dashboard.update',
+                component: AgentEditPasswordView
+            },
+            {
+                path: 'order',
+                name: 'agent.order',
+                component: AgentOrdersIndexView
+            },
+            {
+                path: 'order/:id',
+                name: 'agent.order.show',
+                component: AgentOrderShowView
+            },
+            {
+                path: 'order/:id/chat',
+                name: 'agent.order.chat',
+                component: AgentOrderChatView
             }
         ]
     },
