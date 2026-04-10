@@ -102,9 +102,14 @@ async function handleRegister() {
 
         if (response.data.success) {
             // Update reactive auth store
-            authStore.setUser(response.data.user, response.data.token);
+            const { user, token } = response.data.data;
+            authStore.setUser(user, token);
+            
+            // Redirect to landing page
+            const redirectPath = response.data.redirect || '/';
+            
             // Smooth SPA navigation
-            router.push(response.data.redirect);
+            router.push(redirectPath);
         }
     } catch (error) {
         if (error.response && error.response.status === 422) {

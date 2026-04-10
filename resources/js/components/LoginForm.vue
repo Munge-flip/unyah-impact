@@ -66,7 +66,7 @@ async function handleLogin() {
             const userData = response.data.data.user;
             const redirectPath = response.data.redirect || 
                                 (userData.role === 'admin' ? '/admin' : 
-                                (userData.role === 'agent' ? '/agent' : '/user'));
+                                (userData.role === 'agent' ? '/agent' : '/'));
 
             // Smooth SPA navigation
             router.push(redirectPath);
