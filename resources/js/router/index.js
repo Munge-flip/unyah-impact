@@ -13,6 +13,7 @@ const AgentLayout = () => import('../layouts/AgentLayout.vue');
 const HomeView = () => import('../views/public/HomeView.vue');
 const LoginView = () => import('../views/auth/LoginView.vue');
 const RegisterView = () => import('../views/auth/RegisterView.vue');
+const UnauthorizedView = () => import('../views/public/UnauthorizedView.vue');
 
 // User Pages
 const UserDashboardView = () => import('../views/user/UserDashboardView.vue');
@@ -64,6 +65,11 @@ const routes = [
                 path: '',
                 name: 'home',
                 component: HomeView
+            },
+            {
+                path: 'unauthorized',
+                name: 'unauthorized',
+                component: UnauthorizedView
             }
         ]
     },
@@ -332,18 +338,14 @@ router.beforeEach((to, from, next) => {
     }
 
     if (requiresAuth && requiredRole && user?.role !== requiredRole) {
-        // Redirect based on actual role if trying to access unauthorized area
-        if (user?.role === 'admin') return next({ name: 'admin.dashboard' });
-        if (user?.role === 'agent') return next({ name: 'agent.dashboard' });
-        if (user?.role === 'user') return next({ name: 'user.dashboard' });
-        return next({ name: 'home' });
+        // Redirect to Unauthorized 401 page if role doesn't match
+        return next({ name: 'unauthorized', replace: true });
     }
 
     if (requiresGuest && token) {
-        // Redirect logged-in users away from guest-only pages
+        // Redirect logged-in users away from guest-only pages based on their role
         if (user?.role === 'admin') return next({ name: 'admin.dashboard' });
         if (user?.role === 'agent') return next({ name: 'agent.dashboard' });
-        if (user?.role === 'user') return next({ name: 'home' }); // Redirect users to landing instead of dashboard
         return next({ name: 'home' });
     }
 
