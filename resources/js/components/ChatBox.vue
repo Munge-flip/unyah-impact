@@ -4,11 +4,15 @@
       <!-- MESSAGES AREA -->
       <div class="chat-messages" id="chatMessages" ref="messageContainer">
         <div v-for="msg in messages" :key="msg.id" 
-             :class="['message', msg.user_id === currentUserId ? 'sent' : 'received']"
-             :style="getMessageStyle(msg.user_id)"
+             class="message-wrapper"
+             :class="[msg.user_id === currentUserId ? 'sent' : 'received']"
         >
-          <p style="margin: 0;">{{ msg.message }}</p>
-          <span class="message-data">{{ msg.created_at_human }}</span>
+          <div class="message-bubble" :style="getMessageStyle(msg.user_id)">
+            <p style="margin: 0;">{{ msg.message }}</p>
+            <span class="message-data" :style="{ color: msg.user_id === currentUserId ? 'rgba(255,255,255,0.8)' : '#888' }">
+              {{ msg.created_at_human }}
+            </span>
+          </div>
         </div>
 
         <!-- Empty State -->
@@ -27,7 +31,7 @@
 
       <!-- INPUT AREA -->
       <div class="chat-input-container">
-        <form @submit.prevent="sendMessage" style="display: flex; width: 100%; gap: 10px;">
+        <form @submit.prevent="sendMessage" class="chat-form">
           <input 
             type="text" 
             v-model="newMessage" 
@@ -122,12 +126,13 @@ function scrollToBottom() {
 function getMessageStyle(userId) {
   const isMe = userId === props.currentUserId;
   return {
-    maxWidth: '70%', 
-    padding: '10px 15px', 
-    borderRadius: '15px', 
-    alignSelf: isMe ? 'flex-end' : 'flex-start',
-    background: isMe ? '#667eea' : '#f1f1f1',
-    color: isMe ? '#fff' : '#333'
+    maxWidth: '85%', 
+    padding: '12px 18px', 
+    borderRadius: '18px', 
+    background: isMe ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#fff',
+    color: isMe ? '#fff' : '#333',
+    boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
+    border: isMe ? 'none' : '1px solid #eee'
   };
 }
 
@@ -143,22 +148,142 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.chat-messages {
+.chat-container {
+  height: 600px; /* Fixed height for the entire component */
+  max-height: 80vh;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.chat-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Critical for keeping input at bottom */
+}
+
+.chat-messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   overflow-y: auto;
-  max-height: 500px;
+  padding: 25px;
+  background: #f9faff;
 }
+
+.message-wrapper {
+  display: flex;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.message-wrapper.sent {
+  justify-content: flex-end;
+}
+
+.message-wrapper.received {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
 .message-data {
-  font-size: 11px; 
-  opacity: 0.7; 
+  font-size: 10px; 
   display: block; 
-  text-align: right; 
-  margin-top: 5px;
+  margin-top: 4px;
+  text-align: right;
 }
+
+.chat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #b0b0b0;
+  text-align: center;
+}
+
+.chat-empty svg {
+  margin-bottom: 15px;
+  opacity: 0.4;
+}
+
+.chat-empty p {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.chat-input-container {
+  padding: 20px;
+  background: white;
+  border-top: 2px solid #f0f0f0;
+  flex-shrink: 0; /* Ensures it never gets squished */
+}
+
+.chat-form {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.chat-input:focus {
+  border-color: #a78bfa;
+}
+
+.send-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.send-btn:hover {
+  transform: scale(1.05);
+}
+
 .send-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Custom Scrollbar */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 10px;
 }
 </style>
