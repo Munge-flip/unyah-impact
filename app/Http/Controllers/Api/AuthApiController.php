@@ -48,7 +48,7 @@ class AuthApiController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Validation error',
+                'message' => 'Email already used',
                 'errors' => $e->errors()
             ], 422);
         }

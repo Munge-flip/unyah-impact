@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard - Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Syne', sans-serif; }</style>
+</head>
+<body class="bg-[#f0f9f9] min-h-screen pb-28">
+
+    <!-- Header -->
+    <header class="p-4 flex justify-between items-center sticky top-0 z-50 bg-[#1e1e1e]/90 backdrop-blur-md border-b border-white/10 text-white">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border-2 border-emerald-400 overflow-hidden">
+                <img src="../public/img/yours.png" class="w-full h-full object-cover">
+            </div>
+            <div>
+                <h1 class="text-sm font-bold leading-none">Agent Silver</h1>
+                <p class="text-[10px] text-emerald-400 font-black uppercase tracking-widest mt-1">Status: Online</p>
+            </div>
+        </div>
+        <button class="p-2 bg-white/10 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </button>
+    </header>
+
+    <main class="p-4 space-y-6">
+        <!-- Earning Summary Card -->
+        <section class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-[2rem] p-6 shadow-xl shadow-emerald-100 text-white">
+            <p class="text-[10px] font-black uppercase tracking-widest opacity-70 mb-1">Weekly Earnings</p>
+            <h2 class="text-4xl font-black mb-6">₱2,450.00</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white/10 rounded-2xl p-4">
+                    <p class="text-[10px] text-white/60 uppercase font-bold mb-1">Tasks Done</p>
+                    <p class="text-xl font-black">14</p>
+                </div>
+                <div class="bg-white/10 rounded-2xl p-4">
+                    <p class="text-[10px] text-white/60 uppercase font-bold mb-1">In Progress</p>
+                    <p class="text-xl font-black">3</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Active Tasks -->
+        <section class="space-y-4">
+            <div class="flex justify-between items-end px-1">
+                <h3 class="text-xs font-black text-teal-800 uppercase tracking-widest">Active Workload</h3>
+                <a href="agent-tasks.html" class="text-[10px] font-bold text-emerald-600 uppercase">View All</a>
+            </div>
+            
+            <!-- Task 1 -->
+            <div class="bg-white rounded-3xl p-5 shadow-sm border border-emerald-50">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase rounded-lg italic">In Progress</span>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase italic">#HP-992</p>
+                </div>
+                
+                <div class="space-y-2 mb-2">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-400 font-medium">Game:</span>
+                        <span class="font-bold text-gray-700">Genshin Impact</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-400 font-medium">Task:</span>
+                        <span class="font-bold text-gray-700">100% Map Completion</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task 2 -->
+            <div class="bg-white rounded-3xl p-5 shadow-sm border border-emerald-50">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase rounded-lg italic">In Progress</span>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase italic">#HP-1004</p>
+                </div>
+                
+                <div class="space-y-2 mb-2">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-400 font-medium">Game:</span>
+                        <span class="font-bold text-gray-700">HSR</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-400 font-medium">Task:</span>
+                        <span class="font-bold text-gray-700">Spiral Abyss</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Agent Bottom Nav (Settings Added) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-[#1e1e1e]/95 backdrop-blur-lg border-t border-white/10 p-4 flex justify-between items-center z-50 text-white/40">
+        <a href="agent-dashboard.html" class="flex flex-col items-center gap-1 text-emerald-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span class="text-[8px] font-bold uppercase">Stats</span>
+        </a>
+        <a href="agent-tasks.html" class="flex flex-col items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+            <span class="text-[8px] font-bold uppercase">Tasks</span>
+        </a>
+        <a href="agent-settings.html" class="flex flex-col items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /></svg>
+            <span class="text-[8px] font-bold uppercase">Settings</span>
+        </a>
+    </nav>
+
+</body>
+</html>
